@@ -476,13 +476,6 @@ void mainloop(void *arg)
         if(steptexr.x < game.user.mouse["x"] && game.user.mouse["x"] < steptexr.x + steptexr.w){
             if(steptexr.y < game.user.mouse["y"] && game.user.mouse["y"] < steptexr.y + steptexr.h){
                 if(game.user.mouse_down) send_alert(1);
-                
-                if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
-                    if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
-                        if(game.user.mouse_down) send_alert(0);
-                    }
-                }
-            }
         }
     }
 
