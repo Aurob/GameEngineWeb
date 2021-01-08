@@ -1,7 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
-#include <emscripten.h>
 #include <cstdlib>
 #include <time.h>
 #include <math.h>
