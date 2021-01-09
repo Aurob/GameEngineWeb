@@ -341,12 +341,12 @@ void mainloop(void *arg)
     SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
-    // small rectangle where the cursor is
+    // small rectangle for the user position
     temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
     temp_rect.y = game.game.height/2;// - texheight;
     temp_rect.w = game.game.chunk_size/3 - 1;
     temp_rect.h = game.game.chunk_size/3 - 1;
-    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 255 );
+    SDL_SetRenderDrawColor(renderer, 234, 134, 34, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
     // mouse chunk
@@ -365,7 +365,7 @@ void mainloop(void *arg)
     SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
-    for(auto fish : fishs){
+    for(auto fish : fishs){w
         tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
         tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
         steptexr.x = 96 + ((static_cast<int>(game.game.time_stepx/100)) %3)*32; steptexr.y = 192;
