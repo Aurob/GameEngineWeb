@@ -12,8 +12,6 @@
 #include "FastNoise.h"
 #include "Game.h"
 
-
-
 struct context
 {
     SDL_Renderer *renderer;
@@ -35,50 +33,6 @@ int w, h;
 int biometex;
 Position uchunk;
 Position temp_click;
-
-
-// Begin JS/C bridges
-extern "C" {
-    int ecount(){
-        return game.user.owned_entities.size();
-    }
-    const char* get_info(int type){
-        const char* retval;
-        FastNoise noise;
-        switch(type){
-            case 0:
-                retval = (std::to_string(game.user.mouse["x"]) + ", " + std::to_string(game.user.mouse["y"])).c_str();
-                break;
-
-            case 1:
-                retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
-                break;
-
-            case 2:
-                retval = (std::to_string(game.user.mouse_chunk[0]) + ", " + std::to_string(game.user.mouse_chunk[1])).c_str();
-                break;
-            case 3:
-                retval = std::to_string(noise.GetPerlin(game.user.chunk[0], game.user.chunk[1])).c_str();
-                break;
-            case 4:
-                retval = game.game.mouse_entity.ID.c_str();
-                break;
-            case 5:
-                retval = std::to_string(game.user.items["fish"]).c_str();
-                break;
-            case 6:
-                retval = std::to_string(game.user.items["wood"]).c_str();
-                break;
-            case 7:
-                retval = std::to_string(game.user.items["stone"]).c_str();
-                break;
-            default:
-                retval = "No type specified";
-                break;
-        }
-        return retval;
-    }
-}
 
 int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
     int xchunk, ychunk;
@@ -169,7 +123,6 @@ EM_JS(void, talk, (int type), {
     }
     
 });
-
 //If an alert is made, all events need to be cancelled
 void send_alert(int type){
     for(auto& e : game.user.keyState){
@@ -523,6 +476,12 @@ void mainloop(void *arg)
         if(steptexr.x < game.user.mouse["x"] && game.user.mouse["x"] < steptexr.x + steptexr.w){
             if(steptexr.y < game.user.mouse["y"] && game.user.mouse["y"] < steptexr.y + steptexr.h){
                 if(game.user.mouse_down) send_alert(1);
+                
+                if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
+                    if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
+                        if(game.user.mouse_down) send_alert(0);
+                    }
+                }
             }
         }
     }
@@ -534,13 +493,107 @@ void mainloop(void *arg)
         steptexr.w = game.game.chunk_size*2; steptexr.h = game.game.chunk_size*2; 
         SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
     }
+
+    for(auto p : game.game.structures){
+        //draw roof
+        for(int r = 0; r < 6; ++r){
+            steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
+            steptexr.w = 32; steptexr.h = 128;
+            temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1];
+            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+        }
+
+        //draw front walls
+        for(int r = 0; r < 6; ++r){
+            if(r == 0)
+                steptexr.x = 0; 
+            else if(r == 5)
+                steptexr.x = 64;
+            else steptexr.x = 32;
+
+
+            steptexr.y = 1407 + (64 * p.wall_index);
+            steptexr.w = 32; steptexr.h = 64;
+            temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
+            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+        }
+
+        //draw door, window and misc
+        steptexr.x = 224;
+        steptexr.y = 1407 + (64 * p.wall_index);
+        steptexr.w = 32; steptexr.h = 64;
+        temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.game.chunk_size);
+        temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 2; 
+        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+        
+        //check if the user's mouse is in the bounds of the structure
+        
+        if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
+            if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){
+
+                //Door position
+                //TODO
+                //this won't translate well if I plan on having different sized structures
+                if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
+                    if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
+                        if(game.user.mouse_down) send_alert(0);
+                    }
+                }
+            }
+        }
+    }
+
     
     //finally draw everything to the screen
     SDL_RenderPresent(renderer);
     ctx->iteration++;
 }
 
+// Begin JS/C bridges
 
+extern "C" {
+    int ecount(){
+        return game.user.owned_entities.size();
+    }
+    const char* get_info(int type){
+        const char* retval;
+        FastNoise noise;
+        switch(type){
+            case 0:
+                retval = (std::to_string(game.user.mouse["x"]) + ", " + std::to_string(game.user.mouse["y"])).c_str();
+                break;
+
+            case 1:
+                retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
+                break;
+
+            case 2:
+                retval = (std::to_string(game.user.mouse_chunk[0]) + ", " + std::to_string(game.user.mouse_chunk[1])).c_str();
+                break;
+            case 3:
+                retval = std::to_string(noise.GetPerlin(game.user.chunk[0], game.user.chunk[1])).c_str();
+                break;
+            case 4:
+                retval = game.game.mouse_entity.ID.c_str();
+                break;
+            case 5:
+                retval = std::to_string(game.user.items["fish"]).c_str();
+                break;
+            case 6:
+                retval = std::to_string(game.user.items["wood"]).c_str();
+                break;
+            case 7:
+                retval = std::to_string(game.user.items["stone"]).c_str();
+                break;
+            default:
+                retval = "No type specified";
+                break;
+        }
+        return retval;
+    }
+}
 
 int main(int argc, char *argv[])
 {
