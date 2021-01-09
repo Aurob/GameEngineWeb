@@ -424,7 +424,7 @@ void mainloop(void *arg)
         // temp_rect.y =  (entity.chunkfy * game.game.chunk_size);
         // temp_rect.w = game.game.chunk_size;
         // temp_rect.h = game.game.chunk_size;
-        // SDL_RenderFillRect(renderer, &temp_rect);
+        // SDL_RenderFillRect(renderer, &temp_rect);//
         
         SDL_RenderCopy(renderer, game.game.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
 
