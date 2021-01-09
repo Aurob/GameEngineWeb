@@ -341,12 +341,12 @@ void mainloop(void *arg)
     SDL_SetRenderDrawColor(renderer, 124, 194, 101, 128 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
-    // fill the chunk the user is currently in
+    // small rectangle where the cursor is
     temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
     temp_rect.y = game.game.height/2;// - texheight;
     temp_rect.w = game.game.chunk_size/5 - 1;
     temp_rect.h = game.game.chunk_size/5 - 1;
-    SDL_SetRenderDrawColor(renderer, 34, 225, 106, 255 );
+    SDL_SetRenderDrawColor(renderer, 134, 125, 106, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
     // mouse chunk
