@@ -354,7 +354,7 @@ void mainloop(void *arg)
     temp_rect.y = game.user.mouse_chunk[1];
     temp_rect.w = game.game.chunk_size+1;
     temp_rect.h = game.game.chunk_size+1;
-    SDL_SetRenderDrawColor(renderer, 221, 44, 112, 50 );
+    SDL_SetRenderDrawColor(renderer, 121, 144, 112, 50 );
     SDL_RenderFillRect(renderer, &temp_rect);
 
     // mouse cursor
