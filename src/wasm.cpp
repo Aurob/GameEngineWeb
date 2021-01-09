@@ -523,6 +523,7 @@ void mainloop(void *arg)
         if(steptexr.x < game.user.mouse["x"] && game.user.mouse["x"] < steptexr.x + steptexr.w){
             if(steptexr.y < game.user.mouse["y"] && game.user.mouse["y"] < steptexr.y + steptexr.h){
                 if(game.user.mouse_down) send_alert(1);
+            }
         }
     }
 
