@@ -169,6 +169,7 @@ EM_JS(void, talk, (int type), {
     }
     
 });
+
 //If an alert is made, all events need to be cancelled
 void send_alert(int type){
     for(auto& e : game.user.keyState){
