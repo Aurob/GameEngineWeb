@@ -577,7 +577,9 @@ void mainloop(void *arg)
                 //this won't translate well if I plan on having different sized structures
                 if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
                     if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
-                        if(game.user.mouse_down) send_alert(0);
+                        if(game.user.mouse_down) {
+                            send_alert(0);
+                        }
                     }
                 }
             }
@@ -592,7 +594,8 @@ void mainloop(void *arg)
 
 
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     //seed generator
     srand(time(NULL));
     game.game.noise.SetSeed(rand() % 10000);
