@@ -365,7 +365,7 @@ void mainloop(void *arg)
     SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
-    for(auto fish : fishs){w
+    for(auto fish : fishs){
         tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
         tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
         steptexr.x = 96 + ((static_cast<int>(game.game.time_stepx/100)) %3)*32; steptexr.y = 192;
