@@ -12,6 +12,49 @@
 #include "FastNoise.h"
 #include "Game.h"
 
+// Begin JS/C bridges
+extern "C" {
+    int ecount(){
+        return game.user.owned_entities.size();
+    }
+    const char* get_info(int type){
+        const char* retval;
+        FastNoise noise;
+        switch(type){
+            case 0:
+                retval = (std::to_string(game.user.mouse["x"]) + ", " + std::to_string(game.user.mouse["y"])).c_str();
+                break;
+
+            case 1:
+                retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
+                break;
+
+            case 2:
+                retval = (std::to_string(game.user.mouse_chunk[0]) + ", " + std::to_string(game.user.mouse_chunk[1])).c_str();
+                break;
+            case 3:
+                retval = std::to_string(noise.GetPerlin(game.user.chunk[0], game.user.chunk[1])).c_str();
+                break;
+            case 4:
+                retval = game.game.mouse_entity.ID.c_str();
+                break;
+            case 5:
+                retval = std::to_string(game.user.items["fish"]).c_str();
+                break;
+            case 6:
+                retval = std::to_string(game.user.items["wood"]).c_str();
+                break;
+            case 7:
+                retval = std::to_string(game.user.items["stone"]).c_str();
+                break;
+            default:
+                retval = "No type specified";
+                break;
+        }
+        return retval;
+    }
+}
+
 struct context
 {
     SDL_Renderer *renderer;
@@ -544,49 +587,7 @@ void mainloop(void *arg)
     ctx->iteration++;
 }
 
-// Begin JS/C bridges
 
-extern "C" {
-    int ecount(){
-        return game.user.owned_entities.size();
-    }
-    const char* get_info(int type){
-        const char* retval;
-        FastNoise noise;
-        switch(type){
-            case 0:
-                retval = (std::to_string(game.user.mouse["x"]) + ", " + std::to_string(game.user.mouse["y"])).c_str();
-                break;
-
-            case 1:
-                retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
-                break;
-
-            case 2:
-                retval = (std::to_string(game.user.mouse_chunk[0]) + ", " + std::to_string(game.user.mouse_chunk[1])).c_str();
-                break;
-            case 3:
-                retval = std::to_string(noise.GetPerlin(game.user.chunk[0], game.user.chunk[1])).c_str();
-                break;
-            case 4:
-                retval = game.game.mouse_entity.ID.c_str();
-                break;
-            case 5:
-                retval = std::to_string(game.user.items["fish"]).c_str();
-                break;
-            case 6:
-                retval = std::to_string(game.user.items["wood"]).c_str();
-                break;
-            case 7:
-                retval = std::to_string(game.user.items["stone"]).c_str();
-                break;
-            default:
-                retval = "No type specified";
-                break;
-        }
-        return retval;
-    }
-}
 
 int main(int argc, char *argv[])
 {
