@@ -338,7 +338,7 @@ void mainloop(void *arg)
     temp_rect.y = uchunk.y + 1;
     temp_rect.w = game.game.chunk_size - 1;
     temp_rect.h = game.game.chunk_size - 1;
-    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 128 );
+    SDL_SetRenderDrawColor(renderer, 124, 194, 101, 128 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
     // fill the chunk the user is currently in
