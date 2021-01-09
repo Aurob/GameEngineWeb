@@ -93,20 +93,20 @@
             
             ctx.canvas.width = 1000;
             ctx.canvas.height = window.innerHeight;
-            // setInterval(()=>{
-            //     if(get_info){
-            //         $("#mousechk").html(get_info(2));
-            //         $("#global").html(get_info(1));
-            //         $("#mouse").html(get_info(0));
-            //         $("#einfo").html(get_info(4));
-            //         $("#fish").html(get_info(5));
-            //         $("#wood").html(get_info(6));
-            //         $("#stone").html(get_info(7));
-            //     }
-            // }, 10);
+            setInterval(()=>{
+                if(get_info){
+                    $("#mousechk").html(get_info(2));
+                    $("#global").html(get_info(1));
+                    $("#mouse").html(get_info(0));
+                    //$("#einfo").html(get_info(4));
+                    //$("#fish").html(get_info(5));
+                    //$("#wood").html(get_info(6));
+                    //$("#stone").html(get_info(7));
+                }
+            }, 10);
         });
     </script>
-    <script src="wasm.js"></script>
+    <script src="src/wasm.js"></script>
 
 </body>
 
