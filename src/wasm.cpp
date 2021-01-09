@@ -344,8 +344,8 @@ void mainloop(void *arg)
     // small rectangle where the cursor is
     temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
     temp_rect.y = game.game.height/2;// - texheight;
-    temp_rect.w = game.game.chunk_size/5 - 1;
-    temp_rect.h = game.game.chunk_size/5 - 1;
+    temp_rect.w = game.game.chunk_size/2 - 1;
+    temp_rect.h = game.game.chunk_size/2 - 1;
     SDL_SetRenderDrawColor(renderer, 134, 134, 134, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
