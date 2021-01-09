@@ -346,7 +346,7 @@ void mainloop(void *arg)
     temp_rect.y = game.game.height/2;// - texheight;
     temp_rect.w = game.game.chunk_size/3 - 1;
     temp_rect.h = game.game.chunk_size/3 - 1;
-    SDL_SetRenderDrawColor(renderer, 234, 134, 34, 255 );
+    SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
     SDL_RenderFillRect(renderer, &temp_rect );
 
     // mouse chunk
