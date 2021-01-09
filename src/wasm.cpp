@@ -592,8 +592,7 @@ void mainloop(void *arg)
 
 
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     //seed generator
     srand(time(NULL));
     game.game.noise.SetSeed(rand() % 10000);
