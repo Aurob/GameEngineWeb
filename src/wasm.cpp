@@ -234,18 +234,18 @@ void mainloop(void *arg)
 
                     std::string bID = game.rstring(10);
                     Building b;
-                    if(!game.check_key(game.game.structures, bID)){
-                        b.global_origin[0] = i;
-                        b.global_origin[1] = j;
+                    // if(!game.check_key(game.game.structures, bID)){
+                    //     b.global_origin[0] = i;
+                    //     b.global_origin[1] = j;
 
-                        b.screen_origin[0] = chunk_position.x;
-                        b.screen_origin[1] = chunk_position.y;
+                    //     b.screen_origin[0] = chunk_position.x;
+                    //     b.screen_origin[1] = chunk_position.y;
 
-                        b.roof_index = rand() % 6;
-                        b.wall_index = rand() % 12;
-                        b.ID = bID;
-                        game.game.structures[bID] = b;
-                    }
+                    //     b.roof_index = rand() % 6;
+                    //     b.wall_index = rand() % 12;
+                    //     b.ID = bID;
+                    //     game.game.structures[bID] = b;
+                    // }
 
                     int occupant_count = rand() % 10; //10 is the max occupant count
 
