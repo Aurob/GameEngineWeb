@@ -111,7 +111,7 @@ EM_JS(void, talk, (int type), {
             break;
 
         case 1:
-            alert("You slapped the tree, 123");
+            alert("You slapped the tree, 12345!");
             break;
         case 2:
             alert("Can I help you?");
