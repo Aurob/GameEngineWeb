@@ -333,7 +333,7 @@ void mainloop(void *arg)
             if(type.first == 0){ //water
                 resource_index = 3;
 
-                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*5)%6));
                 steptexr.y = 1376;
 
                 int left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
@@ -361,7 +361,7 @@ void mainloop(void *arg)
                     }
                     //left is water, down is water, but left down is not, top right corner
                     
-                    else if(down_left_tile != 0){
+                    else if(up_tile == 0 && down_tile == 0 && down_left_tile != 0){
                         steptexr.y = 1440;
                     }
 
