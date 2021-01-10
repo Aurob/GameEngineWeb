@@ -339,30 +339,26 @@ void mainloop(void *arg)
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
                     
                     //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
+                    steptexr.x = 192; steptexr.y = 224*5;
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
 
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                    steptexr.y = 224;
+                    steptexr.y = 224*5;
 
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
-                        steptexr.y = 192;
+                        steptexr.y = 192*5;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
-                        steptexr.y = 256;
+                        steptexr.y = 256*5;
                     }
-                    else if(game.game.WorldGen.terrainGeneration(tile.ix+1, tile.iy+1) != 0){
-                        steptexr.y = 288;
+                    else if(game.game.WorldGen.terrainGeneration(tile.ix-1, tile.iy-1) != 0){
+                        steptexr.y = 288*5;
                     }
                     
 
                 }
-                else {
-                   
-                }
-
                 //TODO
                 //use noise for smoother water transitions.
                 
