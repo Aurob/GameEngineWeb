@@ -272,7 +272,7 @@ bool Game::check_key(std::unordered_map<std::string, Building> m, std::string ke
 { 
     // Key is not present 
     if (m.find(key) == m.end()) 
-        return false; 
+        return false; //
   
     return true; 
 } 
