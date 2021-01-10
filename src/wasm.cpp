@@ -334,7 +334,7 @@ void mainloop(void *arg)
                 resource_index = 3;
 
                 steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                steptexr.y = 1344;
+                steptexr.y = 1376;
 
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
                     
@@ -345,16 +345,16 @@ void mainloop(void *arg)
                     //
 
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                    steptexr.y = 1344 + 32;
+                    steptexr.y = 1376;
 
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
                         steptexr.y = 1344;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
-                        steptexr.y = 1344 + (32*2);
+                        steptexr.y = 1408;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix-1, tile.iy-1) != 0){
-                        steptexr.y = 1344 + (32*3)
+                        steptexr.y = 1440;
                     }
                     
 
