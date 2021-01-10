@@ -20,38 +20,6 @@ struct Position
     float noise;
 };
 
-struct Entity
-{
-    Position position; //global position
-    Position chunk; //global chunk
-    float speed;
-    float size;
-    int directionx;
-    int directiony;
-    float chunkfx;
-    float chunkfy;
-    SDL_Color color;
-    bool persist;
-    unsigned int oldtime;
-    unsigned int newtime;
-    float timex;
-    float timey;
-    unsigned int index;
-    bool hasTex;
-    int texIndex;
-    int step;
-    int texAng;
-    std::string ID;
-    std::unordered_map<std::string, int> items;
-    unsigned int boat_texIndex;
-    int fast_texIndex;
-    float temp_speed;
-    Position local_position;
-    Position old_pos;
-    float health;
-    bool interacting;
-};
-
 struct GameOBJ
 {
     float speed;
