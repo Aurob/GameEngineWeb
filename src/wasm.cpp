@@ -336,7 +336,13 @@ void mainloop(void *arg)
                 steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                 steptexr.y = 1376;
 
-                if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
+                int left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
+                int right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy);
+                int up_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
+                int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
+                int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
+
+                if(left_tile != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
@@ -347,13 +353,17 @@ void mainloop(void *arg)
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     steptexr.y = 1376;
 
-                    if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
+                    if(up_tile != 0){
                         steptexr.y = 1344;
                     }
-                    else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
+                    else if(down_tile != 0){
                         steptexr.y = 1408;
                     }
+                    //left is water, down is water, but left down is not, top right corner
                     
+                    else if(down_left_tile != 0){
+                        steptexr.y = 1440;
+                    }
 
                 }
                 //TODO
