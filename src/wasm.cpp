@@ -361,7 +361,7 @@ void mainloop(void *arg)
                     }
                     //left is water, down is water, but left down is not, top right corner
                     
-                    if(up_tile == 0 && down_tile == 0 && left_tile == 0 && right_tile == 0 && down_left_tile != 0){
+                    if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
                         steptexr.y = 1440;
                     }
 
