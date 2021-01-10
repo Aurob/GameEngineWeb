@@ -353,7 +353,7 @@ void mainloop(void *arg)
                 }
 
                 //TODO
-                //use noise for smoother water transitions
+                //use noise for smoother water transitions.
                 steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                 steptexr.w = 32; steptexr.h = 32;
             }
