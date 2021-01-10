@@ -338,23 +338,25 @@ void mainloop(void *arg)
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-
+                    
+                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
-                        steptexr.y = 960;
+                        steptexr.y = 928;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
-                        steptexr.y = 1024;
+                        steptexr.y = 992;
                     }
                     else steptexr.y = 992;
                     
                 }
                 else {
+                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     steptexr.y = 224;
                 }
 
                 //TODO
                 //use noise for smoother water transitions.
-                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                
                 steptexr.w = 32; steptexr.h = 32;
             }
             else if(type.first == 1){ //sand
