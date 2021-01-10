@@ -14,6 +14,8 @@ struct Position
     float y;
     bool visible;
     float noise;
+    int ix;
+    int iy;
 };
 
 struct Entity
