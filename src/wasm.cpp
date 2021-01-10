@@ -196,7 +196,7 @@ void mainloop(void *arg)
             //Get the screen coordinates of the current tile
             Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
             chunk_position = game.content(chunk_position, 6);
-
+            chunk_position.ix = i; chunk_position.iy = j;
             biometex = game.game.WorldGen.terrainGeneration(i, j);
             tiles[biometex].push_back(chunk_position);
             
@@ -230,6 +230,8 @@ void mainloop(void *arg)
             //load structures anywhere but water
             if(biometex != 0){
                 if(game.game.WorldGen.doorGeneration(i, j)){
+                    std::string bID = game.rstring(10);
+                    
                     structures.push_back(chunk_position);
                     Building b;
                     b.global_origin[0] = i;
@@ -240,47 +242,48 @@ void mainloop(void *arg)
 
                     b.roof_index = rand() % 6;
                     b.wall_index = rand() % 12;
-                    b.ID = game.rstring(10);
+                    b.ID = bID;
 
                     int occupant_count = rand() % 10; //10 is the max occupant count
 
                     //Entity creation
-                    for(unsigned int i = 0; i < occupant_count; ++i){
-                        float n = game.game.noise.GetPerlinFractal(i, -i);
-                        Entity e {
-                            .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
-                            .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
-                            .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
-                            .persist = false, .timex = 0, .timey = 0, .index = i, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
-                            .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
-                            .health = 100.f
-                        };
+                    // for(unsigned int ii = 0; ii < occupant_count; ++ii){
+                    //     float n = game.game.noise.GetPerlinFractal(ii, -ii);
+                    //     Entity e {
+                    //         .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
+                    //         .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
+                    //         .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
+                    //         .persist = false, .timex = 0, .timey = 0, .index = ii, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
+                    //         .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, 
+                    //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
+                    //         .health = 100.f
+                    //     };
                         
-                        if(e.speed < 20){
-                            e.fast_texIndex = e.texIndex;
-                        }
-                        Position entity_spawn = Position{
-                            b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
-                            b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
-                        };
+                    //     if(e.speed < 20){
+                    //         e.fast_texIndex = e.texIndex;
+                    //     }
+                    //     Position entity_spawn = Position{
+                    //         b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
+                    //         b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
+                    //     };
 
-                        //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
-                        e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
-                        n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
-                        n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
-                        if(n < .45){
-                            e.items["boat"] = 1;
-                        }
-                        if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
-                            e.items["fly"] = 1;
-                        }
-                        e.temp_speed = e.speed;
-                        e.position.x = entity_spawn.x;
-                        e.position.y = entity_spawn.y;
-                        game.game.entities.push_back(e);
+                    //     //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
+                    //     e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
+                    //     n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
+                    //     n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+                    //     if(n < .45){
+                    //         e.items["boat"] = 1;
+                    //     }
+                    //     if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
+                    //         e.items["fly"] = 1;
+                    //     }
+                    //     e.temp_speed = e.speed;
+                    //     e.position.x = entity_spawn.x;
+                    //     e.position.y = entity_spawn.y;
+                    //     game.game.entities.push_back(e);
 
-                        b.occupants[e.ID] = e;
-                    }
+                    //     b.occupants[e.ID] = e;
+                    // }
 
                     game.game.structures.push_back(b);
                     //Structure spawns are based on a single tile, 
@@ -329,7 +332,12 @@ void mainloop(void *arg)
             int resource_index;
             if(type.first == 0){ //water
                 resource_index = 3;
-                steptexr.x = 192 + (256 * 1 * 6);
+                // if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
+                //     steptexr.x = 160 + (256 * 1 * 6);
+                // }
+                // else steptexr.x = 192 + (256 * 1 * 6);
+                
+                steptexr.x = 160 + (256 * 1 * 6);
                 steptexr.y = 224;
                 steptexr.w = 32; steptexr.h = 32;
             }
