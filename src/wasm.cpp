@@ -342,7 +342,10 @@ void mainloop(void *arg)
                 int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
                 int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
 
-                if(left_tile != 0){
+                if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
+                    steptexr.y = 1440;
+                }
+                else if(left_tile != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
@@ -359,12 +362,6 @@ void mainloop(void *arg)
                     else if(down_tile != 0){
                         steptexr.y = 1408;
                     }
-                    //left is water, down is water, but left down is not, top right corner
-                    
-                    if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
-                        steptexr.y = 1440;
-                    }
-
                 }
                 //TODO
                 //use noise for smoother water transitions.
