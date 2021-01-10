@@ -1,6 +1,9 @@
 #ifndef StructureUtils_H
 #define StructureUtils_H
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
 #include <unordered_map>
 #include <vector>
 #include <string>
