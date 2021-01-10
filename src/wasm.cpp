@@ -343,6 +343,7 @@ void mainloop(void *arg)
                 int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
 
                 if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
+                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     steptexr.y = 1440;
                 }
                 else if(left_tile != 0){
