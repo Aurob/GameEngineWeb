@@ -244,7 +244,7 @@ void mainloop(void *arg)
                     b.wall_index = rand() % 12;
                     b.ID = game.rstring(10);
 
-                    int occupant_count = rand() % MAX_occupants;
+                    int occupant_count = rand() % 10; //10 is the max occupant count
                     for(int i = 0; i < occupant_count; ++i){
                         Entity occupant{
                             .ID = game.rstring(10)
