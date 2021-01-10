@@ -234,7 +234,7 @@ void mainloop(void *arg)
 
                     std::string bID = game.rstring(10);
                     Building b;
-                    if(!check_key(game.game.structures, bID)){
+                    if(!game.check_key(game.game.structures, bID)){
                         b.global_origin[0] = i;
                         b.global_origin[1] = j;
 
