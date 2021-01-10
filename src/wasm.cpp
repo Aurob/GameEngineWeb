@@ -353,9 +353,6 @@ void mainloop(void *arg)
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
                         steptexr.y = 1408;
                     }
-                    else if(game.game.WorldGen.terrainGeneration(tile.ix-1, tile.iy-1) != 0){
-                        steptexr.y = 1440;
-                    }
                     
 
                 }
