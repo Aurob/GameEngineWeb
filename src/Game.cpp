@@ -10,7 +10,7 @@ Game::Game(){
         .xoffset = 0, .yoffset = 0,
         .width = 1000, .height = 1000,
         .chunk_sizes = std::vector<int>{10, 20, 50, 100, 250, 500},
-        .current_chunk_size = 5, .chunk_size = 20, .size = 25,
+        .current_chunk_size = 5, .chunk_size = 20, .size = 625,
         .time = SDL_GetTicks(), .MAX_ENTITIES = 10, .default_chk = 3,
         .time_stepx = 0, .time_stepy = 0
     };
