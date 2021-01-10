@@ -80,7 +80,9 @@ std::vector<std::string> tile_files {
     "Resources/tiles/[A]LongGrass_pipo.png",
     "Resources/tiles/[A]Water_pipo.png",
     "Resources/tiles/[Base]BaseChip_pipo.png",
-    "Resources/tiles/trees.png"
+    "Resources/tiles/trees.png",
+    "Resources/tiles/zbeach.png"
+    
 };
 
 std::vector<std::string> animal_files {
