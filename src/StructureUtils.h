@@ -12,7 +12,10 @@ struct Building {
     int wall_index;
     int roof[6][3];
     int front[6][3];  
-    int ID;
+    std::string ID;
+
+    std::unordered_map<int, Entity> occupants;
+    int MAX_occupants = 10;
 };
 
 //building 1 = 3x6 roof & 3x6 front wall
