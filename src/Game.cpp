@@ -60,7 +60,7 @@ Position Game::getChunkFromCoord(float x, float y) {
 
 //Batch updates game values
 void Game::update_pos(){
-    game.structures.clear();
+    game.visible_structures.clear();
     //update global position
     if(user.keyState[1]){
         user.globalx+=game.speed * ((user.keyState[5]) ? 15 : 1); //D
@@ -266,3 +266,13 @@ std::string Game::rstring(size_t length){
     }
     return new_key;
 }
+
+// Function to check if the key is present or not 
+bool check_key(std::unordered_map<std::string, Building> m, std::string key) 
+{ 
+    // Key is not present 
+    if (m.find(key) == m.end()) 
+        return false; 
+  
+    return true; 
+} 
