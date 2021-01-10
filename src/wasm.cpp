@@ -332,26 +332,31 @@ void mainloop(void *arg)
             int resource_index;
             if(type.first == 0){ //water
                 resource_index = 3;
+
+                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                steptexr.y = 224;
+
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    
+                    //
+
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.y = 224;
+
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
-                        steptexr.y = 928;
+                        steptexr.y = 192;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
-                        steptexr.y = 992;
+                        steptexr.y = 256;
                     }
-                    else steptexr.y = 992;
                     
                 }
                 else {
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                    steptexr.y = 224;
+                   
                 }
 
                 //TODO
