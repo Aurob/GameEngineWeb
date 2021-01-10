@@ -1,0 +1,86 @@
+float n;
+int ei;
+for(Entity& entity : game.game.visible_entities){
+    SDL_Rect e;
+    //if(entity.chunk.x == temp_click.x && entity.chunk.y == temp_click.y){
+        game.user.owned_entities[entity.ID] = entity;
+        //user.owned_entities[entity.ID].index = user.owned_entities.size()-1;
+        //game.entities.erase(game.entities.begin() + entity.index);
+        //update each entities index after the deleted 
+        // for(int i = entity.index; i < game.entities.size(); ++i){
+        //     game.entities[i].index = i - 1;
+        // }
+    // }
+    Position p = game.content(entity.chunk, 0);
+    if(p.visible){
+        
+
+        //draw entity sprite
+        float texheight = (game.game.chunk_size) + ((game.game.chunk_size) * .333);
+        chartexr.x = (p.x + (entity.chunkfx * game.game.chunk_size)) - (game.game.size * .7); chartexr.y = (p.y + (entity.chunkfy * game.game.chunk_size)) - texheight;
+        chartexr.w = game.game.chunk_size; chartexr.h = texheight;
+
+        steptexr.x = entity.step * 32; steptexr.y = entity.texAng * 48;
+        steptexr.w = 32; steptexr.h = 48; 
+        ei = entity.texIndex + 8;
+
+        // copy the texture to the rendering context
+        n = (game.game.noise.GetPerlin((entity.chunk.x), (entity.chunk.y)) - -1) / (1 - -1);
+        n = (game.game.noise.GetPerlinFractal((entity.chunk.x)+pow(n,2), (entity.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+        if(n < .45 && entity.items["boat"] > 0){
+            if(entity.speed > 20 && entity.items["fly"] > 0) ei = entity.fast_texIndex;
+            else ei = entity.boat_texIndex;
+            chartexr.x = (p.x + (entity.chunkfx * game.game.chunk_size)) - game.game.chunk_size;
+            chartexr.y = (p.y + (entity.chunkfy * game.game.chunk_size)) - game.game.chunk_size*3;
+
+            chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+            steptexr.x = 32 * (entity.step % 3); steptexr.y = entity.texAng * 32;
+            steptexr.w = 32; steptexr.h = 32; 
+            
+        }
+        else if(entity.speed > 20){
+            ei = entity.fast_texIndex;
+            chartexr.x = (p.x + (entity.chunkfx * game.game.chunk_size)) - game.game.chunk_size;
+            chartexr.y = (p.y + (entity.chunkfy * game.game.chunk_size)) - game.game.chunk_size*3;
+            chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+            steptexr.x = 32; steptexr.y = entity.texAng * 32;
+            steptexr.w = 32; steptexr.h = 32; 
+        }
+
+        if(game.game.mouse_entity.ID == entity.ID){
+            e.x = p.x + (entity.chunkfx * game.game.chunk_size);
+            e.y = p.y + (entity.chunkfy * game.game.chunk_size);
+            e.w = game.game.chunk_size;
+            e.h = game.game.chunk_size;
+            SDL_SetRenderDrawColor(renderer, entity.color.r, entity.color.g, entity.color.b, 255 );
+            SDL_RenderFillRect(renderer, &e);
+        }
+        
+        SDL_RenderCopy(renderer, game.game.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
+
+        if(chartexr.x < game.user.mouse["x"] && game.user.mouse["x"] < chartexr.x + chartexr.w){
+            if(chartexr.y < game.user.mouse["y"] && game.user.mouse["y"] < chartexr.y+ chartexr.h){
+                game.game.mouse_entity = entity;
+                if(game.user.mouse_down){
+                    chartexr.x = (p.x + (entity.chunkfx * game.game.chunk_size)) - (game.game.size * .7); chartexr.y = (p.y + (entity.chunkfy * game.game.chunk_size)) - texheight;
+                    chartexr.w = game.game.chunk_size/3; chartexr.h = game.game.chunk_size/3;
+                    steptexr.x = 0; steptexr.y = 0;
+                    steptexr.w = 32; steptexr.h = 32; 
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &chartexr);
+                }
+                
+            }
+        }
+    }
+}
+
+
+
+//draw user sprite
+    //SDL_Rect texr;
+    texr.x = game.user.mouse["x"] - (game.game.chunk_size*.8)/2;//static_cast<float>(game.game.width)/2; 
+    texr.y = game.user.mouse["y"] - (game.game.chunk_size*.8)/2;//static_cast<float>(game.game.height)/2;
+    texr.w = game.game.chunk_size/2; texr.h = game.game.chunk_size/2; 
+    // copy the texture to the rendering context
+    //SDL_RenderCopy(renderer, icons[get_icon_index()].tex, NULL, &texr);
+    SDL_RenderCopy(renderer, game.game.Textures.Textures["items"][0].tex, NULL, &texr);
