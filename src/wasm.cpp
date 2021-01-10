@@ -334,18 +334,18 @@ void mainloop(void *arg)
                 resource_index = 3;
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
-                        steptexr.y = 1088;
+                        steptexr.y = 0;
                     }
                     else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
-                        steptexr.y = 1152;
+                        steptexr.y = 2*32;
                     }
-                    else steptexr.y = 1120;
-                    steptexr.x = 160 + (256 * 1 * 6);
+                    else steptexr.y = 7*32;
+                    steptexr.x = 0;
                     
                 }
                 else {
-                    steptexr.x = 192 + (256 * 1 * 6);
-                    steptexr.y = 224;
+                    steptexr.x = 0;
+                    steptexr.y = 15*32;
                 }
                 
                 steptexr.w = 32; steptexr.h = 32;
