@@ -267,12 +267,3 @@ std::string Game::rstring(size_t length){
     return new_key;
 }
 
-// Function to check if the key is present or not 
-bool Game::check_key(std::unordered_map<std::string, Building> m, std::string key) 
-{ 
-    // Key is not present 
-    if (m.find(key) == m.end()) 
-        return false; //
-  
-    return true; 
-} 

@@ -86,5 +86,4 @@ class Game {
     void update_pos();
     void update_entities();
     std::string rstring(size_t);
-    bool check_key(std::unordered_map<std::string, Building>, std::string); 
 };
