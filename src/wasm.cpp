@@ -226,7 +226,7 @@ void mainloop(void *arg)
                     fishs.push_back(chunk_position);
                 } 
             }
-
+            //
             //load structures anywhere but water
             if(biometex != 0){
                 if(game.game.WorldGen.doorGeneration(i, j)){
