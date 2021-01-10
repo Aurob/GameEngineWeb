@@ -341,6 +341,7 @@ void mainloop(void *arg)
                 int up_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
                 int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
                 int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
+                int up_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy - 1);
 
                 if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
                     //draw a sand tile, then draw the water tile on top
@@ -349,6 +350,15 @@ void mainloop(void *arg)
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.y = 1440;
+                }
+                if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
+                    //draw a sand tile, then draw the water tile on top
+                    steptexr.x = 192; steptexr.y = 224;
+                    steptexr.w = 32; steptexr.h = 32;
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                    //
+                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     steptexr.y = 1440;
                 }
                 else if(left_tile != 0){
