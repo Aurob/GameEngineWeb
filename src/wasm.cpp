@@ -331,7 +331,7 @@ void mainloop(void *arg)
             
             int resource_index;
             if(type.first == 0){ //water
-                resource_index = 3;
+                resource_index = 6;
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
                     if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
                         steptexr.y = 0;
