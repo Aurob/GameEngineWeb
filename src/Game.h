@@ -12,14 +12,6 @@
 #include "StructureUtils.h"
 #include <iostream>
 
-struct Position
-{
-    float x;
-    float y;
-    bool visible;
-    float noise;
-};
-
 struct GameOBJ
 {
     float speed;

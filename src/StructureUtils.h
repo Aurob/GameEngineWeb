@@ -5,6 +5,14 @@
 #include <vector>
 #include <string>
 
+struct Position
+{
+    float x;
+    float y;
+    bool visible;
+    float noise;
+};
+
 struct Entity
 {
     Position position; //global position
