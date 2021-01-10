@@ -49,9 +49,7 @@ struct GameOBJ
     
     Position uchunk;
 
-    
-    std::unordered_map<std::string, Building> structures;
-    std::vector<Building> visible_structures;
+    std::vector<Building> structures;
 };
 
 struct User
@@ -74,7 +72,6 @@ struct User
 };
 
 bool zorder(const Entity&, const Entity&);
-
 
 class Game {
     public:

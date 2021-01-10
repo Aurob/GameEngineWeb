@@ -226,26 +226,23 @@ void mainloop(void *arg)
                     fishs.push_back(chunk_position);
                 } 
             }
-            //
+
             //load structures anywhere but water
             if(biometex != 0){
                 if(game.game.WorldGen.doorGeneration(i, j)){
-                    
-
                     std::string bID = game.rstring(10);
+                    
+                    structures.push_back(chunk_position);
                     Building b;
-                    // if(!game.check_key(game.game.structures, bID)){
-                    //     b.global_origin[0] = i;
-                    //     b.global_origin[1] = j;
+                    b.global_origin[0] = i;
+                    b.global_origin[1] = j;
 
-                    //     b.screen_origin[0] = chunk_position.x;
-                    //     b.screen_origin[1] = chunk_position.y;
+                    b.screen_origin[0] = chunk_position.x;
+                    b.screen_origin[1] = chunk_position.y;
 
-                    //     b.roof_index = rand() % 6;
-                    //     b.wall_index = rand() % 12;
-                    //     b.ID = bID;
-                    //     game.game.structures[bID] = b;
-                    // }
+                    b.roof_index = rand() % 6;
+                    b.wall_index = rand() % 12;
+                    b.ID = bID;
 
                     int occupant_count = rand() % 10; //10 is the max occupant count
 
@@ -288,7 +285,7 @@ void mainloop(void *arg)
                     //     b.occupants[e.ID] = e;
                     // }
 
-                    game.game.visible_structures.push_back(game.game.structures[bID]);
+                    game.game.structures.push_back(b);
                     //Structure spawns are based on a single tile, 
                     //  so we need to check each tile that the structure covers
                     //  and ignore that tile
@@ -552,7 +549,7 @@ void mainloop(void *arg)
         SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
     }
 
-    for(auto p : game.game.visible_structures){
+    for(auto p : game.game.structures){
         //draw roof
         for(int r = 0; r < 6; ++r){
             steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
