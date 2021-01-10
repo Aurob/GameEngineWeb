@@ -333,11 +333,21 @@ void mainloop(void *arg)
             if(type.first == 0){ //water
                 resource_index = 3;
                 if(game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy) != 0){
+                    if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy-1) != 0){
+                        steptexr.y = 1088;
+                    }
+                    else if(game.game.WorldGen.terrainGeneration(tile.ix, tile.iy+1) != 0){
+                        steptexr.y = 1152;
+                    }
+                    else steptexr.y = 1120;
                     steptexr.x = 160 + (256 * 1 * 6);
+                    
                 }
-                else steptexr.x = 192 + (256 * 1 * 6);
+                else {
+                    steptexr.x = 192 + (256 * 1 * 6);
+                    steptexr.y = 224;
+                }
                 
-                steptexr.y = 224;
                 steptexr.w = 32; steptexr.h = 32;
             }
             else if(type.first == 1){ //sand
