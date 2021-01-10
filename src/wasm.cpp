@@ -247,7 +247,7 @@ void mainloop(void *arg)
                     int occupant_count = rand() % 10; //10 is the max occupant count
                     for(int i = 0; i < occupant_count; ++i){
                         Entity occupant{
-                            .ID = game.rstring(10)
+                            .ID = game.rstring(10)//
                         };
                     }
 
