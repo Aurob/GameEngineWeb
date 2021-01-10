@@ -242,8 +242,15 @@ void mainloop(void *arg)
 
                     b.roof_index = rand() % 6;
                     b.wall_index = rand() % 12;
+                    b.ID = game.rstring(10);
 
-                    
+                    int occupant_count = rand() % MAX_occupants;
+                    for(int i = 0; i < occupant_count; ++i){
+                        Entity occupant{
+                            .ID = game.rstring(10)
+                        };
+                    }
+
                     game.game.structures.push_back(b);
                     //Structure spawns are based on a single tile, 
                     //  so we need to check each tile that the structure covers
