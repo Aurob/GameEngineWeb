@@ -346,7 +346,7 @@ void mainloop(void *arg)
                     steptexr.y = 224;
                 }
 
-                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*100)%6));
+                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                 steptexr.w = 32; steptexr.h = 32;
             }
             else if(type.first == 1){ //sand
