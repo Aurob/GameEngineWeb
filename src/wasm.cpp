@@ -1,5 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <emscripten.h>
 #include <cstdlib>
 #include <time.h>
@@ -245,10 +243,43 @@ void mainloop(void *arg)
                     b.ID = game.rstring(10);
 
                     int occupant_count = rand() % 10; //10 is the max occupant count
-                    for(int i = 0; i < occupant_count; ++i){
-                        Entity occupant{
-                            .ID = game.rstring(10)//
+
+                    //Entity creation
+                    for(unsigned int i = 0; i < occupant_count; ++i){
+                        float n = game.game.noise.GetPerlinFractal(i, -i);
+                        Entity e {
+                            .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
+                            .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
+                            .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
+                            .persist = false, .timex = 0, .timey = 0, .index = i, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
+                            .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
+                            .health = 100.f
                         };
+                        
+                        if(e.speed < 20){
+                            e.fast_texIndex = e.texIndex;
+                        }
+                        Position entity_spawn = Position{
+                            b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
+                            b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
+                        };
+
+                        //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
+                        e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
+                        n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
+                        n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+                        if(n < .45){
+                            e.items["boat"] = 1;
+                        }
+                        if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
+                            e.items["fly"] = 1;
+                        }
+                        e.temp_speed = e.speed;
+                        e.position.x = entity_spawn.x;
+                        e.position.y = entity_spawn.y;
+                        game.game.entities.push_back(e);
+
+                        b.occupants[e.ID] = e;
                     }
 
                     game.game.structures.push_back(b);
@@ -631,38 +662,7 @@ int main(int argc, char *argv[])
     game.game.WorldGen.fish_noise.SetSeed(rand() % 10000);
     game.game.WorldGen.tree_noise.SetSeed(rand() % 10000);
 
-    //Entity creation
-    for(unsigned int i = 0; i < 200; ++i){
-        float n = game.game.noise.GetPerlinFractal(i, -i);
-        Entity e {
-            .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
-            .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
-            .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
-            .persist = false, .timex = 0, .timey = 0, .index = i, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
-            .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
-            .health = 100.f
-        };
-        
-        if(e.speed < 20){
-            e.fast_texIndex = e.texIndex;
-        }
-        Position entity_spawn = Position{static_cast<float>(rand() % 10000), static_cast<float>(rand() % 10000)};
-
-        //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
-        e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
-        n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
-        n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
-        if(n < .45){
-            e.items["boat"] = 1;
-        }
-        if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
-            e.items["fly"] = 1;
-        }
-        e.temp_speed = e.speed;
-        e.position.x = entity_spawn.x;
-        e.position.y = entity_spawn.y;
-        game.game.entities.push_back(e);
-    }
+    
 
 
     emscripten_set_main_loop_arg(mainloop, &ctx, fps, simulate_infinite_loop);
