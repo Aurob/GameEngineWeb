@@ -390,7 +390,7 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1344;
                 }
                 if(left_tile == 0 && down_tile != 0 && right_tile == 0){
@@ -399,7 +399,7 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1408;
                 }
 
@@ -411,7 +411,7 @@ void mainloop(void *arg)
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
 
-                    steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1376;
 
                     if(up_tile != 0){
@@ -628,11 +628,11 @@ void mainloop(void *arg)
                 if(game.user.mouse_down) send_alert(1);
 
                                 
-                if(uchunk.x + 1 >= (tree.x + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.game.chunk_size * 4))){
-                    if(uchunk.y + 1 >= (tree.y + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.game.chunk_size * 7))){
-                        if(game.user.mouse_down) send_alert(0);
-                    }
-                }
+                // if(uchunk.x + 1 >= (tree.x + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.game.chunk_size * 4))){
+                //     if(uchunk.y + 1 >= (tree.y + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.game.chunk_size * 7))){
+                //         if(game.user.mouse_down) send_alert(0);
+                //     }
+                // }
             }
         }
     }
