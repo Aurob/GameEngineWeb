@@ -615,9 +615,9 @@ void mainloop(void *arg)
     /*Secondary Tile renders*/
     for(auto tree : trees){
         srand(floor(tree.noise));
-        chartexr.x = 50;// * (static_cast<int>(game.game.time_stepx*60) % 4); 
+        chartexr.x = 64 * (static_cast<int>(game.game.time_stepx*10) % 4); 
         chartexr.y = 65 * (rand() % 7);
-        chartexr.w = 50; chartexr.h = 65;
+        chartexr.w = 64; chartexr.h = 64;
         steptexr.x = tree.x - (game.game.chunk_size/4); 
         steptexr.y = tree.y - (game.game.chunk_size*3);
         steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*4; 
