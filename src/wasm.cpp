@@ -618,9 +618,9 @@ void mainloop(void *arg)
         chartexr.x = 0; 
         chartexr.y = 65 * (rand() % 7);
         chartexr.w = 64; chartexr.h = 64;
-        steptexr.x = tree.x - (game.game.chunk_size); 
-        steptexr.y = tree.y - (game.game.chunk_size*2);
-        steptexr.w = game.game.chunk_size*2; steptexr.h = game.game.chunk_size*2; 
+        steptexr.x = tree.x - (game.game.chunk_size*2); 
+        steptexr.y = tree.y - (game.game.chunk_size*3);
+        steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*3; 
         SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
         if(steptexr.x < game.user.mouse["x"] && game.user.mouse["x"] < steptexr.x + steptexr.w){
