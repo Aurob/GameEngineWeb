@@ -380,7 +380,7 @@ void mainloop(void *arg)
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
                     steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1472
+                    steptexr.y = 1472;
                 }
 
 
