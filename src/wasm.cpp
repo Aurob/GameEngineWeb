@@ -623,8 +623,8 @@ void mainloop(void *arg)
         steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*4; 
         SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
-        if(steptexr.x < game.user.mouse["x"] && game.user.mouse["x"] < steptexr.x + steptexr.w){
-            if(steptexr.y < game.user.mouse["y"] && game.user.mouse["y"] < steptexr.y + steptexr.h){
+        if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.game.chunk_size){
+            if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.game.chunk_size){
                 if(game.user.mouse_down) send_alert(1);
 
                                 
