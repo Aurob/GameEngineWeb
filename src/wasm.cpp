@@ -179,6 +179,7 @@ void mainloop(void *arg)
     /*Tile loading*/
     for (int i = game.user.chunks[0][0] - 6; i < game.user.chunks[1][0] + 1; i++) {
         for (int j = game.user.chunks[0][1] - 6; j < game.user.chunks[3][1] + 1; j++) {
+            
             srand(hasher(std::to_string(i) + std::to_string(j)));
             //Used to skip drawing of a tile
             //Clicking trees/rocks causes that tile to be skipped
@@ -191,6 +192,7 @@ void mainloop(void *arg)
                     break;
                 }
             }
+            if(i > 100) skip = true;
             if(skip) continue;
 
             //Get the screen coordinates of the current tile
