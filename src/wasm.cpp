@@ -351,7 +351,7 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1440;
                 }
                 if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
@@ -360,7 +360,7 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1472;
                 }
 
@@ -370,7 +370,7 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
-                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1440;
                 }
                 if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
@@ -379,8 +379,8 @@ void mainloop(void *arg)
                     steptexr.w = 32; steptexr.h = 32;
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                     //
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                    steptexr.y = 1440;
+                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                    steptexr.y = 1472
                 }
 
 
