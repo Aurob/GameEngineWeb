@@ -379,7 +379,27 @@ void mainloop(void *arg)
                     steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx)%6));
                     steptexr.y = 1408;
                 }
-                else if(left_tile != 0){
+
+                else if(right_tile != 0){
+                    
+                    //draw a sand tile, then draw the water tile on top
+                    steptexr.x = 192; steptexr.y = 224;
+                    steptexr.w = 32; steptexr.h = 32;
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                    //
+
+                    steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                    steptexr.y = 1376;
+
+                    if(up_tile != 0){
+                        steptexr.y = 1344;
+                    }
+                    else if(down_tile != 0){
+                        steptexr.y = 1408;
+                    }
+                }
+
+                if(left_tile != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
