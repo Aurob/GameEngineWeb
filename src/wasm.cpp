@@ -583,7 +583,7 @@ void mainloop(void *arg)
                 game.game.mouse_entity = entity;
                 if(game.user.mouse_down){
                     if(SDL_GetTicks() > game.user.timer + 3000)
-                        send_alert(2);
+                        send_alert(2); //
                     game.user.timer = SDL_GetTicks();
                     //chartexr.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size) + 32; 
                     //chartexr.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
