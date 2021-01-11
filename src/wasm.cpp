@@ -354,7 +354,7 @@ void mainloop(void *arg)
                     steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1440;
                 }
-                if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
+                else if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
@@ -364,7 +364,7 @@ void mainloop(void *arg)
                     steptexr.y = 1472;
                 }
 
-                if(right_tile == 0 && down_tile == 0 && down_right_tile != 0){
+                else if(right_tile == 0 && down_tile == 0 && down_right_tile != 0){
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
@@ -373,7 +373,7 @@ void mainloop(void *arg)
                     steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1440;
                 }
-                if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
+                else if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
@@ -384,7 +384,7 @@ void mainloop(void *arg)
                 }
 
 
-                if(left_tile == 0 && up_tile != 0 && right_tile == 0){
+                else if(left_tile == 0 && up_tile != 0 && right_tile == 0){
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
@@ -393,7 +393,7 @@ void mainloop(void *arg)
                     steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
                     steptexr.y = 1344;
                 }
-                if(left_tile == 0 && down_tile != 0 && right_tile == 0){
+                else if(left_tile == 0 && down_tile != 0 && right_tile == 0){
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
                     steptexr.w = 32; steptexr.h = 32;
@@ -403,7 +403,7 @@ void mainloop(void *arg)
                     steptexr.y = 1408;
                 }
 
-                if(right_tile != 0){
+                else if(right_tile != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
@@ -422,7 +422,7 @@ void mainloop(void *arg)
                     }
                 }
 
-                if(left_tile != 0){
+                else if(left_tile != 0){
                     
                     //draw a sand tile, then draw the water tile on top
                     steptexr.x = 192; steptexr.y = 224;
