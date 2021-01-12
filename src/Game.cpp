@@ -138,7 +138,7 @@ void Game::update_pos(){
         user.directionx = temp_directionx; user.directiony = temp_directiony;
         game.xoffset = temp_xoff; game.yoffset = temp_yoff;
         game.zoom_modx = temp_zoomx; game.zoom_mody = temp_zoomy;
-        game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xhcunk2;
+        game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xchunk2;
         game.ychunk1 = temp_ychunk1; game.ychunk2 = temp_ychunk2;
 
         return;
