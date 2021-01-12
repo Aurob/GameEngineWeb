@@ -77,19 +77,19 @@ void Game::update_pos(){
 
 
     if(user.keyState[1]){
-        user.globalx+=game.speed * ((user.keyState[5]) ? 45 : 1); //D
+        user.globalx+=game.speed * ((user.keyState[5]) ? 15 : 1); //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        user.globalx-=game.speed * ((user.keyState[5]) ? 45 : 1); //A
+        user.globalx-=game.speed * ((user.keyState[5]) ? 15 : 1); //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        user.globaly+=game.speed * ((user.keyState[5]) ? 45 : 1); //S
+        user.globaly+=game.speed * ((user.keyState[5]) ? 15 : 1); //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        user.globaly-=game.speed * ((user.keyState[5]) ? 45 : 1); //W
+        user.globaly-=game.speed * ((user.keyState[5]) ? 15 : 1); //W
         user.directiony = -1;
     } 
 
@@ -133,7 +133,7 @@ void Game::update_pos(){
     user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
     user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
 
-    if(game.WorldGen.terrainGeneration(user.chunk[0] + user.directionx, user.chunk[1] + user.directiony) == 0){
+    if(game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]) == 0){
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
         game.xoffset = temp_xoff; game.yoffset = temp_yoff;
