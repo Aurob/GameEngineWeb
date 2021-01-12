@@ -133,8 +133,9 @@ void Game::update_pos(){
     user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
     user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
 
-    if(game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]) == 0 ||
-       game.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])){
+    int tile = game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
+    if(tile == 0 || ((tile == 4 || tile == 5) && 
+       game.WorldGen.treeGeneration(user.chunk[0] + (user.directionx*2), user.chunk[1]))){
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
         game.xoffset = temp_xoff; game.yoffset = temp_yoff;
