@@ -135,7 +135,7 @@ void Game::update_pos(){
 
     int tile = game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
     if(tile == 0 || ((tile == 4 || tile == 5) && 
-       game.WorldGen.treeGeneration(user.chunk[0] + 1, user.chunk[1] - 2))){
+       game.WorldGen.treeGeneration(user.chunk[0], user.chunk[1]))){
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
         game.xoffset = temp_xoff; game.yoffset = temp_yoff;
