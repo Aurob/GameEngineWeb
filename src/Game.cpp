@@ -141,6 +141,17 @@ void Game::update_pos(){
         game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xchunk2;
         game.ychunk1 = temp_ychunk1; game.ychunk2 = temp_ychunk2;
 
+        user.chunks[0][0] = game.xchunk1; user.chunks[0][1] = game.ychunk1;
+
+        user.chunks[1][0] = game.xchunk2; user.chunks[1][1] = game.ychunk1;
+
+        user.chunks[2][0] = game.xchunk1; user.chunks[2][1] = game.ychunk2;
+
+        user.chunks[3][0] = game.xchunk2; user.chunks[3][1] = game.ychunk2;
+
+        user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
+        user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
+
         return;
     }
 
