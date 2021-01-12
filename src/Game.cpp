@@ -70,7 +70,7 @@ void Game::update_pos(){
 
     float tempx = user.globalx, tempy = user.globaly;
     int temp_directionx = user.directionx, temp_directiony = user.directiony;
-    float temp_xoff = user.xoffset, temp_yoff = user.yoffset;
+    float temp_xoff = game.xoffset, temp_yoff = game.yoffset;
     float temp_zoomx = game.zoom_modx, temp_zoomy = game.zoom_mody;
     int temp_xchunk1 = game.xchunk1, temp_xchunk2 = game.xchunk2;
     int temp_ychunk1 = game.ychunk1, temp_ychunk2 = game.ychunk2;
