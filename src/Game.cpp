@@ -77,19 +77,19 @@ void Game::update_pos(){
 
 
     if(user.keyState[1]){
-        user.globalx+=game.speed * ((user.keyState[5]) ? 15 : 1); //D
+        user.globalx+=game.speed * ((user.keyState[5]) ? 45 : 1); //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        user.globalx-=game.speed * ((user.keyState[5]) ? 15 : 1); //A
+        user.globalx-=game.speed * ((user.keyState[5]) ? 45 : 1); //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        user.globaly+=game.speed * ((user.keyState[5]) ? 15 : 1); //S
+        user.globaly+=game.speed * ((user.keyState[5]) ? 45 : 1); //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        user.globaly-=game.speed * ((user.keyState[5]) ? 15 : 1); //W
+        user.globaly-=game.speed * ((user.keyState[5]) ? 45 : 1); //W
         user.directiony = -1;
     } 
 
