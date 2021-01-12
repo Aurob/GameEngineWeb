@@ -192,7 +192,8 @@ void mainloop(void *arg)
                     break;
                 }
             }
-            if(i > 100) skip = true;
+            //This could be used to limit the size of the world
+            //if(i > 100) skip = true;
             if(skip) continue;
 
             //Get the screen coordinates of the current tile
