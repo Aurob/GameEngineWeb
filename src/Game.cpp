@@ -136,7 +136,7 @@ void Game::update_pos(){
     if(game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]) == 0){
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
-        user.xoffset = temp_xoff; user.yoffset = temp_yoff;
+        game.xoffset = temp_xoff; game.yoffset = temp_yoff;
         game.zoom_modx = temp_zoomx; game.zoom_mody = temp_zoomy;
         game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xhcunk2;
         game.ychunk1 = temp_ychunk1; game.ychunk2 = temp_ychunk2;
