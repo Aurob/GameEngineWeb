@@ -617,13 +617,6 @@ void mainloop(void *arg)
 
     /*Secondary Tile renders*/
     for(auto tree : trees){
-        temp_rect.x = tree.x + 1;
-        temp_rect.y = tree.y + 1;
-        temp_rect.w = game.game.chunk_size - 1;
-        temp_rect.h = game.game.chunk_size - 1;
-        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
-        SDL_RenderFillRect(renderer, &temp_rect );
-
         srand(floor(tree.noise));
         chartexr.x = 0; 
         chartexr.y = 65 * (rand() % 7);
