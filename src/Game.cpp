@@ -62,6 +62,20 @@ Position Game::getChunkFromCoord(float x, float y) {
 void Game::update_pos(){
     game.structures.clear();
     //update global position
+    //TODO check if the user moves onto a tile they shouldn't
+    // i.e Trees, Strucutres, Water Tiles
+    //Will need to revert data
+    // i.e: globalx/y, directionx/y, x/yoffset
+    // zoom_modx/y, xchunk1/2, ychunk1/2, chunks
+
+    float tempx = user.globalx, tempy = user.globaly;
+    int temp_directionx = user.directionx, temp_directiony = user.directiony;
+    float temp_xoff = user.xoffset, temp_yoff = user.yoffset;
+    float temp_zoomx = game.zoom_modx, temp_zoomy = game.zoom_mody;
+    int temp_xchunk1 = game.xchunk1, temp_xchunk2 = game.xchunk2;
+    int temp_ychunk1 = game.ychunk1, temp_ychunk2 = game.ychunk2;
+
+
     if(user.keyState[1]){
         user.globalx+=game.speed * ((user.keyState[5]) ? 15 : 1); //D
         user.directionx = 1;
@@ -119,7 +133,20 @@ void Game::update_pos(){
     user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
     user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
 
+    std::cout << game.game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]) << std::endl;
+    if(game.game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]) == 0){
+        user.globalx = tempx; user.globaly = tempy;
+        user.directionx = temp_directionx; user.directiony = temp_directiony;
+        user.xoffset = temp_xoff; user.yoffset = temp_yoff;
+        game.zoom_modx = temp_zoomx; game.zoom_mody = temp_zoomy;
+        game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xhcunk2;
+        game.ychunk1 = temp_ychunk1; game.ychunk2 = temp_ychunk2;
+
+        return;
+    }
+
     game.uchunk = getChunkFromCoord(user.globalx, user.globaly);
+    
     //Determines the cuurent mouse chunk
     //TODO
     //Does this really need to be 2 for loops?
