@@ -178,545 +178,554 @@ void mainloop(void *arg)
     std::vector<Position> fishs;
     std::unordered_map<int, std::vector<Position>> tiles;
 
-    /*Tile loading*/
-    for (int i = game.user.chunks[0][0] - 6; i < game.user.chunks[1][0] + 1; i++) {
-        for (int j = game.user.chunks[0][1] - 6; j < game.user.chunks[3][1] + 1; j++) {
-            
-            srand(hasher(std::to_string(i) + std::to_string(j)));
-            //Used to skip drawing of a tile
-            //Clicking trees/rocks causes that tile to be skipped
-            //TODO
-            //Store the reason for skipping the tile so it can be drawn?
-            skip = false;
-            for(auto structure : ignored_tiles){
-                if(i == structure[0] && j == structure[1]){
-                    skip = true;
-                    break;
-                }
-            }
-            //This could be used to limit the size of the world
-            //if(i > 100) skip = true;
-            if(skip) continue;
-
-            //Get the screen coordinates of the current tile
-            Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
-            chunk_position = game.content(chunk_position, 6);
-            chunk_position.ix = i; chunk_position.iy = j;
-            biometex = game.game.WorldGen.terrainGeneration(i, j);
-            tiles[biometex].push_back(chunk_position);
-            
-            //Next determine secondary tile spawns
-            //(fish, trees, rocks, etc..)
-           
-            //load trees on grass tiles
-            if(biometex == 4 || biometex == 5){
+    if(game.game.inside) {
+        // small rectangle for the user position
+        temp_rect.x = game.game.width/2;// - (game.game.size * .7); 
+        temp_rect.y = game.game.height/2;// - texheight;
+        temp_rect.w = game.game.chunk_size;
+        temp_rect.h = game.game.chunk_size;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+    }
+    else {
+        /*Tile loading*/
+        for (int i = game.user.chunks[0][0] - 6; i < game.user.chunks[1][0] + 1; i++) {
+            for (int j = game.user.chunks[0][1] - 6; j < game.user.chunks[3][1] + 1; j++) {
                 
-                if(game.game.WorldGen.treeGeneration(i, j)){
-                    
-                    chunk_position.noise = rand() % 10000;
-                    trees.push_back(chunk_position);
+                srand(hasher(std::to_string(i) + std::to_string(j)));
+                //Used to skip drawing of a tile
+                //Clicking trees/rocks causes that tile to be skipped
+                //TODO
+                //Store the reason for skipping the tile so it can be drawn?
+                skip = false;
+                for(auto structure : ignored_tiles){
+                    if(i == structure[0] && j == structure[1]){
+                        skip = true;
+                        break;
+                    }
                 }
-            }
+                //This could be used to limit the size of the world
+                //if(i > 100) skip = true;
+                if(skip) continue;
 
-            //Rocks spawn on top of stone tiles
-            else if(biometex == 6){
-                if(game.game.WorldGen.rockGeneration(i, j)){
-                    rocks.push_back(chunk_position);
-                } 
-            }
-
-            //Generate fish popups on water only
-            else if(biometex == 0){
-                if(game.game.WorldGen.fishGeneration(i, j, game.game.time_stepx, game.game.time_stepy)){
-                    fishs.push_back(chunk_position);
-                } 
-            }
-
-            //load structures anywhere but water
-            if(biometex != 0){
-                if(game.game.WorldGen.doorGeneration(i, j)){
-                    std::string bID = game.rstring(10);
+                //Get the screen coordinates of the current tile
+                Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
+                chunk_position = game.content(chunk_position, 6);
+                chunk_position.ix = i; chunk_position.iy = j;
+                biometex = game.game.WorldGen.terrainGeneration(i, j);
+                tiles[biometex].push_back(chunk_position);
+                
+                //Next determine secondary tile spawns
+                //(fish, trees, rocks, etc..)
+            
+                //load trees on grass tiles
+                if(biometex == 4 || biometex == 5){
                     
-                    structures.push_back(chunk_position);
-                    Building b;
-                    b.global_origin[0] = i;
-                    b.global_origin[1] = j;
-
-                    b.screen_origin[0] = chunk_position.x;
-                    b.screen_origin[1] = chunk_position.y;
-
-                    b.roof_index = rand() % 6;
-                    b.wall_index = rand() % 12;
-                    b.ID = bID;
-
-                    int occupant_count = rand() % 10; //10 is the max occupant count
-
-                    //Entity creation
-                    // for(unsigned int ii = 0; ii < occupant_count; ++ii){
-                    //     float n = game.game.noise.GetPerlinFractal(ii, -ii);
-                    //     Entity e {
-                    //         .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
-                    //         .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
-                    //         .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
-                    //         .persist = false, .timex = 0, .timey = 0, .index = ii, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
-                    //         .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, 
-                    //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
-                    //         .health = 100.f
-                    //     };
+                    if(game.game.WorldGen.treeGeneration(i, j)){
                         
-                    //     if(e.speed < 20){
-                    //         e.fast_texIndex = e.texIndex;
-                    //     }
-                    //     Position entity_spawn = Position{
-                    //         b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
-                    //         b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
-                    //     };
+                        chunk_position.noise = rand() % 10000;
+                        trees.push_back(chunk_position);
+                    }
+                }
 
-                    //     //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
-                    //     e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
-                    //     n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
-                    //     n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
-                    //     if(n < .45){
-                    //         e.items["boat"] = 1;
-                    //     }
-                    //     if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
-                    //         e.items["fly"] = 1;
-                    //     }
-                    //     e.temp_speed = e.speed;
-                    //     e.position.x = entity_spawn.x;
-                    //     e.position.y = entity_spawn.y;
-                    //     game.game.entities.push_back(e);
+                //Rocks spawn on top of stone tiles
+                else if(biometex == 6){
+                    if(game.game.WorldGen.rockGeneration(i, j)){
+                        rocks.push_back(chunk_position);
+                    } 
+                }
 
-                    //     b.occupants[e.ID] = e;
-                    // }
+                //Generate fish popups on water only
+                else if(biometex == 0){
+                    if(game.game.WorldGen.fishGeneration(i, j, game.game.time_stepx, game.game.time_stepy)){
+                        fishs.push_back(chunk_position);
+                    } 
+                }
 
-                    game.game.structures.push_back(b);
-                    //Structure spawns are based on a single tile, 
-                    //  so we need to check each tile that the structure covers
-                    //  and ignore that tile
-                    //TODO
-                    for(int ii = i; ii < i + 6; ++ii){
-                        for(int jj = j; jj < j + 6; ++jj){
-                            if(ii != i && jj != j)
-                                ignored_tiles.push_back(std::vector<int>{ii, jj});
+                //load structures anywhere but water
+                if(biometex != 0){
+                    if(game.game.WorldGen.doorGeneration(i, j)){
+                        std::string bID = game.rstring(10);
+                        
+                        structures.push_back(chunk_position);
+                        Building b;
+                        b.global_origin[0] = i;
+                        b.global_origin[1] = j;
+
+                        b.screen_origin[0] = chunk_position.x;
+                        b.screen_origin[1] = chunk_position.y;
+
+                        b.roof_index = rand() % 6;
+                        b.wall_index = rand() % 12;
+                        b.ID = bID;
+
+                        int occupant_count = rand() % 10; //10 is the max occupant count
+
+                        //Entity creation
+                        // for(unsigned int ii = 0; ii < occupant_count; ++ii){
+                        //     float n = game.game.noise.GetPerlinFractal(ii, -ii);
+                        //     Entity e {
+                        //         .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
+                        //         .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
+                        //         .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
+                        //         .persist = false, .timex = 0, .timey = 0, .index = ii, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
+                        //         .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, 
+                        //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
+                        //         .health = 100.f
+                        //     };
+                            
+                        //     if(e.speed < 20){
+                        //         e.fast_texIndex = e.texIndex;
+                        //     }
+                        //     Position entity_spawn = Position{
+                        //         b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
+                        //         b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
+                        //     };
+
+                        //     //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
+                        //     e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
+                        //     n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
+                        //     n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+                        //     if(n < .45){
+                        //         e.items["boat"] = 1;
+                        //     }
+                        //     if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
+                        //         e.items["fly"] = 1;
+                        //     }
+                        //     e.temp_speed = e.speed;
+                        //     e.position.x = entity_spawn.x;
+                        //     e.position.y = entity_spawn.y;
+                        //     game.game.entities.push_back(e);
+
+                        //     b.occupants[e.ID] = e;
+                        // }
+
+                        game.game.structures.push_back(b);
+                        //Structure spawns are based on a single tile, 
+                        //  so we need to check each tile that the structure covers
+                        //  and ignore that tile
+                        //TODO
+                        for(int ii = i; ii < i + 6; ++ii){
+                            for(int jj = j; jj < j + 6; ++jj){
+                                if(ii != i && jj != j)
+                                    ignored_tiles.push_back(std::vector<int>{ii, jj});
+                            }
                         }
                     }
                 }
             }
-        }
-    }   
-
-    //concat visible trees to the entities data 
-    //game.game.entities.insert(game.game.entities.end(), trees.begin(), trees.end());
+        }   
+        //concat visible trees to the entities data 
+        //game.game.entities.insert(game.game.entities.end(), trees.begin(), trees.end());
 
 
-    /*Tile renders*/
-    for(auto type : tiles){
-        
-        for(auto tile : type.second){
-
-            tiletexr.x = tile.x; tiletexr.y = tile.y;
-            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+        /*Tile renders*/
+        for(auto type : tiles){
             
-            //Start by drawing the tile type
-            //Will be a terrain tile or city tile
-            // if(type.first == 12){
-            //     steptexr.x = 32; steptexr.y = 0;
-            //     steptexr.w = 32; steptexr.h = 32; 
-            // }
-            // else if(type.first == 13 || type.first == 8 || type.first == 3){
-            //     steptexr.x = 192; steptexr.y = 32;
-            //     steptexr.w = 32; steptexr.h = 32;
-            // }
-            // else{
-            //     steptexr.x = 0; steptexr.y = 32;
-            //     steptexr.w = 64; steptexr.h = 64; 
-            // }
-            
-            
-            int resource_index;
-            if(type.first == 0){ //water
-                resource_index = 3;
+            for(auto tile : type.second){
 
-                steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*5)%6));
-                steptexr.y = 1376;
-
-                int left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
-                int right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy);
-                int up_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
-                int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
-                int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
-                int up_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy - 1);
-                int down_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy + 1);
-                int up_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy - 1);
-
-                if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1440;
-                }
-                else if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1472;
-                }
-
-                else if(right_tile == 0 && down_tile == 0 && down_right_tile != 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1440;
-                }
-                else if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-                    steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1472;
-                }
-
-
-                else if(left_tile == 0 && up_tile != 0 && right_tile == 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1344;
-                }
-                else if(left_tile == 0 && down_tile != 0 && right_tile == 0){
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1408;
-                }
-
-                else if(right_tile != 0){
-                    
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-
-                    steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
-                    steptexr.y = 1376;
-
-                    if(up_tile != 0){
-                        steptexr.y = 1344;
-                    }
-                    else if(down_tile != 0){
-                        steptexr.y = 1408;
-                    }
-                }
-
-                else if(left_tile != 0){
-                    
-                    //draw a sand tile, then draw the water tile on top
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
-                    //
-
-                    steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
-                    steptexr.y = 1376;
-
-                    if(up_tile != 0){
-                        steptexr.y = 1344;
-                    }
-                    else if(down_tile != 0){
-                        steptexr.y = 1408;
-                    }
-                }
-                //TODO
-                //use noise for smoother water transitions.
+                tiletexr.x = tile.x; tiletexr.y = tile.y;
+                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
                 
-                steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 1){ //sand
-                    resource_index = 0;
-                    steptexr.x = 192; steptexr.y = 224;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 2){ //dark sand
-                    resource_index = 1;
-                    steptexr.x = 192; steptexr.y = 32;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 3){ //dirt
-                    resource_index = 0;
-                    steptexr.x = 192; steptexr.y = 32;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 4){ //dark grass
-                    resource_index = 1;
-                    steptexr.x = 192; steptexr.y = 1184;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 5){ //grass
-                    resource_index = 1;
-                    steptexr.x = 192; steptexr.y = 800;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-            else if(type.first == 6){ //stone
-                    resource_index = 0;
-                    steptexr.x = 192; steptexr.y = 416;
-                    steptexr.w = 32; steptexr.h = 32;
-            }
-
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][resource_index].tex, &steptexr, &tiletexr);
-        }
-    }
-
-    /*User renders*/
-    // fill the chunk the user is currently in
-    Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
-    uchunk = game.content(uchunk, 1);
-    temp_rect.x = uchunk.x + 1;
-    temp_rect.y = uchunk.y + 1;
-    temp_rect.w = game.game.chunk_size - 1;
-    temp_rect.h = game.game.chunk_size - 1;
-    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
-    // small rectangle for the user position
-    temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
-    temp_rect.y = game.game.height/2;// - texheight;
-    temp_rect.w = game.game.chunk_size/3 - 1;
-    temp_rect.h = game.game.chunk_size/3 - 1;
-    SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
-    // mouse chunk
-    temp_rect.x = game.user.mouse_chunk[0];
-    temp_rect.y = game.user.mouse_chunk[1];
-    temp_rect.w = game.game.chunk_size+1;
-    temp_rect.h = game.game.chunk_size+1;
-    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
-    SDL_RenderFillRect(renderer, &temp_rect);
-
-    // mouse cursor
-    temp_rect.x = game.user.mouse["x"];
-    temp_rect.y = game.user.mouse["y"];
-    temp_rect.w = game.game.chunk_size/10;
-    temp_rect.h = game.game.chunk_size/10;
-    SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
-    for(auto fish : fishs){
-        tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
-        tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
-        steptexr.x = 96 + ((static_cast<int>(game.game.time_stepx/100)) %3)*32; steptexr.y = 192;
-        steptexr.w = 32; steptexr.h = 32; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &tiletexr);
-    }
-    
-    /*Entity renders*/
-    game.update_entities();
-    //Only draw visible entities'
-    t = 0;
-    for(Entity& entity : game.game.visible_entities){
-
-        t++;
-        texheight = (game.game.chunk_size) + ((game.game.chunk_size) * .333);
-        
-        chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - (game.game.size * .7); 
-        chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - texheight;
-        chartexr.w = game.game.chunk_size; 
-        chartexr.h = texheight;
-        
-        steptexr.x = entity.step * 32; steptexr.y = entity.texAng * 48;
-        steptexr.w = 32; steptexr.h = 48; 
-
-        ei = entity.texIndex + 8;
-        n = game.game.WorldGen.terrainGeneration(entity.chunk.x, entity.chunk.y);
-        if(n == 0){ // && entity.items["boat"] > 0){
-            if(entity.speed > 20 && entity.items["fly"] > 0) ei = entity.fast_texIndex;
-            else ei = entity.boat_texIndex;
-            chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
-            chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
-
-            chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
-            steptexr.x = 32 * (entity.step % 3); steptexr.y = entity.texAng * 32;
-            steptexr.w = 32; steptexr.h = 32; 
-            
-        }
-        else if(entity.speed > 20){
-            ei = entity.fast_texIndex;
-            chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
-            chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
-            chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
-            steptexr.x = 32; steptexr.y = entity.texAng * 32;
-            steptexr.w = 32; steptexr.h = 32; 
-        }
-
-        // if(game.game.mouse_entity.ID == entity.ID){
-        //     temp_rect.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size);
-        //     temp_rect.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
-        //     temp_rect.w = game.game.chunk_size;
-        //     temp_rect.h = game.game.chunk_size;
-        //     SDL_SetRenderDrawColor(renderer, entity.color.r, entity.color.g, entity.color.b, 255 );
-        //     SDL_RenderFillRect(renderer, &temp_rect);
-        // // }
-        // temp_rect.x =  (entity.chunkfx * game.game.chunk_size);
-        // temp_rect.y =  (entity.chunkfy * game.game.chunk_size);
-        // temp_rect.w = game.game.chunk_size;
-        // temp_rect.h = game.game.chunk_size;
-        // SDL_RenderFillRect(renderer, &temp_rect);
-        
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
-
-        if(chartexr.x < game.user.mouse["x"] && game.user.mouse["x"] < chartexr.x + chartexr.w){
-            if(chartexr.y < game.user.mouse["y"] && game.user.mouse["y"] < chartexr.y+ chartexr.h){
-                game.game.mouse_entity = entity;
-                if(game.user.mouse_down){
-                    if(SDL_GetTicks() > game.user.timer + 3000)
-                        send_alert(2); //
-                    game.user.timer = SDL_GetTicks();
-                    //chartexr.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size) + 32; 
-                    //chartexr.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
-                    chartexr.x += game.game.chunk_size/3;
-                    chartexr.y += game.game.chunk_size/3;
-                    chartexr.w = game.game.chunk_size/3; 
-                    chartexr.h = game.game.chunk_size/3;
-
-                    //This seeding sets the entity
-                    srand(hasher(entity.ID));
-
-                    steptexr.x = (rand() % 9) * 96; steptexr.y = (rand() % 10) * 32;
-                    steptexr.w = 32; steptexr.h = 32; 
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &chartexr);
-                    
-                }
-                
-            }
-        }
-    }  
-
-    //TODO
-    //Each of the secondary tiles could be combined into a single vector
-
-    std::sort(trees.begin(),trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
-    //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
-    std::sort(game.game.structures.begin(),game.game.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
-
-    /*Secondary Tile renders*/
-    for(auto tree : trees){
-        srand(floor(tree.noise));
-        chartexr.x = 0; 
-        chartexr.y = 65 * (rand() % 7);
-        chartexr.w = 64; chartexr.h = 64;
-        steptexr.x = tree.x - (game.game.chunk_size/2)*3; 
-        steptexr.y = tree.y - (game.game.chunk_size*3) - (game.game.chunk_size/2);
-        steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*4; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
-
-        if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.game.chunk_size){
-            if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.game.chunk_size){
-                if(game.user.mouse_down) send_alert(1);
-
-                                
-                // if(uchunk.x + 1 >= (tree.x + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.game.chunk_size * 4))){
-                //     if(uchunk.y + 1 >= (tree.y + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.game.chunk_size * 7))){
-                //         if(game.user.mouse_down) send_alert(0);
-                //     }
+                //Start by drawing the tile type
+                //Will be a terrain tile or city tile
+                // if(type.first == 12){
+                //     steptexr.x = 32; steptexr.y = 0;
+                //     steptexr.w = 32; steptexr.h = 32; 
                 // }
+                // else if(type.first == 13 || type.first == 8 || type.first == 3){
+                //     steptexr.x = 192; steptexr.y = 32;
+                //     steptexr.w = 32; steptexr.h = 32;
+                // }
+                // else{
+                //     steptexr.x = 0; steptexr.y = 32;
+                //     steptexr.w = 64; steptexr.h = 64; 
+                // }
+                
+                
+                int resource_index;
+                if(type.first == 0){ //water
+                    resource_index = 3;
+
+                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*5)%6));
+                    steptexr.y = 1376;
+
+                    int left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
+                    int right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy);
+                    int up_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
+                    int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
+                    int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
+                    int up_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy - 1);
+                    int down_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy + 1);
+                    int up_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy - 1);
+
+                    if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1440;
+                    }
+                    else if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1472;
+                    }
+
+                    else if(right_tile == 0 && down_tile == 0 && down_right_tile != 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+                        steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1440;
+                    }
+                    else if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+                        steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1472;
+                    }
+
+
+                    else if(left_tile == 0 && up_tile != 0 && right_tile == 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        
+                        steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1344;
+                    }
+                    else if(left_tile == 0 && down_tile != 0 && right_tile == 0){
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+                        steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1408;
+                    }
+
+                    else if(right_tile != 0){
+                        
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+
+                        steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.y = 1376;
+
+                        if(up_tile != 0){
+                            steptexr.y = 1344;
+                        }
+                        else if(down_tile != 0){
+                            steptexr.y = 1408;
+                        }
+                    }
+
+                    else if(left_tile != 0){
+                        
+                        //draw a sand tile, then draw the water tile on top
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        //
+
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                        steptexr.y = 1376;
+
+                        if(up_tile != 0){
+                            steptexr.y = 1344;
+                        }
+                        else if(down_tile != 0){
+                            steptexr.y = 1408;
+                        }
+                    }
+                    //TODO
+                    //use noise for smoother water transitions.
+                    
+                    steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 1){ //sand
+                        resource_index = 0;
+                        steptexr.x = 192; steptexr.y = 224;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 2){ //dark sand
+                        resource_index = 1;
+                        steptexr.x = 192; steptexr.y = 32;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 3){ //dirt
+                        resource_index = 0;
+                        steptexr.x = 192; steptexr.y = 32;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 4){ //dark grass
+                        resource_index = 1;
+                        steptexr.x = 192; steptexr.y = 1184;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 5){ //grass
+                        resource_index = 1;
+                        steptexr.x = 192; steptexr.y = 800;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+                else if(type.first == 6){ //stone
+                        resource_index = 0;
+                        steptexr.x = 192; steptexr.y = 416;
+                        steptexr.w = 32; steptexr.h = 32;
+                }
+
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][resource_index].tex, &steptexr, &tiletexr);
             }
         }
-    }
 
-    for(auto rock : rocks){
-        chartexr.x = 32; chartexr.y = 256;
-        chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = rock.x; steptexr.y = rock.y;
-        steptexr.w = game.game.chunk_size*2; steptexr.h = game.game.chunk_size*2; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
-    }
+        /*User renders*/
+        // fill the chunk the user is currently in
+        Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
+        uchunk = game.content(uchunk, 1);
+        temp_rect.x = uchunk.x + 1;
+        temp_rect.y = uchunk.y + 1;
+        temp_rect.w = game.game.chunk_size - 1;
+        temp_rect.h = game.game.chunk_size - 1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
+        SDL_RenderFillRect(renderer, &temp_rect );
 
-    for(auto p : game.game.structures){
-        //draw roof
-        for(int r = 0; r < 6; ++r){
-            steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
-            steptexr.w = 32; steptexr.h = 128;
-            temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1];
-            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+        // small rectangle for the user position
+        temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
+        temp_rect.y = game.game.height/2;// - texheight;
+        temp_rect.w = game.game.chunk_size/3 - 1;
+        temp_rect.h = game.game.chunk_size/3 - 1;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        // mouse chunk
+        temp_rect.x = game.user.mouse_chunk[0];
+        temp_rect.y = game.user.mouse_chunk[1];
+        temp_rect.w = game.game.chunk_size+1;
+        temp_rect.h = game.game.chunk_size+1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
+        SDL_RenderFillRect(renderer, &temp_rect);
+
+        // mouse cursor
+        temp_rect.x = game.user.mouse["x"];
+        temp_rect.y = game.user.mouse["y"];
+        temp_rect.w = game.game.chunk_size/10;
+        temp_rect.h = game.game.chunk_size/10;
+        SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        for(auto fish : fishs){
+            tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
+            tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
+            steptexr.x = 96 + ((static_cast<int>(game.game.time_stepx/100)) %3)*32; steptexr.y = 192;
+            steptexr.w = 32; steptexr.h = 32; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &tiletexr);
+        }
+        
+        /*Entity renders*/
+        game.update_entities();
+        //Only draw visible entities'
+        t = 0;
+        for(Entity& entity : game.game.visible_entities){
+
+            t++;
+            texheight = (game.game.chunk_size) + ((game.game.chunk_size) * .333);
+            
+            chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - (game.game.size * .7); 
+            chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - texheight;
+            chartexr.w = game.game.chunk_size; 
+            chartexr.h = texheight;
+            
+            steptexr.x = entity.step * 32; steptexr.y = entity.texAng * 48;
+            steptexr.w = 32; steptexr.h = 48; 
+
+            ei = entity.texIndex + 8;
+            n = game.game.WorldGen.terrainGeneration(entity.chunk.x, entity.chunk.y);
+            if(n == 0){ // && entity.items["boat"] > 0){
+                if(entity.speed > 20 && entity.items["fly"] > 0) ei = entity.fast_texIndex;
+                else ei = entity.boat_texIndex;
+                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
+                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
+
+                chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+                steptexr.x = 32 * (entity.step % 3); steptexr.y = entity.texAng * 32;
+                steptexr.w = 32; steptexr.h = 32; 
+                
+            }
+            else if(entity.speed > 20){
+                ei = entity.fast_texIndex;
+                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
+                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
+                chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+                steptexr.x = 32; steptexr.y = entity.texAng * 32;
+                steptexr.w = 32; steptexr.h = 32; 
+            }
+
+            // if(game.game.mouse_entity.ID == entity.ID){
+            //     temp_rect.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size);
+            //     temp_rect.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
+            //     temp_rect.w = game.game.chunk_size;
+            //     temp_rect.h = game.game.chunk_size;
+            //     SDL_SetRenderDrawColor(renderer, entity.color.r, entity.color.g, entity.color.b, 255 );
+            //     SDL_RenderFillRect(renderer, &temp_rect);
+            // // }
+            // temp_rect.x =  (entity.chunkfx * game.game.chunk_size);
+            // temp_rect.y =  (entity.chunkfy * game.game.chunk_size);
+            // temp_rect.w = game.game.chunk_size;
+            // temp_rect.h = game.game.chunk_size;
+            // SDL_RenderFillRect(renderer, &temp_rect);
+            
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
+
+            if(chartexr.x < game.user.mouse["x"] && game.user.mouse["x"] < chartexr.x + chartexr.w){
+                if(chartexr.y < game.user.mouse["y"] && game.user.mouse["y"] < chartexr.y+ chartexr.h){
+                    game.game.mouse_entity = entity;
+                    if(game.user.mouse_down){
+                        if(SDL_GetTicks() > game.user.timer + 3000)
+                            send_alert(2); //
+                        game.user.timer = SDL_GetTicks();
+                        //chartexr.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size) + 32; 
+                        //chartexr.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
+                        chartexr.x += game.game.chunk_size/3;
+                        chartexr.y += game.game.chunk_size/3;
+                        chartexr.w = game.game.chunk_size/3; 
+                        chartexr.h = game.game.chunk_size/3;
+
+                        //This seeding sets the entity
+                        srand(hasher(entity.ID));
+
+                        steptexr.x = (rand() % 9) * 96; steptexr.y = (rand() % 10) * 32;
+                        steptexr.w = 32; steptexr.h = 32; 
+                        SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &chartexr);
+                        
+                    }
+                    
+                }
+            }
+        }  
+
+        //TODO
+        //Each of the secondary tiles could be combined into a single vector
+
+        std::sort(trees.begin(),trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
+        //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
+        std::sort(game.game.structures.begin(),game.game.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
+
+        /*Secondary Tile renders*/
+        for(auto tree : trees){
+            srand(floor(tree.noise));
+            chartexr.x = 0; 
+            chartexr.y = 65 * (rand() % 7);
+            chartexr.w = 64; chartexr.h = 64;
+            steptexr.x = tree.x - (game.game.chunk_size/2)*3; 
+            steptexr.y = tree.y - (game.game.chunk_size*3) - (game.game.chunk_size/2);
+            steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*4; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
+
+            if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.game.chunk_size){
+                if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.game.chunk_size){
+                    if(game.user.mouse_down) send_alert(1);
+
+                                    
+                    // if(uchunk.x + 1 >= (tree.x + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.game.chunk_size * 4))){
+                    //     if(uchunk.y + 1 >= (tree.y + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.game.chunk_size * 7))){
+                    //         if(game.user.mouse_down) send_alert(0);
+                    //     }
+                    // }
+                }
+            }
         }
 
-        //draw front walls
-        for(int r = 0; r < 6; ++r){
-            if(r == 0)
-                steptexr.x = 0; 
-            else if(r == 5)
-                steptexr.x = 64;
-            else steptexr.x = 32;
+        for(auto rock : rocks){
+            chartexr.x = 32; chartexr.y = 256;
+            chartexr.w = 32; chartexr.h = 32;
+            steptexr.x = rock.x; steptexr.y = rock.y;
+            steptexr.w = game.game.chunk_size*2; steptexr.h = game.game.chunk_size*2; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
+        }
+
+        for(auto p : game.game.structures){
+            //draw roof
+            for(int r = 0; r < 6; ++r){
+                steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
+                steptexr.w = 32; steptexr.h = 128;
+                temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1];
+                temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+            }
+
+            //draw front walls
+            for(int r = 0; r < 6; ++r){
+                if(r == 0)
+                    steptexr.x = 0; 
+                else if(r == 5)
+                    steptexr.x = 64;
+                else steptexr.x = 32;
 
 
+                steptexr.y = 1407 + (64 * p.wall_index);
+                steptexr.w = 32; steptexr.h = 64;
+                temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
+                temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+            }
+
+            //draw door, window and misc
+
+            //door
+            steptexr.x = 224;
             steptexr.y = 1407 + (64 * p.wall_index);
             steptexr.w = 32; steptexr.h = 64;
-            temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
-            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
+            temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.game.chunk_size);
+            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 2; 
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-        }
+            
+            //sign
+            steptexr.x = 0 + (32 * (p.roof_index % 7));
+            steptexr.y = 2624 + (32 * (p.wall_index)%2);
+            steptexr.w = 32; steptexr.h = 32;
+            temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
+            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
 
-        //draw door, window and misc
+            //check if the user's mouse is in the bounds of the structure
+            
+            if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
+                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){
 
-        //door
-        steptexr.x = 224;
-        steptexr.y = 1407 + (64 * p.wall_index);
-        steptexr.w = 32; steptexr.h = 64;
-        temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.game.chunk_size);
-        temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 2; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-        
-        //sign
-        steptexr.x = 0 + (32 * (p.roof_index % 7));
-        steptexr.y = 2624 + (32 * (p.wall_index)%2);
-        steptexr.w = 32; steptexr.h = 32;
-        temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
-        temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-
-        //check if the user's mouse is in the bounds of the structure
-        
-        if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
-            if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){
-
-                //Door position
-                //TODO
-                //this won't translate well if I plan on having different sized structures
-                if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
-                    if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
-                        //
-                        if(!game.game.inside) {
-                            game.game.inside = true;
-                            game.game.active_interior = p;
+                    //Door position
+                    //TODO
+                    //this won't translate well if I plan on having different sized structures
+                    if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
+                        if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
+                            //
+                            if(!game.game.inside) {
+                                game.game.inside = true;
+                                game.game.active_interior = p;
+                            }
+                            if(game.user.mouse_down) send_alert(0);
                         }
-                        if(game.user.mouse_down) send_alert(0);
                     }
                 }
             }
         }
-    }
 
-    
+    }
     //finally draw everything to the screen
     SDL_RenderPresent(renderer);
     ctx->iteration++;
