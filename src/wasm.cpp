@@ -45,12 +45,15 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
             break;
 
         case SDL_MOUSEWHEEL:
-            if(event->wheel.y < 0 && game.game.current_chunk_size > 0) game.game.current_chunk_size--;
-            if(event->wheel.y > 0 && game.game.current_chunk_size < 5) game.game.current_chunk_size++;
-            
-            game.game.chunk_size = game.game.chunk_sizes[game.game.current_chunk_size];
+            //Temporarily disabling zooming while inside
+            if(!game.game.inside){
+                if(event->wheel.y < 0 && game.game.current_chunk_size > 0) game.game.current_chunk_size--;
+                if(event->wheel.y > 0 && game.game.current_chunk_size < 5) game.game.current_chunk_size++;
+                
+                game.game.chunk_size = game.game.chunk_sizes[game.game.current_chunk_size];
 
-            game.game.size = floor(static_cast<float>(game.game.chunk_size) / 2);
+                game.game.size = floor(static_cast<float>(game.game.chunk_size) / 2);
+            }
 
             break;
 
@@ -770,6 +773,7 @@ void mainloop(void *arg)
                                 p.user.x = game.game.chunk_size*3;
                                 p.user.y = game.game.chunk_size*6;
                                 game.game.active_interior = p;
+                                game.game.current_chunk_size = game.game.default_chk;
                                 // send_alert(0);
                             }
                         }
