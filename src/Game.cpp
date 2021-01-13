@@ -221,7 +221,8 @@ bool zorder(const Entity &a, const Entity &b){
 }
 
 void Game::update_inside(){
-
+    game.user.chunks[0][0] = 0; game.user.chunks[0][1] = 0;
+    game.user.chunks[0][0] = 6; game.user.chunks[0][1] = 6;
 }
 //loop through current entities and update each
 //despawn any entites outside of render distance
