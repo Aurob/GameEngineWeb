@@ -15,7 +15,7 @@ Game::Game(){
         .time_stepx = 0, .time_stepy = 0
     };
 
-    game.WorldGen.rock_noise.setSeed(time(NULL));
+    game.WorldGen.rock_noise.SetSeed(time(NULL));
     User user {
         .globalx = 1, .globaly = 1,
         .mouse{{"x",0},{"y",0}}, .chunk{0, 0},
