@@ -675,6 +675,8 @@ void mainloop(void *arg)
         }
 
         //draw door, window and misc
+
+        //door
         steptexr.x = 224;
         steptexr.y = 1407 + (64 * p.wall_index);
         steptexr.w = 32; steptexr.h = 64;
@@ -682,6 +684,14 @@ void mainloop(void *arg)
         temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 2; 
         SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
         
+        //sign
+        steptexr.x = 0 + (32 * (p.roof_index % 7));
+        steptexr.y = 2624 + (32 * (p.wall_index)%2);
+        steptexr.w = 32; steptexr.h = 32;
+        temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
+        temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
+        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+
         //check if the user's mouse is in the bounds of the structure
         
         if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
