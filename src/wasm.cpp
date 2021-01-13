@@ -127,7 +127,10 @@ EM_JS(void, talk, (int type), {
         case 4:
             alert("The door opened...");
             break;
-        
+
+        case 5:
+            document.getElementById("#overlay").style.display = "block";//
+            break;
         default:
             break;
     }
