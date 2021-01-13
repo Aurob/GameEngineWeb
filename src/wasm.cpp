@@ -179,19 +179,20 @@ void mainloop(void *arg)
     std::unordered_map<int, std::vector<Position>> tiles;
 
     if(game.game.inside) {
-        send_alert(1);
-        // small rectangle for the user position
-        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
-            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
 
-                temp_rect.x = i * game.game.chunk_size;// - (game.game.size * .7); 
-                temp_rect.y = j * game.game.chunk_size;// - texheight;
-                temp_rect.w = game.game.chunk_size;
-                temp_rect.h = game.game.chunk_size;
-                SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
-                SDL_RenderFillRect(renderer, &temp_rect );
-            }
-        }
+        // small rectangle for the user position
+        // for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
+        //     for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
+
+                
+        //     }
+        // }
+        temp_rect.x = 0;// - (game.game.size * .7); 
+        temp_rect.y = 0;// - texheight;
+        temp_rect.w = 400;
+        temp_rect.h = 400;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
     }
     else {
         /*Tile loading*/
