@@ -50,6 +50,9 @@ struct GameOBJ
     Position uchunk;
 
     std::vector<Building> structures;
+
+    Structure active_interior;
+    bool inside{false};
 };
 
 struct User
@@ -81,6 +84,7 @@ class Game {
     Position content(Position&, int);
     Position getChunkFromCoord(float, float);
     void update_pos();
+    void update_inside();
     void update_entities();
     std::string rstring(size_t);
 };

@@ -219,10 +219,13 @@ void Game::update_pos(){
 bool zorder(const Entity &a, const Entity &b){
     return a.position.y < b.position.y;
 }
+
+void Game::update_inside(){
+
+}
 //loop through current entities and update each
 //despawn any entites outside of render distance
 //update positions for visible entities
-
 void Game::update_entities(){
 
     //Possible performance hit
