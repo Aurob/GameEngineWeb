@@ -221,7 +221,7 @@ bool zorder(const Entity &a, const Entity &b){
 }
 
 void Game::update_inside(){
-    user.chunks[0][0] = 0; user.chunks[0][1] = 6;
+    user.chunks[0][0] = 0; user.chunks[0][1] = 0;
 
     user.chunks[1][0] = 6; user.chunks[1][1] = 0;
 
