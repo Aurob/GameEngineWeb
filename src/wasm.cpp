@@ -181,12 +181,17 @@ void mainloop(void *arg)
     if(game.game.inside) {
         send_alert(1);
         // small rectangle for the user position
-        temp_rect.x = game.game.width/2;// - (game.game.size * .7); 
-        temp_rect.y = game.game.height/2;// - texheight;
-        temp_rect.w = game.game.chunk_size;
-        temp_rect.h = game.game.chunk_size;
-        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
-        SDL_RenderFillRect(renderer, &temp_rect );
+        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
+            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
+
+                temp_rect.x = i * game.game.chunk_size;// - (game.game.size * .7); 
+                temp_rect.y = j * game.game.chunk_size;// - texheight;
+                temp_rect.w = game.game.chunk_size;
+                temp_rect.h = game.game.chunk_size;
+                SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+                SDL_RenderFillRect(renderer, &temp_rect );
+            }
+        }
     }
     else {
         /*Tile loading*/
@@ -717,6 +722,7 @@ void mainloop(void *arg)
                             //
                             if(!game.game.inside && game.user.mouse_down) {
                                 game.game.inside = true;
+                                p.user{game.game.chunk_size*3,game.game.chunk_size*6};
                                 game.game.active_interior = p;
                                 send_alert(0);
                             }
