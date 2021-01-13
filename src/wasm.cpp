@@ -509,6 +509,41 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &tiletexr);
         }
         
+        /*User renders*/
+        // fill the chunk the user is currently in
+        Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
+        uchunk = game.content(uchunk, 1);
+        temp_rect.x = uchunk.x + 1;
+        temp_rect.y = uchunk.y + 1;
+        temp_rect.w = game.game.chunk_size - 1;
+        temp_rect.h = game.game.chunk_size - 1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        // small rectangle for the user position
+        temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
+        temp_rect.y = game.game.height/2;// - texheight;
+        temp_rect.w = game.game.chunk_size/3 - 1;
+        temp_rect.h = game.game.chunk_size/3 - 1;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        // mouse chunk
+        temp_rect.x = game.user.mouse_chunk[0];
+        temp_rect.y = game.user.mouse_chunk[1];
+        temp_rect.w = game.game.chunk_size+1;
+        temp_rect.h = game.game.chunk_size+1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
+        SDL_RenderFillRect(renderer, &temp_rect);
+
+        // mouse cursor
+        temp_rect.x = game.user.mouse["x"];
+        temp_rect.y = game.user.mouse["y"];
+        temp_rect.w = game.game.chunk_size/10;
+        temp_rect.h = game.game.chunk_size/10;
+        SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
         /*Entity renders*/
         game.update_entities();
         //Only draw visible entities'
