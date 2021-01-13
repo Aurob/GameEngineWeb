@@ -60,6 +60,7 @@ struct Building {
     std::string ID;
 
     std::unordered_map<std::string, Entity> occupants;
+    Position user;
 };
 
 //building 1 = 3x6 roof & 3x6 front wall
