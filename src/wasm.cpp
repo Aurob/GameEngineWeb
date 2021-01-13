@@ -180,8 +180,8 @@ void mainloop(void *arg)
 
     if(game.game.inside) {
         // small rectangle for the user position
-        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
-            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
 
                 temp_rect.x = i * game.game.chunk_size;// - (game.game.size * .7); 
                 temp_rect.y = j * game.game.chunk_size;// - texheight;
