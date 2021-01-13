@@ -196,11 +196,20 @@ void mainloop(void *arg)
         
         if(game.game.active_interior.items.size() > 0){
             tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
-            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size/2; 
             steptexr.x = 64; steptexr.y = 3808;
             steptexr.w = 32; steptexr.h = 16; 
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
         }
+
+        // small rectangle for the user position
+        temp_rect.x = game.game.active_interior.user.x;// - (game.game.size * .7); 
+        temp_rect.y = game.game.active_interior.user.y;// - texheight;
+        temp_rect.w = game.game.chunk_size;
+        temp_rect.h = game.game.chunk_size;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
     }
     else {
         /*Tile loading*/
