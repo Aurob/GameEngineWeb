@@ -126,10 +126,10 @@ EM_JS(void, talk, (int type), {
         
         case 4:
             alert("The door opened...");
+            break;
 
         case 5:
-            document.getElementById("#overlay").innerHTML = '<button id="close">Close</button><iframe width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-            
+            document.getElementById("#overlay").style.display = "block";
             break
         default:
             break;
