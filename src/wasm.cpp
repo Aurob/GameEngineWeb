@@ -206,7 +206,7 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
         }
 
-        if(game.game.mouse_down){
+        if(game.user.mouse_down){
             if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
                 if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
                     // small rectangle for the user position
