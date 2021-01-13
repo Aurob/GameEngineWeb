@@ -246,6 +246,31 @@ void Game::update_inside(){
         user.directiony = -1;
     } 
 
+    Position ichunk = getChunkFromCoord(game.active_interior.user.x, game.active_interior.user.y);
+    
+    //Determines the cuurent mouse chunk
+    //TODO
+    //Does this really need to be 2 for loops?
+    //Change mouse_chunk to a position, so it can be reference with .x and .y
+    //user.mouse_chunk[0] = ((ceil(user.mouse["x"]/game.chunk_size)+1) * game.chunk_size) - game.xoffset;
+    //user.mouse_chunk[1] = ((ceil(user.mouse["y"]/game.chunk_size)+1) * game.chunk_size) - game.yoffset;
+    
+    for(int i = 0; i < 6 + 1; i++){
+        //Unnecessary re-initialization 
+        game.xpos = i*game.chunk_size;
+        
+        if(user.mouse["x"] > game.xpos){
+            user.mouse_chunk[0] = game.xpos;
+        }
+    }
+    for(int i = 0; i < 6 + 1; i++){    
+        //Unnecessary re-initialization 
+        game.ypos = i*game.chunk_size;
+        if(user.mouse["y"] > game.ypos){
+            user.mouse_chunk[1] = game.ypos;
+        }
+    }
+
 }
 //loop through current entities and update each
 //despawn any entites outside of render distance
