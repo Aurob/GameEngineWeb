@@ -179,7 +179,6 @@ void mainloop(void *arg)
     std::unordered_map<int, std::vector<Position>> tiles;
 
     if(game.game.inside) {
-        send_alert(1);
         // small rectangle for the user position
         for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
             for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
