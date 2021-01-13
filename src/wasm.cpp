@@ -186,7 +186,7 @@ void mainloop(void *arg)
         // small rectangle for the user position
         for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
             for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-                tiletexr.x = (game.game.width/2) - ((i * game.game.chunk_size)/2); tiletexr.y = (game.game.height/2) - (j * game.game.chunk_size);
+                tiletexr.x = (i * game.game.chunk_size); tiletexr.y = (j * game.game.chunk_size);
                 tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
                 steptexr.x = 0; steptexr.y = 1152;
                 steptexr.w = 32; steptexr.h = 32; 
@@ -194,6 +194,13 @@ void mainloop(void *arg)
             }
         }
         
+        if(game.game.active_interior.items.size() > 0){
+            tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
+            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+            steptexr.x = 64; steptexr.y = 3808;
+            steptexr.w = 32; steptexr.h = 16; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+        }
     }
     else {
         /*Tile loading*/
@@ -308,6 +315,7 @@ void mainloop(void *arg)
                         //     b.occupants[e.ID] = e;
                         // }
 
+                        b.items["note"] = Position{300, 300};
                         game.game.structures.push_back(b);
                         //Structure spawns are based on a single tile, 
                         //  so we need to check each tile that the structure covers
