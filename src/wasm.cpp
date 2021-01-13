@@ -773,7 +773,6 @@ void mainloop(void *arg)
                                 p.user.x = game.game.chunk_size*3;
                                 p.user.y = game.game.chunk_size*6;
                                 game.game.active_interior = p;
-                                game.game.current_chunk_size = game.game.default_chk;
                                 // send_alert(0);
                             }
                         }
