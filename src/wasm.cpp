@@ -126,6 +126,12 @@ EM_JS(void, talk, (int type), {
         
         case 4:
             alert("The door opened...");
+
+        case 5:
+            $("#overlay").html('<button id="close">Close</button><iframe width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+            $("#close").on("click", function(e){
+                $("#overlay").html("");
+            });
         default:
             break;
     }
