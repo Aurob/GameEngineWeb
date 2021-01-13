@@ -187,7 +187,7 @@ void mainloop(void *arg)
 
     if(game.game.inside) {
 
-        if((game.game.active_interior.user.x > 32*3 && game.game.active_interior.user.x < 32*4) && game.game.active_interior.user.y > 32*5){
+        if((game.game.active_interior.user.x > game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*6){
             game.game.inside = false;
         }
         else {
@@ -211,8 +211,8 @@ void mainloop(void *arg)
             }
 
             if(game.user.mouse_down){
-                if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
-                    if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
+                if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < (game.game.chunk_size * 2.5) + game.game.chunk_size){
+                    if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < (game.game.chunk_size * 2.5) + game.game.chunk_size*.625){
                         // small rectangle for the user position
                         
                         send_alert(3);
@@ -228,7 +228,7 @@ void mainloop(void *arg)
             SDL_RenderFillRect(renderer, &temp_rect );
 
             temp_rect.x = game.game.chunk_size*3;
-            temp_rect.y = game.game.chunk_size*5;
+            temp_rect.y = game.game.chunk_size*6;
             temp_rect.w = game.game.chunk_size;
             temp_rect.h = game.game.chunk_size;
             SDL_SetRenderDrawColor(renderer, 100, 234, 34, 255 );
