@@ -123,6 +123,9 @@ EM_JS(void, talk, (int type), {
             alert("It's a book!");
             alert("Too bad you can't read...");
             break;
+        
+        case 4:
+            alert("The door opened...");
         default:
             break;
     }
@@ -758,23 +761,32 @@ void mainloop(void *arg)
 
             //check if the user's mouse is in the bounds of the structure
             
+            bool unlocked{false};
+            if(steptexr.x == 3 * 32 && steptexr.y == 32){
+                unlocked = true;
+            }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
                 if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){
-
+                    game.user.mouse_down = false;
+                    
                     //Door position
                     //TODO
-                    //this won't translate well if I plan on having different sized structures
                     if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
                         if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
-                            //
-                            if(!game.game.inside && game.user.mouse_down) {
-                                game.user.mouse_down = false;
-                                game.game.inside = true;
-                                p.user.x = game.game.chunk_size*3;
-                                p.user.y = game.game.chunk_size*6;
-                                game.game.active_interior = p;
-                                game.game.chunk_size = game.game.chunk_sizes[2];
-                                // send_alert(0);
+                            
+                            if(game.user.mouse_down) {
+                                if(!unlocked) send_alert(0);
+                                else {
+                                    if(!game.game.inside) {
+                                        send_alert(4);
+                                        game.game.inside = true;
+                                        p.user.x = game.game.chunk_size*3;
+                                        p.user.y = game.game.chunk_size*6;
+                                        game.game.active_interior = p;
+                                        game.game.chunk_size = game.game.chunk_sizes[2];
+                                        
+                                    }
+                                }
                             }
                         }
                     }
