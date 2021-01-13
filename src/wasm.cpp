@@ -129,7 +129,7 @@ EM_JS(void, talk, (int type), {
             break;
 
         case 5:
-            document.getElementById("#overlay").style.display = "block";
+            document.getElementById("#overlay").style.display = "block";//
             break
         default:
             break;
