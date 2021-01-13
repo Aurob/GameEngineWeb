@@ -184,17 +184,16 @@ void mainloop(void *arg)
     if(game.game.inside) {
 
         // small rectangle for the user position
-        // for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
-        //     for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-
-                
-        //     }
-        // }
-        tiletexr.x = 0; tiletexr.y = 0;
-        tiletexr.w = 32; tiletexr.h = 32; 
-        steptexr.x = 0; steptexr.y = 1152;
-        steptexr.w = 32; steptexr.h = 32; 
-        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
+            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
+                tiletexr.x = 0 + (i * game.game.chunk_size); tiletexr.y = 0 + (j * game.game.chunk_size);
+                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+                steptexr.x = 0; steptexr.y = 1152;
+                steptexr.w = 32; steptexr.h = 32; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+            }
+        }
+        
     }
     else {
         /*Tile loading*/
