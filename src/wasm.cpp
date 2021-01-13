@@ -116,6 +116,10 @@ EM_JS(void, talk, (int type), {
         case 2:
             alert("Can I help you?");
             break;
+        case 3:
+            alert("It's a book!");
+            alert("Too bad you can't read...");
+            break;
         default:
             break;
     }
@@ -198,17 +202,26 @@ void mainloop(void *arg)
             tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
             tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size/2; 
             steptexr.x = 64; steptexr.y = 3808;
-            steptexr.w = 32; steptexr.h = 16; 
+            steptexr.w = 32; steptexr.h = 20; 
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
         }
 
-        // small rectangle for the user position
-        temp_rect.x = game.game.active_interior.user.x;// - (game.game.size * .7); 
-        temp_rect.y = game.game.active_interior.user.y;// - texheight;
-        temp_rect.w = game.game.chunk_size;
-        temp_rect.h = game.game.chunk_size;
+        if(game.game.active_interior.user.x < game.user.mouse["x"] && game.user.mouse["x"] < game.game.active_interior.user.x + game.game.chunk_size){
+            if(game.game.active_interior.user.y < game.user.mouse["y"] && game.user.mouse["y"] < game.game.active_interior.user.y + game.game.chunk_size){
+                // small rectangle for the user position
+                
+                send_alert(3);
+            }
+        }
+
+        temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;// - (game.game.size * .7); 
+        temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;// - texheight;
+        temp_rect.w = game.game.chunk_size/5;
+        temp_rect.h = game.game.chunk_size/5;
         SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
         SDL_RenderFillRect(renderer, &temp_rect );
+        if(game.user.mouse_down) send_alert(3);
+
 
     }
     else {
