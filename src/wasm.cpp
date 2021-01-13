@@ -752,8 +752,10 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             
             //sign
-            steptexr.x = 0 + (32 * (p.roof_index % 7));
-            steptexr.y = 2624 + (32 * (p.roof_index % 2));
+            int sign_c = (p.roof_index % 7);
+            int sign_r = (p.roof_index % 2);
+            steptexr.x = 0 + (32 * sign_i);
+            steptexr.y = 2624 + (32 * sign_r);
             steptexr.w = 32; steptexr.h = 32;
             temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
             temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
@@ -761,8 +763,8 @@ void mainloop(void *arg)
 
             //check if the user's mouse is in the bounds of the structure
             
-            bool unlocked{false};
-            if(steptexr.x == 3 * 32 && steptexr.y == 32){
+            bool unlocked = false;
+            if(sign_c == 3 && sign_r == 1){
                 unlocked = true;
             }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
