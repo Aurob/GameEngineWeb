@@ -159,7 +159,7 @@ void mainloop(void *arg)
     else game.update_pos();
     
     //game.game.EntityManager.update();
-
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
     SDL_RenderClear(renderer);
 
     SDL_Rect tiletexr;
