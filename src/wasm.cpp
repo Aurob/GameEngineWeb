@@ -757,7 +757,7 @@ void mainloop(void *arg)
                                 p.user.x = game.game.chunk_size*3;
                                 p.user.y = game.game.chunk_size*6;
                                 game.game.active_interior = p;
-                                send_alert(0);
+                                // send_alert(0);
                             }
                         }
                     }
