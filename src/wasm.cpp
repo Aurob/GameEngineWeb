@@ -179,9 +179,10 @@ void mainloop(void *arg)
     std::unordered_map<int, std::vector<Position>> tiles;
 
     if(game.game.inside) {
+        send_alert(1);
         // small rectangle for the user position
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
+            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
 
                 temp_rect.x = i * game.game.chunk_size;// - (game.game.size * .7); 
                 temp_rect.y = j * game.game.chunk_size;// - texheight;
@@ -499,6 +500,41 @@ void mainloop(void *arg)
             }
         }
 
+        /*User renders*/
+        // fill the chunk the user is currently in
+        Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
+        uchunk = game.content(uchunk, 1);
+        temp_rect.x = uchunk.x + 1;
+        temp_rect.y = uchunk.y + 1;
+        temp_rect.w = game.game.chunk_size - 1;
+        temp_rect.h = game.game.chunk_size - 1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        // small rectangle for the user position
+        temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
+        temp_rect.y = game.game.height/2;// - texheight;
+        temp_rect.w = game.game.chunk_size/3 - 1;
+        temp_rect.h = game.game.chunk_size/3 - 1;
+        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
+        // mouse chunk
+        temp_rect.x = game.user.mouse_chunk[0];
+        temp_rect.y = game.user.mouse_chunk[1];
+        temp_rect.w = game.game.chunk_size+1;
+        temp_rect.h = game.game.chunk_size+1;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
+        SDL_RenderFillRect(renderer, &temp_rect);
+
+        // mouse cursor
+        temp_rect.x = game.user.mouse["x"];
+        temp_rect.y = game.user.mouse["y"];
+        temp_rect.w = game.game.chunk_size/10;
+        temp_rect.h = game.game.chunk_size/10;
+        SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
+        SDL_RenderFillRect(renderer, &temp_rect );
+
         for(auto fish : fishs){
             tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
             tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
@@ -698,42 +734,6 @@ void mainloop(void *arg)
         }
 
     }
-
-    /*User renders*/
-    // fill the chunk the user is currently in
-    Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
-    uchunk = game.content(uchunk, 1);
-    temp_rect.x = uchunk.x + 1;
-    temp_rect.y = uchunk.y + 1;
-    temp_rect.w = game.game.chunk_size - 1;
-    temp_rect.h = game.game.chunk_size - 1;
-    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
-    // small rectangle for the user position
-    temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
-    temp_rect.y = game.game.height/2;// - texheight;
-    temp_rect.w = game.game.chunk_size/3 - 1;
-    temp_rect.h = game.game.chunk_size/3 - 1;
-    SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
-    // mouse chunk
-    temp_rect.x = game.user.mouse_chunk[0];
-    temp_rect.y = game.user.mouse_chunk[1];
-    temp_rect.w = game.game.chunk_size+1;
-    temp_rect.h = game.game.chunk_size+1;
-    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
-    SDL_RenderFillRect(renderer, &temp_rect);
-
-    // mouse cursor
-    temp_rect.x = game.user.mouse["x"];
-    temp_rect.y = game.user.mouse["y"];
-    temp_rect.w = game.game.chunk_size/10;
-    temp_rect.h = game.game.chunk_size/10;
-    SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
-    SDL_RenderFillRect(renderer, &temp_rect );
-
     //finally draw everything to the screen
     SDL_RenderPresent(renderer);
     ctx->iteration++;
