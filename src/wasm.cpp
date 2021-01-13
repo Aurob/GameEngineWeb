@@ -187,7 +187,7 @@ void mainloop(void *arg)
 
     if(game.game.inside) {
 
-        if((game.game.active_interior.user.x > game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*5){
+        if((game.game.active_interior.user.x > 32*3 && game.game.active_interior.user.x < 32*4) && game.game.active_interior.user.y > 32*5){
             game.game.inside = false;
         }
         else {
@@ -220,12 +220,20 @@ void mainloop(void *arg)
                 }
             }
             
-            temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;// - (game.game.size * .7); 
-            temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;// - texheight;
+            temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
+            temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;
             temp_rect.w = game.game.chunk_size/5;
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
+
+            temp_rect.x = game.game.chunk_size*3;
+            temp_rect.y = game.game.chunk_size*5;
+            temp_rect.w = game.game.chunk_size;
+            temp_rect.h = game.game.chunk_size;
+            SDL_SetRenderDrawColor(renderer, 100, 234, 34, 255 );
+            SDL_RenderFillRect(renderer, &temp_rect );
+
             if(game.user.mouse_down) send_alert(3);
         }
 
