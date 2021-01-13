@@ -129,7 +129,7 @@ EM_JS(void, talk, (int type), {
             break;
         
         case 5:
-            emscripten_run_script('document.getElementById("#overlay").style.display = "block";');
+            
             break
 
         default:
