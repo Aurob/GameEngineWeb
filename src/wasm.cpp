@@ -722,7 +722,8 @@ void mainloop(void *arg)
                             //
                             if(!game.game.inside && game.user.mouse_down) {
                                 game.game.inside = true;
-                                p.user{game.game.chunk_size*3,game.game.chunk_size*6};
+                                p.user.x = game.game.chunk_size*3;
+                                p.user.y = game.game.chunk_size*6;
                                 game.game.active_interior = p;
                                 send_alert(0);
                             }
