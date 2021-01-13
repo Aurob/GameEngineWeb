@@ -225,19 +225,19 @@ void Game::update_inside(){
     user.chunks[0][0] = 6; user.chunks[0][1] = 6;
 
     if(user.keyState[1]){
-        active_interior.user.x += game.speed/10; //D
+        game.active_interior.user.x += game.speed/10; //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        active_interior.user.x -= game.speed/10; //A
+        game.active_interior.user.x -= game.speed/10; //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        active_interior.user.y += game.speed/10; //S
+        game.active_interior.user.y += game.speed/10; //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        active_interior.user.y -= game.speed/10; //W
+        game.active_interior.user.y -= game.speed/10; //W
         user.directiony = -1;
     } 
 
