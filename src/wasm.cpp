@@ -750,7 +750,7 @@ void mainloop(void *arg)
             
             //sign
             steptexr.x = 0 + (32 * (p.roof_index % 7));
-            steptexr.y = 2624 + (32 * (p.wall_index)%2);
+            steptexr.y = 2624 + (32 * (p.roof_index % 2));
             steptexr.w = 32; steptexr.h = 32;
             temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
             temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
