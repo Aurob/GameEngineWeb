@@ -187,43 +187,47 @@ void mainloop(void *arg)
 
     if(game.game.inside) {
 
-        // small rectangle for the user position
-        for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
-            for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-                tiletexr.x = (i * game.game.chunk_size); tiletexr.y = (j * game.game.chunk_size);
-                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
-                steptexr.x = 0; steptexr.y = 1152;
-                steptexr.w = 32; steptexr.h = 32; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
-            }
+        if((game.game.active_interior.user.x > game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*5){
+            game.game.inside = false;
         }
-        
-        if(game.game.active_interior.items.size() > 0){
-            tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
-            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
-            steptexr.x = 64; steptexr.y = 3808;
-            steptexr.w = 32; steptexr.h = 20; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
-        }
-
-        if(game.user.mouse_down){
-            if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
-                if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
-                    // small rectangle for the user position
-                    
-                    send_alert(3);
+        else {
+            // small rectangle for the user position
+            for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
+                for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
+                    tiletexr.x = (i * game.game.chunk_size); tiletexr.y = (j * game.game.chunk_size);
+                    tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+                    steptexr.x = 0; steptexr.y = 1152;
+                    steptexr.w = 32; steptexr.h = 32; 
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
                 }
             }
-        }
-        
-        temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;// - (game.game.size * .7); 
-        temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;// - texheight;
-        temp_rect.w = game.game.chunk_size/5;
-        temp_rect.h = game.game.chunk_size/5;
-        SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
-        SDL_RenderFillRect(renderer, &temp_rect );
-        if(game.user.mouse_down) send_alert(3);
+            
+            if(game.game.active_interior.items.size() > 0){
+                tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
+                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
+                steptexr.x = 64; steptexr.y = 3808;
+                steptexr.w = 32; steptexr.h = 20; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+            }
 
+            if(game.user.mouse_down){
+                if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
+                    if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
+                        // small rectangle for the user position
+                        
+                        send_alert(3);
+                    }
+                }
+            }
+            
+            temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;// - (game.game.size * .7); 
+            temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;// - texheight;
+            temp_rect.w = game.game.chunk_size/5;
+            temp_rect.h = game.game.chunk_size/5;
+            SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
+            SDL_RenderFillRect(renderer, &temp_rect );
+            if(game.user.mouse_down) send_alert(3);
+        }
 
     }
     else {
@@ -753,6 +757,7 @@ void mainloop(void *arg)
                         if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
                             //
                             if(!game.game.inside && game.user.mouse_down) {
+                                game.user.mouse_down = false;
                                 game.game.inside = true;
                                 p.user.x = game.game.chunk_size*3;
                                 p.user.y = game.game.chunk_size*6;
