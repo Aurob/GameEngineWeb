@@ -760,7 +760,7 @@ void mainloop(void *arg)
             
             //sign
             srand(hasher(p.ID));
-            int sign_c = (rand() % 7);
+            int sign_c = (rand() % 8);
             int sign_r = (rand() % 2);
             steptexr.x = 0 + (32 * sign_c);
             steptexr.y = 2624 + (32 * sign_r);
@@ -772,8 +772,14 @@ void mainloop(void *arg)
             //check if the user's mouse is in the bounds of the structure
             
             bool unlocked = false;
+            int room = -1;
             if(sign_c == 3 && sign_r == 1){
                 unlocked = true;
+                room = 1;
+            }
+            if(sign_c == 7 && sign_r == 1){
+                unlocked = true;
+                room = 2;
             }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
                 if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){                    
@@ -786,7 +792,8 @@ void mainloop(void *arg)
                                 game.user.mouse_down = false;
                                 if(!unlocked) send_alert(0);
                                 else {
-                                    if(!game.game.inside) {
+                                    if(room == 2) send_alert(5);
+                                    else if(!game.game.inside) {
                                         send_alert(4);
                                         game.game.inside = true;
                                         p.user.x = game.game.chunk_size*3;
