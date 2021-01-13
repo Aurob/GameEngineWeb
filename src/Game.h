@@ -51,7 +51,7 @@ struct GameOBJ
 
     std::vector<Building> structures;
 
-    Structure active_interior;
+    Building active_interior;
     bool inside{false};
 };
 
