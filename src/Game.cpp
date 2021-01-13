@@ -221,8 +221,13 @@ bool zorder(const Entity &a, const Entity &b){
 }
 
 void Game::update_inside(){
-    user.chunks[0][0] = 0; user.chunks[0][1] = 0;
-    user.chunks[0][0] = 6; user.chunks[0][1] = 6;
+    user.chunks[0][0] = 0; user.chunks[0][1] = 6;
+
+    user.chunks[1][0] = 6; user.chunks[1][1] = 0;
+
+    user.chunks[2][0] = 0; user.chunks[2][1] = 6;
+
+    user.chunks[3][0] = 6; user.chunks[3][1] = 6;
 
     if(user.keyState[1]){
         game.active_interior.user.x += game.speed/10; //D
