@@ -766,15 +766,14 @@ void mainloop(void *arg)
                 unlocked = true;
             }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
-                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){
-                    game.user.mouse_down = false;
-                    
+                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){                    
                     //Door position
                     //TODO
                     if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
                         if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
                             
                             if(game.user.mouse_down) {
+                                game.user.mouse_down = false;
                                 if(!unlocked) send_alert(0);
                                 else {
                                     if(!game.game.inside) {
