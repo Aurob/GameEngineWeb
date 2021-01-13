@@ -190,12 +190,11 @@ void mainloop(void *arg)
                 
         //     }
         // }
-        temp_rect.x = 400;// - (game.game.size * .7); 
-        temp_rect.y = 400;// - texheight;
-        temp_rect.w = 100;
-        temp_rect.h = 100;
-        SDL_SetRenderDrawColor(renderer, 22, 166, 234, 255 );
-        SDL_RenderFillRect(renderer, &temp_rect );
+        tiletexr.x = 0; tiletexr.y = 0;
+        tiletexr.w = 32; tiletexr.h = 32; 
+        steptexr.x = 0; steptexr.y = 1152;
+        steptexr.w = 32; steptexr.h = 32; 
+        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
     }
     else {
         /*Tile loading*/
