@@ -179,6 +179,7 @@ void mainloop(void *arg)
     std::unordered_map<int, std::vector<Position>> tiles;
 
     if(game.game.inside) {
+        send_alert(1);
         // small rectangle for the user position
         temp_rect.x = game.game.width/2;// - (game.game.size * .7); 
         temp_rect.y = game.game.height/2;// - texheight;
@@ -714,11 +715,11 @@ void mainloop(void *arg)
                     if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
                         if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
                             //
-                            if(!game.game.inside) {
+                            if(!game.game.inside && game.user.mouse_down) {
                                 game.game.inside = true;
                                 game.game.active_interior = p;
+                                send_alert(0);
                             }
-                            if(game.user.mouse_down) send_alert(0);
                         }
                     }
                 }
