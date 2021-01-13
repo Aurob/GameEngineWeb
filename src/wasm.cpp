@@ -206,14 +206,16 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
         }
 
-        if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
-            if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
-                // small rectangle for the user position
-                
-                send_alert(3);
+        if(game.game.mouse_down){
+            if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
+                if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
+                    // small rectangle for the user position
+                    
+                    send_alert(3);
+                }
             }
         }
-
+        
         temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;// - (game.game.size * .7); 
         temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;// - texheight;
         temp_rect.w = game.game.chunk_size/5;
