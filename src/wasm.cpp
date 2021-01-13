@@ -178,6 +178,9 @@ void mainloop(void *arg)
     std::vector<Position> fishs;
     std::unordered_map<int, std::vector<Position>> tiles;
 
+    Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
+    uchunk = game.content(uchunk, 1);
+
     if(game.game.inside) {
 
         // small rectangle for the user position
@@ -187,10 +190,10 @@ void mainloop(void *arg)
                 
         //     }
         // }
-        temp_rect.x = 0;// - (game.game.size * .7); 
-        temp_rect.y = 0;// - texheight;
-        temp_rect.w = 400;
-        temp_rect.h = 400;
+        temp_rect.x = 400;// - (game.game.size * .7); 
+        temp_rect.y = 400;// - texheight;
+        temp_rect.w = 100;
+        temp_rect.h = 100;
         SDL_SetRenderDrawColor(renderer, 22, 166, 234, 255 );
         SDL_RenderFillRect(renderer, &temp_rect );
     }
@@ -511,8 +514,6 @@ void mainloop(void *arg)
         
         /*User renders*/
         // fill the chunk the user is currently in
-        Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
-        uchunk = game.content(uchunk, 1);
         temp_rect.x = uchunk.x + 1;
         temp_rect.y = uchunk.y + 1;
         temp_rect.w = game.game.chunk_size - 1;
