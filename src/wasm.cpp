@@ -150,7 +150,9 @@ void mainloop(void *arg)
     //Start to update game content
     game.game.time_stepx += .01;
     game.game.time_stepy += .01;
-    game.update_pos();
+
+    if(game.game.inside) game.update_inside();
+    else game.update_pos();
     
     //game.game.EntityManager.update();
 
@@ -702,6 +704,11 @@ void mainloop(void *arg)
                 //this won't translate well if I plan on having different sized structures
                 if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
                     if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
+                        //
+                        if(!game.game.inside) {
+                            game.game.inside = true;
+                            game.game.active_interior = p;
+                        }
                         if(game.user.mouse_down) send_alert(0);
                     }
                 }
