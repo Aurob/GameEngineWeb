@@ -186,7 +186,7 @@ void mainloop(void *arg)
         // small rectangle for the user position
         for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
             for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-                tiletexr.x = (game.width/2) - ((i * game.game.chunk_size)/2); tiletexr.y = (game.height/2) - (j * game.game.chunk_size);
+                tiletexr.x = (game.game.width/2) - ((i * game.game.chunk_size)/2); tiletexr.y = (game.game.height/2) - (j * game.game.chunk_size);
                 tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
                 steptexr.x = 0; steptexr.y = 1152;
                 steptexr.w = 32; steptexr.h = 32; 
