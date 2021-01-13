@@ -752,9 +752,10 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             
             //sign
-            int sign_c = (p.roof_index % 7);
-            int sign_r = (p.roof_index % 2);
-            steptexr.x = 0 + (32 * sign_i);
+            srand(hasher(p.ID));
+            int sign_c = (rand() % 7);
+            int sign_r = (rand() % 2);
+            steptexr.x = 0 + (32 * sign_c);
             steptexr.y = 2624 + (32 * sign_r);
             steptexr.w = 32; steptexr.h = 32;
             temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
