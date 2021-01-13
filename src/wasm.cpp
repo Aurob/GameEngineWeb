@@ -132,6 +132,7 @@ EM_JS(void, talk, (int type), {
             $("#close").on("click", function(e){
                 $("#overlay").html("");
             });
+            break
         default:
             break;
     }
