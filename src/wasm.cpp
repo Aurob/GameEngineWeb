@@ -200,14 +200,14 @@ void mainloop(void *arg)
         
         if(game.game.active_interior.items.size() > 0){
             tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
-            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size/2; 
+            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
             steptexr.x = 64; steptexr.y = 3808;
             steptexr.w = 32; steptexr.h = 20; 
             SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
         }
 
-        if(game.game.active_interior.user.x < game.user.mouse["x"] && game.user.mouse["x"] < game.game.active_interior.user.x + game.game.chunk_size){
-            if(game.game.active_interior.user.y < game.user.mouse["y"] && game.user.mouse["y"] < game.game.active_interior.user.y + game.game.chunk_size){
+        if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < game.game.chunk_size * 2.5 + game.game.chunk_size){
+            if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < game.game.chunk_size * 2.5 + game.game.chunk_size*.625){
                 // small rectangle for the user position
                 
                 send_alert(3);
