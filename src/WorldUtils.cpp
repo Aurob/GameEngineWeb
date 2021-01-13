@@ -10,6 +10,8 @@ WorldUtils::WorldUtils(){
     fish_noise.SetFrequency(.004);
     fish_noise.SetFractalOctaves(12);
     fish_noise.SetFractalLacunarity(0.0);
+
+    rock_noise.setSeed(time(NULL));
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
