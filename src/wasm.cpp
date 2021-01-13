@@ -128,10 +128,6 @@ EM_JS(void, talk, (int type), {
             alert("The door opened...");
             break;
         
-        case 5:
-            
-            break
-
         default:
             break;
     }
