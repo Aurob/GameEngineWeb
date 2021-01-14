@@ -14,7 +14,3 @@ then
   -s ASSERTIONS=1
   echo "compile concluded at:" $(date)
 fi
-
-mv wasm.js wasm.data wasm.wasm ../
-mv ../index.html ../index_building.html
-mv ../index_temp.html ../index.html
