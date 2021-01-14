@@ -815,20 +815,14 @@ void mainloop(void *arg)
                                     if(room == 2) send_alert(5);
                                     else {
                                         if(!game.game.inside) {
-                                            if(room == 1){
-                                                send_alert(4);
-                                                p.type = "book";
-                                            }
-                                            if(room == 3){
-                                                send_alert(6);
-                                                p.type = "shrek";
-                                            }
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
                                             p.user.y = game.game.chunk_size*6;
                                             game.game.active_interior = p;
                                             game.game.chunk_size = game.game.chunk_sizes[2];
 
+                                            if(room == 1) send_alert(4);
+                                            if(room == 3) send_alert(6);
                                         }
                                     }
                                 }
