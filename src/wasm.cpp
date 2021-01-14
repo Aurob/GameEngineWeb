@@ -835,7 +835,7 @@ void mainloop(void *arg)
                                                 p.type = "shrek"; 
                                                 send_alert(6);
                                             }
-                                            p.last = 0;
+                                            p.start = 0;
                                             p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
