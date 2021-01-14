@@ -249,7 +249,7 @@ void mainloop(void *arg)
                 steptexr.w = 304; steptexr.h = 282; 
                 SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][0].tex, &steptexr, &tiletexr);
             }
-            // small rectangle for the user position
+            //
 
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
             temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;
