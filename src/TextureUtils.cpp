@@ -4,6 +4,33 @@
 //TODO
 //set file paths and types in a separate file
 //read from that file to load textures
+std::vector<std::string> shrek_files {
+    "Resources/shrek/0.png",
+    "Resources/shrek/1.png", "Resources/shrek/2.png", "Resources/shrek/3.png", "Resources/shrek/4.png", "Resources/shrek/5.png", 
+    "Resources/shrek/6.png", "Resources/shrek/7.png", "Resources/shrek/8.png", "Resources/shrek/9.png", "Resources/shrek/10.png", "Resources/shrek/11.png", 
+    "Resources/shrek/12.png", "Resources/shrek/13.png", "Resources/shrek/14.png", "Resources/shrek/15.png", "Resources/shrek/16.png", "Resources/shrek/17.png", 
+    "Resources/shrek/18.png", "Resources/shrek/19.png", "Resources/shrek/20.png", "Resources/shrek/21.png", "Resources/shrek/22.png", "Resources/shrek/23.png", 
+    "Resources/shrek/24.png", "Resources/shrek/25.png", "Resources/shrek/26.png", "Resources/shrek/27.png", "Resources/shrek/28.png", "Resources/shrek/29.png", 
+    "Resources/shrek/30.png", "Resources/shrek/31.png", "Resources/shrek/32.png", "Resources/shrek/33.png", "Resources/shrek/34.png", "Resources/shrek/35.png", 
+    "Resources/shrek/36.png", "Resources/shrek/37.png", "Resources/shrek/38.png", "Resources/shrek/39.png", "Resources/shrek/40.png", "Resources/shrek/41.png", 
+    "Resources/shrek/42.png", "Resources/shrek/43.png", "Resources/shrek/44.png", "Resources/shrek/45.png", "Resources/shrek/46.png", "Resources/shrek/47.png", 
+    "Resources/shrek/48.png", "Resources/shrek/49.png", "Resources/shrek/50.png", "Resources/shrek/51.png", "Resources/shrek/52.png", "Resources/shrek/53.png", 
+    "Resources/shrek/54.png", "Resources/shrek/55.png", "Resources/shrek/56.png", "Resources/shrek/57.png", "Resources/shrek/58.png", "Resources/shrek/59.png", 
+    "Resources/shrek/60.png", "Resources/shrek/61.png", "Resources/shrek/62.png", "Resources/shrek/63.png", "Resources/shrek/64.png", "Resources/shrek/65.png", 
+    "Resources/shrek/66.png", "Resources/shrek/67.png", "Resources/shrek/68.png", "Resources/shrek/69.png", "Resources/shrek/70.png", "Resources/shrek/71.png", 
+    "Resources/shrek/72.png", "Resources/shrek/73.png", "Resources/shrek/74.png", "Resources/shrek/75.png", "Resources/shrek/76.png", "Resources/shrek/77.png", 
+    "Resources/shrek/78.png", "Resources/shrek/79.png", "Resources/shrek/80.png", "Resources/shrek/81.png", "Resources/shrek/82.png", "Resources/shrek/83.png", 
+    "Resources/shrek/84.png", "Resources/shrek/85.png", "Resources/shrek/86.png", "Resources/shrek/87.png", "Resources/shrek/88.png", "Resources/shrek/89.png", 
+    "Resources/shrek/90.png", "Resources/shrek/91.png", "Resources/shrek/92.png", "Resources/shrek/93.png", "Resources/shrek/94.png", "Resources/shrek/95.png", 
+    "Resources/shrek/96.png", "Resources/shrek/97.png", "Resources/shrek/98.png", "Resources/shrek/99.png", "Resources/shrek/100.png", "Resources/shrek/101.png", 
+    "Resources/shrek/102.png", "Resources/shrek/103.png", "Resources/shrek/104.png", "Resources/shrek/105.png", "Resources/shrek/106.png", "Resources/shrek/107.png", 
+    "Resources/shrek/108.png", "Resources/shrek/109.png", "Resources/shrek/110.png", "Resources/shrek/111.png", "Resources/shrek/112.png", "Resources/shrek/113.png", 
+    "Resources/shrek/114.png", "Resources/shrek/115.png", "Resources/shrek/116.png", "Resources/shrek/117.png", "Resources/shrek/118.png", "Resources/shrek/119.png", 
+    "Resources/shrek/120.png", "Resources/shrek/121.png", "Resources/shrek/122.png", "Resources/shrek/123.png", "Resources/shrek/124.png", "Resources/shrek/125.png", 
+    "Resources/shrek/126.png", "Resources/shrek/127.png", "Resources/shrek/128.png", "Resources/shrek/129.png", "Resources/shrek/130.png", "Resources/shrek/131.png", 
+    "Resources/shrek/132.png", "Resources/shrek/133.png", "Resources/shrek/134.png", "Resources/shrek/135.png", "Resources/shrek/136.png", "Resources/shrek/137.png",
+    "Resources/shrek/138.png"
+}
 
 std::vector<std::string> image_files{
     "Resources/items/battery.png",
@@ -115,8 +142,10 @@ std::vector<std::string> structure_files {
 
 std::unordered_map<std::string, std::vector<std::string>> texture_types{
     {"characters", char_files}, {"tiles", tile_files},
-    {"popups", popup_files}, {"structures", structure_files}
+    {"popups", popup_files}, {"structures", structure_files},
+    {"shrek", shrek_files}
 };
+
 //,{"items", image_files} {"animals", animal_files}, 
 bool TextureUtils::loadTextures(){
     if(texturesLoaded) return true;

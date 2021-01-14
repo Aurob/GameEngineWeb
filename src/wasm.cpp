@@ -132,6 +132,11 @@ EM_JS(void, talk, (int type), {
             document.getElementById("overlay").innerHTML = '<iframe width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>';
             setTimeout(function(){document.getElementById("overlay").innerHTML = ''},60000);
             break;
+        
+        case 6:
+            alert("You feel a strong urge to enter...");
+            break;
+
         default:
             break;
     }
@@ -203,7 +208,7 @@ void mainloop(void *arg)
             game.game.inside = false;
         }
         else {
-            // small rectangle for the user position
+            
             for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
                 for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
                     tiletexr.x = (i * game.game.chunk_size); tiletexr.y = (j * game.game.chunk_size);
@@ -213,25 +218,39 @@ void mainloop(void *arg)
                     SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
                 }
             }
-            
-            if(game.game.active_interior.items.size() > 0){
-                tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
-                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
-                steptexr.x = 64; steptexr.y = 3808;
-                steptexr.w = 32; steptexr.h = 20; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
-            }
+            if(game.game.active_interior.type == "book"){
+                if(game.game.active_interior.items.size() > 0){
+                    tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
+                    tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
+                    steptexr.x = 64; steptexr.y = 3808;
+                    steptexr.w = 32; steptexr.h = 20; 
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+                }
 
-            if(game.user.mouse_down){
-                if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < (game.game.chunk_size * 2.5) + game.game.chunk_size){
-                    if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < (game.game.chunk_size * 2.5) + game.game.chunk_size*.625){
-                        // small rectangle for the user position
-                        
-                        send_alert(3);
+                if(game.user.mouse_down){
+                    if(game.game.chunk_size * 2.5 < game.user.mouse["x"] && game.user.mouse["x"] < (game.game.chunk_size * 2.5) + game.game.chunk_size){
+                        if(game.game.chunk_size * 2.5 < game.user.mouse["y"] && game.user.mouse["y"] < (game.game.chunk_size * 2.5) + game.game.chunk_size*.625){
+                            // small rectangle for the user position
+                            
+                            tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
+                            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
+                            steptexr.x = 64; steptexr.y = 3808;
+                            steptexr.w = 32; steptexr.h = 20; 
+                            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+                            send_alert(3);
+                        }
                     }
                 }
             }
-            
+            else if(game.game.active_interior.type == "shrek"){
+                tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
+                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
+                steptexr.x = 0; steptexr.y = 0;
+                steptexr.w = 304; steptexr.h = 282; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][game.game.time_stepy%138].tex, &steptexr, &tiletexr);
+            }
+            // small rectangle for the user position
+
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
             temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;
             temp_rect.w = game.game.chunk_size/5;
@@ -780,6 +799,10 @@ void mainloop(void *arg)
                 unlocked = true;
                 room = 2;
             }
+            if(sign_c == 1 && sign_r == 1){
+                unlocked = true;
+                room = 3;
+            }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
                 if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){                    
                     //Door position
@@ -792,6 +815,15 @@ void mainloop(void *arg)
                                 if(!unlocked) send_alert(0);
                                 else {
                                     if(room == 2) send_alert(5);
+                                    else if(room == 3) {
+                                        send_alert(6);
+                                        game.game.inside = true;
+                                        p.user.x = game.game.chunk_size*3;
+                                        p.user.y = game.game.chunk_size*6;
+                                        game.game.active_interior = p;
+                                        game.game.chunk_size = game.game.chunk_sizes[2];
+                                        p.type = "shrek";
+                                    }
                                     else if(!game.game.inside) {
                                         send_alert(4);
                                         game.game.inside = true;
@@ -799,7 +831,7 @@ void mainloop(void *arg)
                                         p.user.y = game.game.chunk_size*6;
                                         game.game.active_interior = p;
                                         game.game.chunk_size = game.game.chunk_sizes[2];
-                                        
+                                        p.type = "book";
                                     }
                                 }
                             }

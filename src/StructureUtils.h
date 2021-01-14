@@ -58,7 +58,7 @@ struct Building {
     int roof[6][3];
     int front[6][3];  
     std::string ID;
-
+    std::string type;
     std::unordered_map<std::string, Entity> occupants;
     std::unordered_map<std::string, Position> items;
     Position user;
