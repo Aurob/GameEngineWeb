@@ -264,7 +264,6 @@ void mainloop(void *arg)
             SDL_SetRenderDrawColor(renderer, 100, 234, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
 
-            if(game.user.mouse_down) send_alert(3);
         }
 
     }
