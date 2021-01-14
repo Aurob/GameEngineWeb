@@ -136,6 +136,11 @@ EM_JS(void, talk, (int type), {
         
         case 6:
             alert("You feel a strong urge to enter...");
+            document.getElementById("overlay").innerHTML = '<audio><source src="horse.ogg" type="audio/ogg"><source src="ruski.mp3" type="audio/mpeg"></audio>';
+            break;
+        
+        case 7:
+            document.getElementById("overlay").innerHTML = "";
             break;
 
         default:
@@ -206,6 +211,7 @@ void mainloop(void *arg)
     if(game.game.inside) {
 
         if((game.game.active_interior.user.x > game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*6){
+            send_alert(7);
             game.game.inside = false;
         }
         else {
@@ -250,6 +256,7 @@ void mainloop(void *arg)
                 game.game.active_interior.step += .5;    
                 game.game.active_interior.step = fmod(game.game.active_interior.step, 138.f);    
             }
+
             //Draws user data
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
             temp_rect.y = game.game.active_interior.user.y - game.game.chunk_size/5;
