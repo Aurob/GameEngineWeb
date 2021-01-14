@@ -247,7 +247,7 @@ void mainloop(void *arg)
                 tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][game.game.time_stepy%138].tex, &steptexr, &tiletexr);
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][fmod(game.game.time_stepy,138.f)].tex, &steptexr, &tiletexr);
             }
             // small rectangle for the user position
 
