@@ -30,7 +30,7 @@ std::vector<std::string> shrek_files {
     "Resources/shrek/126.png", "Resources/shrek/127.png", "Resources/shrek/128.png", "Resources/shrek/129.png", "Resources/shrek/130.png", "Resources/shrek/131.png", 
     "Resources/shrek/132.png", "Resources/shrek/133.png", "Resources/shrek/134.png", "Resources/shrek/135.png", "Resources/shrek/136.png", "Resources/shrek/137.png",
     "Resources/shrek/138.png"
-}
+};
 
 std::vector<std::string> image_files{
     "Resources/items/battery.png",
