@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "compile commenced at:" $(date)
 
+mv ../index.html ../index_temp.html
+mv ../index_building.html ../index.html 
 if [ $1 = "wasm" ] 
 then
   emcc -std=c++1z $1.cpp StructureUtils.cpp FastNoise.cpp TextureUtils.cpp WorldUtils.cpp Game.cpp -s WASM=1 -s USE_SDL=2 -O3 -o $1.js \
