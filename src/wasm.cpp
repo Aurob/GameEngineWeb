@@ -818,6 +818,7 @@ void mainloop(void *arg)
                                             if(room == 1){
                                                 send_alert(4);
                                                 p.type = "book";
+                                            }
                                             if(room == 3){
                                                 send_alert(6);
                                                 p.type = "shrek";
