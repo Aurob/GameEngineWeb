@@ -254,7 +254,7 @@ void mainloop(void *arg)
 
                 SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step)].tex, &steptexr, &tiletexr);
                 game.game.active_interior.current = SDL_GetTicks();
-                if(game.game.active_interior.current > game.game.active_interior.start + 17e3){
+                if(game.game.active_interior.current > game.game.active_interior.start + 16000){
                     game.game.active_interior.step += 2;  
                 }
                 else game.game.active_interior.step += .5;    
