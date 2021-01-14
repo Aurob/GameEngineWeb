@@ -823,8 +823,14 @@ void mainloop(void *arg)
                                     if(room == 2) send_alert(5);
                                     else {
                                         if(!game.game.inside) {
-                                            if(room == 1) p.type = "book"; //send_alert(4);
-                                            if(room == 3) p.type = "shrek"; //send_alert(6);
+                                            if(room == 1) {
+                                                p.type = "book"; 
+                                                send_alert(4);
+                                            }
+                                            if(room == 3) {
+                                                p.type = "shrek"; 
+                                                send_alert(6);
+                                            }
                                             p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
