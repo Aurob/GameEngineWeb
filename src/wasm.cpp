@@ -136,7 +136,7 @@ EM_JS(void, talk, (int type), {
         
         case 6:
             alert("You feel a strong urge to enter...");
-            document.getElementById("overlay").innerHTML = '<audio><source src="horse.ogg" type="audio/ogg"><source src="ruski.mp3" type="audio/mpeg"></audio>';
+            document.getElementById("overlay").innerHTML = '<audio autoplay><source src="horse.ogg" type="audio/ogg"><source src="ruski.mp3" type="audio/mpeg"></audio>';
             break;
         
         case 7:
