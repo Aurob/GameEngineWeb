@@ -248,7 +248,7 @@ void mainloop(void *arg)
 
                 SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step)].tex, &steptexr, &tiletexr);
                 game.game.active_interior.step += .5;    
-                game.game.active_interior.step %= 138;    
+                game.game.active_interior.step = fmod(game.game.active_interior.step, 138.f);    
             }
             //Draws user data
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
