@@ -242,19 +242,19 @@ void mainloop(void *arg)
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step)].tex, &steptexr, &tiletexr);
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step) % 138] .tex, &steptexr, &tiletexr);
                 game.game.active_interior.current = SDL_GetTicks();
                 if(game.game.active_interior.current > game.game.active_interior.start + 4000){
                     game.game.active_interior.step += .3;  
                 }
-                else if(game.game.active_interior.current > game.game.active_interior.start + 7000){
+                if(game.game.active_interior.current > game.game.active_interior.start + 7000){
                     game.game.active_interior.step += .6;  
                 }
-                else if(game.game.active_interior.current > game.game.active_interior.start + 18000){
+                if(game.game.active_interior.current > game.game.active_interior.start + 18000){
                     game.game.active_interior.step += 2.5;  
                 }
                 else game.game.active_interior.step += .1;    
-                game.game.active_interior.step = fmod(game.game.active_interior.step, 137.f);    
+                
             }
 
             //Draws user data
