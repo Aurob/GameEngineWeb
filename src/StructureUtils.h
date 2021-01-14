@@ -63,6 +63,7 @@ struct Building {
     std::unordered_map<std::string, Position> items;
     Position user;
     float step;
+    unsigned start, current;
 
 };
 

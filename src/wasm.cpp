@@ -136,7 +136,7 @@ EM_JS(void, talk, (int type), {
         
         case 6:
             alert("You feel a strong urge to enter...");
-            document.getElementById("overlay").innerHTML = '<audio autoplay><source src="horse.ogg" type="audio/ogg"><source src="ruski.mp3" type="audio/mpeg"></audio>';
+            document.getElementById("overlay").innerHTML = '<audio autoplay><source src="Resources/ruski.mp3" type="audio/mpeg"></audio>';
             break;
         
         case 7:
@@ -253,7 +253,11 @@ void mainloop(void *arg)
                 steptexr.w = 304; steptexr.h = 282; 
 
                 SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step)].tex, &steptexr, &tiletexr);
-                game.game.active_interior.step += .5;    
+                game.game.active_interior.current = SDL_GetTicks();
+                if(game.game.active_interior.current > game.game.active_interior.last + 17e3){
+                    game.game.active_interior.step += 2;  
+                }
+                else game.game.active_interior.step += .5;    
                 game.game.active_interior.step = fmod(game.game.active_interior.step, 138.f);    
             }
 
@@ -831,6 +835,7 @@ void mainloop(void *arg)
                                                 p.type = "shrek"; 
                                                 send_alert(6);
                                             }
+                                            p.last = 0;
                                             p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
