@@ -246,7 +246,7 @@ void mainloop(void *arg)
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(fmod(game.game.time_stepy*1000, 138))].tex, &steptexr, &tiletexr);
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(fmod(game.game.time_stepy*10, 138))].tex, &steptexr, &tiletexr);
                     
             }
             //Draws user data
