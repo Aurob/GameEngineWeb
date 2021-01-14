@@ -780,6 +780,10 @@ void mainloop(void *arg)
                 unlocked = true;
                 room = 2;
             }
+            if(sign_c == 1 && sign_r == 1){
+                unlocked = true;
+                room = 3;
+            }
             if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
                 if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){                    
                     //Door position
