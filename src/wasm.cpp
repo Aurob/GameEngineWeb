@@ -246,8 +246,9 @@ void mainloop(void *arg)
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(fmod(1 + (game.game.time_stepy*100), 138))].tex, &steptexr, &tiletexr);
-                    
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step)].tex, &steptexr, &tiletexr);
+                game.game.active_interior.step += .5;    
+                game.game.active_interior.step %= 138;    
             }
             //Draws user data
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
@@ -817,6 +818,7 @@ void mainloop(void *arg)
                                         if(!game.game.inside) {
                                             if(room == 1) p.type = "book"; //send_alert(4);
                                             if(room == 3) p.type = "shrek"; //send_alert(6);
+                                            p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
                                             p.user.y = game.game.chunk_size*6;

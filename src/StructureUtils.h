@@ -62,6 +62,7 @@ struct Building {
     std::unordered_map<std::string, Entity> occupants;
     std::unordered_map<std::string, Position> items;
     Position user;
+    float step;
 
 };
 
