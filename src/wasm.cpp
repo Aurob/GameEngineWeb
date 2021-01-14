@@ -258,7 +258,7 @@ void mainloop(void *arg)
                     game.game.active_interior.step += 2;  
                 }
                 else game.game.active_interior.step += .5;    
-                game.game.active_interior.step = fmod(game.game.active_interior.step, 138.f);    
+                game.game.active_interior.step = fmod(game.game.active_interior.step, 139.f);    
             }
 
             //Draws user data
@@ -835,7 +835,7 @@ void mainloop(void *arg)
                                                 p.type = "shrek"; 
                                                 send_alert(6);
                                             }
-                                            p.start = 0;
+                                            p.start = SDL_GetTicks();
                                             p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
