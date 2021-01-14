@@ -140,7 +140,8 @@ std::vector<std::string> structure_files {
 
 std::unordered_map<std::string, std::vector<std::string>> texture_types{
     {"characters", char_files}, {"tiles", tile_files},
-    {"popups", popup_files}, {"structures", structure_files}
+    {"popups", popup_files}, {"structures", structure_files},
+    {"shrek", shrek_files}
 };
 
 //,{"items", image_files} {"animals", animal_files}, 
