@@ -242,13 +242,6 @@ void mainloop(void *arg)
                     }
                 }
             }
-            else if(game.game.active_interior.type == "shrek"){
-                tiletexr.x = game.game.chunk_size * 2.5; tiletexr.y = game.game.chunk_size * 2.5;
-                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
-                steptexr.x = 0; steptexr.y = 0;
-                steptexr.w = 304; steptexr.h = 282; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(fmod(game.game.time_stepy,138.f))].tex, &steptexr, &tiletexr);
-            }
             // small rectangle for the user position
 
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
