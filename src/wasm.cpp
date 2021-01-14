@@ -241,13 +241,12 @@ void mainloop(void *arg)
                 }
             }
             else if(game.game.active_interior.type == "shrek"){
-                for(int i = 0; i < 139; i++){
-                    tiletexr.x = (3 * game.game.chunk_size); tiletexr.y = (2 * game.game.chunk_size);
-                    tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
-                    steptexr.x = 0; steptexr.y = 1152;
-                    steptexr.w = 304; steptexr.h = 282; 
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][0].tex, &steptexr, &tiletexr);
-                }
+                tiletexr.x = (3 * game.game.chunk_size); tiletexr.y = (2 * game.game.chunk_size);
+                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+                steptexr.x = 0; steptexr.y = 1152;
+                steptexr.w = 304; steptexr.h = 282; 
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][0].tex, &steptexr, &tiletexr);
+                    
             }
             //Draws user data
             temp_rect.x = game.game.active_interior.user.x - game.game.chunk_size/5;
