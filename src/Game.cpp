@@ -283,15 +283,15 @@ void Game::update_pos(){
                     tile.texture.x = 32; tile.texture.y = 64;
                     tile.texture.w = 32; tile.texture.h = 32;
                     if(grass_edges.right_tile == 5){
-                        data.ignored_tiles.push_back(i+1, j);
+                        data.ignored_tiles.push_back(std::vector<int>(i+1, j));
                         tile.texture.w += 32;
                     }
                     if(grass_edges.down_right_tile == 5){
-                        data.ignored_tiles.push_back(i+1, j+1);
+                        data.ignored_tiles.push_back(std::vector<int>(i+1, j+1));
                         tile.texture.h += 32;
                     }
                     if(grass_edges.down_left_tile == 5){
-                        data.ignored_tiles.push_back(i, j+1);
+                        data.ignored_tiles.push_back(std::vector<int>(i, j+1));
                         tile.texture.h += 32;
                     }
                      
