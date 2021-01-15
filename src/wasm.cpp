@@ -283,8 +283,11 @@ void mainloop(void *arg)
     }
     else {
         /*Tile renders*/
+        SDL_Rect temp_tex, temp_screen;
         for(auto tile : game.data.tiles){
-            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &tile.texture, &tile.screen);
+            temp_tex = tile.texture;
+            temp_screen = tile.screen;
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &temp_tex, &temp_screen);
         }
 
         for(auto fish : game.data.fishs){
