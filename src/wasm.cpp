@@ -457,7 +457,7 @@ void mainloop(void *arg)
             }
         }
 
-        for(auto fish : fishs){
+        for(auto fish : game.data.fishs){
             tiletexr.x = fish.x + (game.data.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.data.chunk_size/1.5)/4;
             tiletexr.w = game.data.chunk_size/1.5; tiletexr.h = game.data.chunk_size/1.5; 
             steptexr.x = 96 + ((static_cast<int>(game.data.time_stepx/100)) %3)*32; steptexr.y = 192;
@@ -583,12 +583,12 @@ void mainloop(void *arg)
         //TODO
         //Each of the secondary tiles could be combined into a single vector
 
-        std::sort(trees.begin(),trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
+        std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
         std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
 
         /*Secondary Tile renders*/
-        for(auto tree : trees){
+        for(auto tree : game.data.trees){
             srand(floor(tree.noise));
             chartexr.x = 0; 
             chartexr.y = 65 * (rand() % 8);
@@ -612,7 +612,7 @@ void mainloop(void *arg)
             }
         }
 
-        for(auto rock : rocks){
+        for(auto rock : game.data.rocks){
             chartexr.x = 32; chartexr.y = 256;
             chartexr.w = 32; chartexr.h = 32;
             steptexr.x = rock.x; steptexr.y = rock.y;
