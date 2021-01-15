@@ -46,14 +46,14 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
 
         case SDL_MOUSEWHEEL:
             //Temporarily disabling zooming while inside
-            if(!game.game.inside){
+            //if(!game.game.inside){
                 if(event->wheel.y < 0 && game.game.current_chunk_size > 0) game.game.current_chunk_size--;
                 if(event->wheel.y > 0 && game.game.current_chunk_size < 5) game.game.current_chunk_size++;
                 
                 game.game.chunk_size = game.game.chunk_sizes[game.game.current_chunk_size];
 
                 game.game.size = floor(static_cast<float>(game.game.chunk_size) / 2);
-            }
+            //}
 
             break;
 
