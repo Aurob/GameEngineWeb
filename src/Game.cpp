@@ -255,7 +255,7 @@ void Game::update_pos(){
 
             SubTexture tile;
             tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
-            tile.texture.w = data.chunk_size; tile.texture.h = data.chunk_size;     
+            tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;     
 
             if(biometex == 1){ //sand
                     tile.resource_index = 0;
