@@ -1,5 +1,5 @@
 #define alphanum "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-#include "Game.h"
+#include "data.h"
 
 //TODO
 //This really needs to be a singleton
@@ -15,7 +15,7 @@ Game::Game(){
         .time_stepx = 0, .time_stepy = 0
     };
 
-    game.WorldGen.rock_noise.SetSeed(time(NULL));
+    data.WorldGen.rock_noise.SetSeed(time(NULL));
     User user {
         .globalx = 1, .globaly = 1,
         .mouse{{"x",0},{"y",0}}, .chunk{0, 0},
@@ -27,13 +27,13 @@ Game::Game(){
 Position Game::content(Position& chunk, int bg_render = 0){
 
     //Unnecessary re-initialization 
-    game.dx = (game.xoffset < 0) ? game.chunk_size + game.xoffset : game.xoffset;
-    game.dy = (game.yoffset < 0) ? game.chunk_size + game.yoffset : game.yoffset;
+    data.dx = (data.xoffset < 0) ? data.chunk_size + data.xoffset : data.xoffset;
+    data.dy = (data.yoffset < 0) ? data.chunk_size + data.yoffset : data.yoffset;
 
     if(user.chunks[0][0] - bg_render <= chunk.x && user.chunks[1][0] + bg_render >= chunk.x && user.chunks[0][1] - bg_render <= chunk.y && user.chunks[2][1] + bg_render >= chunk.y){
         return Position{
-            -game.dx + (chunk.x - user.chunks[0][0])*static_cast<int>(game.chunk_size),
-            -game.dy + (chunk.y - user.chunks[0][1])*static_cast<int>(game.chunk_size),
+            -data.dx + (chunk.x - user.chunks[0][0])*static_cast<int>(data.chunk_size),
+            -data.dy + (chunk.y - user.chunks[0][1])*static_cast<int>(data.chunk_size),
             true
         };
     }
@@ -46,13 +46,13 @@ Position Game::getChunkFromCoord(float x, float y) {
     //Unnecessary re-initialization 
     float xchunk = 0;
     float ychunk = 0;
-    if (game.current_chunk_size <= game.default_chk-2 || game.current_chunk_size == game.default_chk+2 || game.current_chunk_size == game.default_chk) {
-        xchunk = floor((x) / static_cast<float>(game.chunk_sizes[game.default_chk]));
-        ychunk = floor((y) / static_cast<float>(game.chunk_sizes[game.default_chk]));
+    if (data.current_chunk_size <= data.default_chk-2 || data.current_chunk_size == data.default_chk+2 || data.current_chunk_size == data.default_chk) {
+        xchunk = floor((x) / static_cast<float>(data.chunk_sizes[data.default_chk]));
+        ychunk = floor((y) / static_cast<float>(data.chunk_sizes[data.default_chk]));
     }
-    else if(game.current_chunk_size != game.default_chk){
-        xchunk = floor(((x) / fmod(static_cast<float>(game.chunk_size), static_cast<float>(game.chunk_sizes[game.default_chk]))) / 2);
-        ychunk = floor(((y) / fmod(static_cast<float>(game.chunk_size), static_cast<float>(game.chunk_sizes[game.default_chk]))) / 2);
+    else if(data.current_chunk_size != data.default_chk){
+        xchunk = floor(((x) / fmod(static_cast<float>(data.chunk_size), static_cast<float>(data.chunk_sizes[data.default_chk]))) / 2);
+        ychunk = floor(((y) / fmod(static_cast<float>(data.chunk_size), static_cast<float>(data.chunk_sizes[data.default_chk]))) / 2);
     }
     
     return Position{ xchunk, ychunk, true };
@@ -61,7 +61,7 @@ Position Game::getChunkFromCoord(float x, float y) {
 
 //Batch updates game values
 void Game::update_pos(){
-    game.structures.clear();
+    data.structures.clear();
     //update global position
     //TODO check if the user moves onto a tile they shouldn't
     // i.e Trees, Strucutres, Water Tiles
@@ -71,42 +71,42 @@ void Game::update_pos(){
 
     float tempx = user.globalx, tempy = user.globaly;
     int temp_directionx = user.directionx, temp_directiony = user.directiony;
-    float temp_xoff = game.xoffset, temp_yoff = game.yoffset;
-    float temp_zoomx = game.zoom_modx, temp_zoomy = game.zoom_mody;
-    int temp_xchunk1 = game.xchunk1, temp_xchunk2 = game.xchunk2;
-    int temp_ychunk1 = game.ychunk1, temp_ychunk2 = game.ychunk2;
+    float temp_xoff = data.xoffset, temp_yoff = data.yoffset;
+    float temp_zoomx = data.zoom_modx, temp_zoomy = data.zoom_mody;
+    int temp_xchunk1 = data.xchunk1, temp_xchunk2 = data.xchunk2;
+    int temp_ychunk1 = data.ychunk1, temp_ychunk2 = data.ychunk2;
 
 
     if(user.keyState[1]){
-        user.globalx+=game.speed * ((user.keyState[5]) ? 15 : 1); //D
+        user.globalx+=data.speed * ((user.keyState[5]) ? 15 : 1); //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        user.globalx-=game.speed * ((user.keyState[5]) ? 15 : 1); //A
+        user.globalx-=data.speed * ((user.keyState[5]) ? 15 : 1); //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        user.globaly+=game.speed * ((user.keyState[5]) ? 15 : 1); //S
+        user.globaly+=data.speed * ((user.keyState[5]) ? 15 : 1); //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        user.globaly-=game.speed * ((user.keyState[5]) ? 15 : 1); //W
+        user.globaly-=data.speed * ((user.keyState[5]) ? 15 : 1); //W
         user.directiony = -1;
     } 
 
     //update camera offsets
-    if(game.current_chunk_size != game.default_chk){
-        game.xoffset = (fmod(user.globalx, static_cast<float>(game.chunk_sizes[game.default_chk])) / static_cast<float>(game.chunk_sizes[game.default_chk])) * static_cast<float>(game.chunk_size);
-        game.yoffset = (fmod(user.globaly, static_cast<float>(game.chunk_sizes[game.default_chk])) / static_cast<float>(game.chunk_sizes[game.default_chk])) * static_cast<float>(game.chunk_size);
+    if(data.current_chunk_size != data.default_chk){
+        data.xoffset = (fmod(user.globalx, static_cast<float>(data.chunk_sizes[data.default_chk])) / static_cast<float>(data.chunk_sizes[data.default_chk])) * static_cast<float>(data.chunk_size);
+        data.yoffset = (fmod(user.globaly, static_cast<float>(data.chunk_sizes[data.default_chk])) / static_cast<float>(data.chunk_sizes[data.default_chk])) * static_cast<float>(data.chunk_size);
 
-        game.zoom_modx = floor(user.globalx / static_cast<float>(game.chunk_sizes[game.default_chk])) - floor(user.globalx / static_cast<float>(game.chunk_size));
-        game.zoom_mody = floor(user.globaly / static_cast<float>(game.chunk_sizes[game.default_chk])) - floor(user.globaly / static_cast<float>(game.chunk_size));
+        data.zoom_modx = floor(user.globalx / static_cast<float>(data.chunk_sizes[data.default_chk])) - floor(user.globalx / static_cast<float>(data.chunk_size));
+        data.zoom_mody = floor(user.globaly / static_cast<float>(data.chunk_sizes[data.default_chk])) - floor(user.globaly / static_cast<float>(data.chunk_size));
     }
     else{
-        game.xoffset = floor(fmod(user.globalx, static_cast<float>(game.chunk_size)));
-        game.yoffset = floor(fmod(user.globaly, static_cast<float>(game.chunk_size)));
-        game.zoom_modx = 0;
-        game.zoom_mody = 0;
+        data.xoffset = floor(fmod(user.globalx, static_cast<float>(data.chunk_size)));
+        data.yoffset = floor(fmod(user.globaly, static_cast<float>(data.chunk_size)));
+        data.zoom_modx = 0;
+        data.zoom_mody = 0;
     }
 
     //Set the camera bounds
@@ -114,18 +114,18 @@ void Game::update_pos(){
     //TODO
     //Can probably be simplified
     //Unnecessary re-initialization 
-    game.xchunk1 = floor((user.globalx - (static_cast<float>(game.width)/2)) / static_cast<float>(game.chunk_size)) + game.zoom_modx;
-    game.xchunk2 = game.xchunk1 + (static_cast<float>(game.width) / static_cast<float>(game.chunk_size));
-    game.ychunk1 = floor((user.globaly - (static_cast<float>(game.height)/2)) / static_cast<float>(game.chunk_size)) + game.zoom_mody;
-    game.ychunk2 = game.ychunk1 + (static_cast<float>(game.height) / static_cast<float>(game.chunk_size));
+    data.xchunk1 = floor((user.globalx - (static_cast<float>(data.width)/2)) / static_cast<float>(data.chunk_size)) + data.zoom_modx;
+    data.xchunk2 = data.xchunk1 + (static_cast<float>(data.width) / static_cast<float>(data.chunk_size));
+    data.ychunk1 = floor((user.globaly - (static_cast<float>(data.height)/2)) / static_cast<float>(data.chunk_size)) + data.zoom_mody;
+    data.ychunk2 = data.ychunk1 + (static_cast<float>(data.height) / static_cast<float>(data.chunk_size));
 
-    user.chunks[0][0] = game.xchunk1; user.chunks[0][1] = game.ychunk1;
+    user.chunks[0][0] = data.xchunk1; user.chunks[0][1] = data.ychunk1;
 
-    user.chunks[1][0] = game.xchunk2; user.chunks[1][1] = game.ychunk1;
+    user.chunks[1][0] = data.xchunk2; user.chunks[1][1] = data.ychunk1;
 
-    user.chunks[2][0] = game.xchunk1; user.chunks[2][1] = game.ychunk2;
+    user.chunks[2][0] = data.xchunk1; user.chunks[2][1] = data.ychunk2;
 
-    user.chunks[3][0] = game.xchunk2; user.chunks[3][1] = game.ychunk2;
+    user.chunks[3][0] = data.xchunk2; user.chunks[3][1] = data.ychunk2;
 
     //Set the user's chunk
     //Simply calculated by finding the center most chunk, not from the user's global position
@@ -134,23 +134,23 @@ void Game::update_pos(){
     user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
     user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
 
-    int tile = game.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
+    int tile = data.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
     if(!user.keyState[5] && (tile == 0 || ((tile == 4 || tile == 5) 
-        && game.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))){
+        && data.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))){
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
-        game.xoffset = temp_xoff; game.yoffset = temp_yoff;
-        game.zoom_modx = temp_zoomx; game.zoom_mody = temp_zoomy;
-        game.xchunk1 = temp_xchunk1; game.xchunk2 = temp_xchunk2;
-        game.ychunk1 = temp_ychunk1; game.ychunk2 = temp_ychunk2;
+        data.xoffset = temp_xoff; data.yoffset = temp_yoff;
+        data.zoom_modx = temp_zoomx; data.zoom_mody = temp_zoomy;
+        data.xchunk1 = temp_xchunk1; data.xchunk2 = temp_xchunk2;
+        data.ychunk1 = temp_ychunk1; data.ychunk2 = temp_ychunk2;
 
-        user.chunks[0][0] = game.xchunk1; user.chunks[0][1] = game.ychunk1;
+        user.chunks[0][0] = data.xchunk1; user.chunks[0][1] = data.ychunk1;
 
-        user.chunks[1][0] = game.xchunk2; user.chunks[1][1] = game.ychunk1;
+        user.chunks[1][0] = data.xchunk2; user.chunks[1][1] = data.ychunk1;
 
-        user.chunks[2][0] = game.xchunk1; user.chunks[2][1] = game.ychunk2;
+        user.chunks[2][0] = data.xchunk1; user.chunks[2][1] = data.ychunk2;
 
-        user.chunks[3][0] = game.xchunk2; user.chunks[3][1] = game.ychunk2;
+        user.chunks[3][0] = data.xchunk2; user.chunks[3][1] = data.ychunk2;
 
         user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
         user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
@@ -158,28 +158,28 @@ void Game::update_pos(){
         return;
     }
 
-    game.uchunk = getChunkFromCoord(user.globalx, user.globaly);
+    data.uchunk = getChunkFromCoord(user.globalx, user.globaly);
     
     //Determines the cuurent mouse chunk
     //TODO
     //Does this really need to be 2 for loops?
     //Change mouse_chunk to a position, so it can be reference with .x and .y
-    //user.mouse_chunk[0] = ((ceil(user.mouse["x"]/game.chunk_size)+1) * game.chunk_size) - game.xoffset;
-    //user.mouse_chunk[1] = ((ceil(user.mouse["y"]/game.chunk_size)+1) * game.chunk_size) - game.yoffset;
+    //user.mouse_chunk[0] = ((ceil(user.mouse["x"]/data.chunk_size)+1) * data.chunk_size) - data.xoffset;
+    //user.mouse_chunk[1] = ((ceil(user.mouse["y"]/data.chunk_size)+1) * data.chunk_size) - data.yoffset;
     
-    for(int i = 0; i < floor(static_cast<float>(game.width)/static_cast<float>(game.chunk_size)) + 1; i++){
+    for(int i = 0; i < floor(static_cast<float>(data.width)/static_cast<float>(data.chunk_size)) + 1; i++){
         //Unnecessary re-initialization 
-        game.xpos = i*game.chunk_size - game.xoffset;
+        data.xpos = i*data.chunk_size - data.xoffset;
         
-        if(user.mouse["x"] > game.xpos){
-            user.mouse_chunk[0] = game.xpos;
+        if(user.mouse["x"] > data.xpos){
+            user.mouse_chunk[0] = data.xpos;
         }
     }
-    for(int i = 0; i < floor(static_cast<float>(game.height)/static_cast<float>(game.chunk_size)) + 1; i++){    
+    for(int i = 0; i < floor(static_cast<float>(data.height)/static_cast<float>(data.chunk_size)) + 1; i++){    
         //Unnecessary re-initialization 
-        game.ypos = i*game.chunk_size - game.yoffset;
-        if(user.mouse["y"] > game.ypos){
-            user.mouse_chunk[1] = game.ypos;
+        data.ypos = i*data.chunk_size - data.yoffset;
+        if(user.mouse["y"] > data.ypos){
+            user.mouse_chunk[1] = data.ypos;
         }
     }
 
@@ -187,30 +187,30 @@ void Game::update_pos(){
     //Check for generated content on mouse down
     if(user.mouse_down){
         //Unnecessary re-initialization 
-        game.i = user.chunks[0][0] + static_cast<int>(user.mouse_chunk[0]/game.chunk_size);
-        game.j = user.chunks[0][1] + static_cast<int>(user.mouse_chunk[1]/game.chunk_size);
-        float tile_check = game.WorldGen.terrainGeneration(game.i, game.j);
+        data.i = user.chunks[0][0] + static_cast<int>(user.mouse_chunk[0]/data.chunk_size);
+        data.j = user.chunks[0][1] + static_cast<int>(user.mouse_chunk[1]/data.chunk_size);
+        float tile_check = data.WorldGen.terrainGeneration(data.i, data.j);
         if(tile_check == 0){
-            if(game.WorldGen.fishGeneration(game.i, game.j, game.time_stepx, game.time_stepy)){
+            if(data.WorldGen.fishGeneration(data.i, data.j, data.time_stepx, data.time_stepy)){
                 user.items["fish"] += 1;
                 user.mouse_down = false;
             }
         }
         else if(tile_check == 3 || tile_check == 5){
-            if(game.WorldGen.treeGeneration(game.i+1, game.j+1)){
-                game.WorldGen.ignored_tiles.push_back(std::vector<int>{game.i+1, game.j+1});
+            if(data.WorldGen.treeGeneration(data.i+1, data.j+1)){
+                data.WorldGen.ignored_tiles.push_back(std::vector<int>{data.i+1, data.j+1});
                 user.items["wood"] += 1;
                 user.mouse_down = false;
             }
         }
         else if(tile_check == 2 || tile_check == 6){
-            if(game.WorldGen.rockGeneration(game.i-1, game.j-1)){
+            if(data.WorldGen.rockGeneration(data.i-1, data.j-1)){
                 user.items["stone"] += 1;
                 user.mouse_down = false;
             }
         }
 
-        if(game.WorldGen.doorGeneration(game.i+1, game.j+1)){
+        if(data.WorldGen.doorGeneration(data.i+1, data.j+1)){
             printf("Clicking structure");
         }
     }
@@ -230,44 +230,44 @@ void Game::update_inside(){
     user.chunks[3][0] = 6; user.chunks[3][1] = 6;
 
     if(user.keyState[1]){
-        game.active_interior.user.x += game.speed/5; //D
+        data.active_interior.user.x += data.speed/5; //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        game.active_interior.user.x -= game.speed/5; //A
+        data.active_interior.user.x -= data.speed/5; //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        game.active_interior.user.y += game.speed/5; //S
+        data.active_interior.user.y += data.speed/5; //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        game.active_interior.user.y -= game.speed/5; //W
+        data.active_interior.user.y -= data.speed/5; //W
         user.directiony = -1;
     } 
 
-    Position ichunk = getChunkFromCoord(game.active_interior.user.x, game.active_interior.user.y);
+    Position ichunk = getChunkFromCoord(data.active_interior.user.x, data.active_interior.user.y);
     
     //Determines the cuurent mouse chunk
     //TODO
     //Does this really need to be 2 for loops?
     //Change mouse_chunk to a position, so it can be reference with .x and .y
-    //user.mouse_chunk[0] = ((ceil(user.mouse["x"]/game.chunk_size)+1) * game.chunk_size) - game.xoffset;
-    //user.mouse_chunk[1] = ((ceil(user.mouse["y"]/game.chunk_size)+1) * game.chunk_size) - game.yoffset;
+    //user.mouse_chunk[0] = ((ceil(user.mouse["x"]/data.chunk_size)+1) * data.chunk_size) - data.xoffset;
+    //user.mouse_chunk[1] = ((ceil(user.mouse["y"]/data.chunk_size)+1) * data.chunk_size) - data.yoffset;
     
     for(int i = 0; i < 6 + 1; i++){
         //Unnecessary re-initialization 
-        game.xpos = i*game.chunk_size;
+        data.xpos = i*data.chunk_size;
         
-        if(user.mouse["x"] > game.xpos){
-            user.mouse_chunk[0] = game.xpos;
+        if(user.mouse["x"] > data.xpos){
+            user.mouse_chunk[0] = data.xpos;
         }
     }
     for(int i = 0; i < 6 + 1; i++){    
         //Unnecessary re-initialization 
-        game.ypos = i*game.chunk_size;
-        if(user.mouse["y"] > game.ypos){
-            user.mouse_chunk[1] = game.ypos;
+        data.ypos = i*data.chunk_size;
+        if(user.mouse["y"] > data.ypos){
+            user.mouse_chunk[1] = data.ypos;
         }
     }
 
@@ -278,22 +278,22 @@ void Game::update_inside(){
 void Game::update_entities(){
 
     //Possible performance hit
-    std::sort(game.entities.begin(), game.entities.end(), zorder);
+    std::sort(data.entities.begin(), data.entities.end(), zorder);
     
     //Unnecessary re-initializations
     unsigned int index;
     float n;
     
     //Possible performance hit
-    game.visible_entities.clear();
+    data.visible_entities.clear();
     
-    for(Entity& entity : game.entities){
+    for(Entity& entity : data.entities){
 
 
         //Check if the entity is within n chunks of the user's visible range
         entity.local_position = content(entity.chunk, 5);
         if(entity.local_position.visible){
-            game.visible_entities.push_back(entity);
+            data.visible_entities.push_back(entity);
 
             entity.old_pos = entity.position;
 
@@ -301,10 +301,10 @@ void Game::update_entities(){
             entity.position.y += (entity.speed * entity.directiony);// + (n * 2);
             entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
 
-            n = (game.noise.GetPerlin((entity.chunk.x), (entity.chunk.y)) - -1) / (1 - -1);
-            n = (game.noise.GetPerlinFractal((entity.chunk.x)+pow(n,2), (entity.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+            n = (data.noise.GetPerlin((entity.chunk.x), (entity.chunk.y)) - -1) / (1 - -1);
+            n = (data.noise.GetPerlinFractal((entity.chunk.x)+pow(n,2), (entity.chunk.y)+pow(n,2)) - -1) / (1 - -1);
 
-            if(entity.ID == game.mouse_entity.ID && user.mouse_down){
+            if(entity.ID == data.mouse_entity.ID && user.mouse_down){
                 entity.speed = 0;
                 if(entity.chunk.x == user.chunk[0] && entity.chunk.x == user.chunk[1]){
                     entity.interacting = true;
@@ -324,8 +324,8 @@ void Game::update_entities(){
                 entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
             }
 
-            entity.chunkfx = abs((entity.chunk.x * game.chunk_sizes[3]) - (entity.position.x)) / game.chunk_sizes[3];
-            entity.chunkfy = abs((entity.chunk.y * game.chunk_sizes[3]) - (entity.position.y)) / game.chunk_sizes[3];
+            entity.chunkfx = abs((entity.chunk.x * data.chunk_sizes[3]) - (entity.position.x)) / data.chunk_sizes[3];
+            entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
 
             //set walk direction and update texture
             if(rand() % 1000 < 5){
