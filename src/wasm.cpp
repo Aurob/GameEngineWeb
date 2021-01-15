@@ -253,13 +253,13 @@ void mainloop(void *arg)
                 game.data.active_interior.current = SDL_GetTicks();
                 if(game.data.active_interior.current < game.data.active_interior.start + 105000){
                     if(game.data.active_interior.current > game.data.active_interior.start + 4000){
-                        game.data.active_interior.step += .3;  
+                        game.data.active_interior.step += .5;  
                     }
                     if(game.data.active_interior.current > game.data.active_interior.start + 17580){
-                        game.data.active_interior.step += 2.5;  
+                        game.data.active_interior.step += 2;  
                     }
                     if(game.data.active_interior.current > game.data.active_interior.start + 1000) game.data.active_interior.step += .1;    
-                    SDL_RenderCopy(renderer, game.data.Textures.Textures["shrek"][static_cast<int>(floor(game.data.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["shrek"][static_cast<int>(floor(game.data.active_interior.step)) % 139].tex, &steptexr, &tiletexr);
                 }
             }
 
