@@ -31,7 +31,7 @@ struct GameOBJ
     unsigned int time = SDL_GetTicks();
     unsigned int MAX_ENTITIES;
     FastNoise noise{};
-    std::vector<Entity> visible_entities;
+    
     int default_chk;
     unsigned int max_fish = 30;
     float time_stepx; //make x, y struct +time_stepy
@@ -49,12 +49,17 @@ struct GameOBJ
     
     Position uchunk;
 
-    std::vector<Building> structures;
+    
 
     Building active_interior;
     bool inside{false};
     std::unordered_map<int, std::vector<Position>> tiles;
     std::vector<std::vector<int>> ignored_tiles;
+    std::vector<Position> trees;
+    std::vector<Position> rocks;
+    std::vector<Position> fishs;
+    std::vector<Building> structures;
+    std::vector<Entity> visible_entities;
 };
 
 struct User

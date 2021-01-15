@@ -244,6 +244,63 @@ void Game::update_pos(){
             chunk_position.ix = i; chunk_position.iy = j;
             biometex = data.WorldGen.terrainGeneration(i, j);
             data.tiles[biometex].push_back(chunk_position);
+
+            //load trees on grass tiles
+            if(biometex == 4 || biometex == 5){
+                
+                if(data.WorldGen.treeGeneration(i, j)){
+                    
+                    chunk_position.noise = rand() % 10000;
+                    data.trees.push_back(chunk_position);
+                }
+            }
+
+            //Rocks spawn on top of stone tiles
+            else if(biometex == 6){
+                if(data.WorldGen.rockGeneration(i, j)){
+                    data.rocks.push_back(chunk_position);
+                } 
+            }
+
+            //Generate fish popups on water only
+            else if(biometex == 0){
+                if(data.WorldGen.fishGeneration(i, j, data.time_stepx, data.time_stepy)){
+                    data.fishs.push_back(chunk_position);
+                } 
+            }
+
+            //load structures anywhere but water
+            if(biometex != 0){
+                if(data.WorldGen.doorGeneration(i, j)){
+                    std::string bID = rstring(10);
+
+                    Building b;
+                    b.global_origin[0] = i;
+                    b.global_origin[1] = j;
+
+                    b.screen_origin[0] = chunk_position.x;
+                    b.screen_origin[1] = chunk_position.y;
+
+                    b.roof_index = rand() % 6;
+                    b.wall_index = rand() % 12;
+                    b.ID = bID;
+
+                    int occupant_count = rand() % 10; //10 is the max occupant count
+
+                    b.items["note"] = Position{300, 300};
+                    data.structures.push_back(b);
+                    //Structure spawns are based on a single tile, 
+                    //  so we need to check each tile that the structure covers
+                    //  and ignore that tile
+                    //TODO
+                    for(int ii = i; ii < i + 6; ++ii){
+                        for(int jj = j; jj < j + 6; ++jj){
+                            if(ii != i && jj != j)
+                                data.ignored_tiles.push_back(std::vector<int>{ii, jj});
+                        }
+                    }
+                }
+            }
         }
     }
 }
