@@ -78,7 +78,7 @@ bool zorder(const Entity&, const Entity&);
 
 class Game {
     public:
-    GameOBJ game;
+    GameOBJ data;
     User user;
     Game();
     Position content(Position&, int);

@@ -46,13 +46,13 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
 
         case SDL_MOUSEWHEEL:
             //Temporarily disabling zooming while inside
-            //if(!game.game.inside){
-                if(event->wheel.y < 0 && game.game.current_chunk_size > 0) game.game.current_chunk_size--;
-                if(event->wheel.y > 0 && game.game.current_chunk_size < 5) game.game.current_chunk_size++;
+            //if(!game.data.inside){
+                if(event->wheel.y < 0 && game.data.current_chunk_size > 0) game.data.current_chunk_size--;
+                if(event->wheel.y > 0 && game.data.current_chunk_size < 5) game.data.current_chunk_size++;
                 
-                game.game.chunk_size = game.game.chunk_sizes[game.game.current_chunk_size];
+                game.data.chunk_size = game.data.chunk_sizes[game.data.current_chunk_size];
 
-                game.game.size = floor(static_cast<float>(game.game.chunk_size) / 2);
+                game.data.size = floor(static_cast<float>(game.data.chunk_size) / 2);
             //}
 
             break;
@@ -176,13 +176,13 @@ void mainloop(void *arg)
     SDL_Renderer *renderer = ctx->renderer;
 
     //Start to update game content
-    game.game.time_stepx += .01;
-    game.game.time_stepy += .01;
+    game.data.time_stepx += .01;
+    game.data.time_stepy += .01;
 
-    if(game.game.inside) game.update_inside();
+    if(game.data.inside) game.update_inside();
     else game.update_pos();
     
-    //game.game.EntityManager.update();
+    //game.data.EntityManager.update();
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
     SDL_RenderClear(renderer);
 
@@ -209,74 +209,75 @@ void mainloop(void *arg)
     Position uchunk{static_cast<float>(game.user.chunk[0]), static_cast<float>(game.user.chunk[1])};
     uchunk = game.content(uchunk, 1);
 
-    if(game.game.inside) {
+    if(game.data.inside) {
 
-        if((game.game.active_interior.user.x >= game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*6){
+        if((game.data.active_interior.user.x >= game.data.chunk_size*3 && game.data.active_interior.user.x < game.data.chunk_size*4) && game.data.active_interior.user.y > game.data.chunk_size*6){
             send_alert(7);
-            game.game.inside = false;
+            game.data.inside = false;
         }
         else {
 
-            roomx = (game.game.width - (game.game.chunk_size*6))/2;
-            roomy = (game.game.height - (game.game.chunk_size*6))/2;
+            roomx = (game.data.width - (game.data.chunk_size*6))/2;
+            roomy = (game.data.height - (game.data.chunk_size*6))/2;
 
+            
             for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
                 for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-                    tiletexr.x = roomx + (i * game.game.chunk_size); 
-                    tiletexr.y = roomy + (j * game.game.chunk_size);
-                    tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+                    tiletexr.x = roomx + (i * game.data.chunk_size); 
+                    tiletexr.y = roomy + (j * game.data.chunk_size);
+                    tiletexr.w = game.data.chunk_size; tiletexr.h = game.data.chunk_size; 
                     steptexr.x = 0; steptexr.y = 1152;
                     steptexr.w = 32; steptexr.h = 32; 
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
                 }
             }
             
-            if(game.game.active_interior.type == "book"){
+            if(game.data.active_interior.type == "book"){
                 //book room
-                if(game.game.active_interior.items.size() > 0){
-                    tiletexr.x = roomx + (game.game.chunk_size * 2.5); 
-                    tiletexr.y = roomy + (game.game.chunk_size * 2.5);
-                    tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
+                if(game.data.active_interior.items.size() > 0){
+                    tiletexr.x = roomx + (game.data.chunk_size * 2.5); 
+                    tiletexr.y = roomy + (game.data.chunk_size * 2.5);
+                    tiletexr.w = game.data.chunk_size; tiletexr.h = game.data.chunk_size*.625; 
                     steptexr.x = 64; steptexr.y = 3808;
                     steptexr.w = 32; steptexr.h = 20; 
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
                 }
             }
-            else if(game.game.active_interior.type == "shrek"){
-                tiletexr.x = roomx + (3 * game.game.chunk_size);
-                tiletexr.y = roomy + (2 * game.game.chunk_size);
-                tiletexr.w = game.game.chunk_size*2; tiletexr.h = game.game.chunk_size*2; 
+            else if(game.data.active_interior.type == "shrek"){
+                tiletexr.x = roomx + (3 * game.data.chunk_size);
+                tiletexr.y = roomy + (2 * game.data.chunk_size);
+                tiletexr.w = game.data.chunk_size*2; tiletexr.h = game.data.chunk_size*2; 
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
                 
-                game.game.active_interior.current = SDL_GetTicks();
-                if(game.game.active_interior.current < game.game.active_interior.start + 105000){
-                    if(game.game.active_interior.current > game.game.active_interior.start + 4000){
-                        game.game.active_interior.step += .3;  
+                game.data.active_interior.current = SDL_GetTicks();
+                if(game.data.active_interior.current < game.data.active_interior.start + 105000){
+                    if(game.data.active_interior.current > game.data.active_interior.start + 4000){
+                        game.data.active_interior.step += .3;  
                     }
-                    if(game.game.active_interior.current > game.game.active_interior.start + 17600){
-                        game.game.active_interior.step += 2.5;  
+                    if(game.data.active_interior.current > game.data.active_interior.start + 17580){
+                        game.data.active_interior.step += 2.5;  
                     }
-                    if(game.game.active_interior.current > game.game.active_interior.start + 1000) game.game.active_interior.step += .1;    
-                    SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(floor(game.game.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
+                    if(game.data.active_interior.current > game.data.active_interior.start + 1000) game.data.active_interior.step += .1;    
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["shrek"][static_cast<int>(floor(game.data.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
                 }
             }
 
             //Draws user data
-            temp_rect.x = roomx + game.game.active_interior.user.x; 
-            temp_rect.y = roomy + game.game.active_interior.user.y;
-            temp_rect.w = game.game.chunk_size/5;
-            temp_rect.h = game.game.chunk_size/5;
+            temp_rect.x = roomx + game.data.active_interior.user.x; 
+            temp_rect.y = roomy + game.data.active_interior.user.y;
+            temp_rect.w = game.data.chunk_size/5;
+            temp_rect.h = game.data.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
 
-            tiletexr.x = roomx + (game.game.chunk_size*3); 
-            tiletexr.y = roomy + (game.game.chunk_size*6);
-            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+            tiletexr.x = roomx + (game.data.chunk_size*3); 
+            tiletexr.y = roomy + (game.data.chunk_size*6);
+            tiletexr.w = game.data.chunk_size; tiletexr.h = game.data.chunk_size; 
             steptexr.x = 160; steptexr.y = 1152;
             steptexr.w = 32; steptexr.h = 32; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
 
         }
 
@@ -306,7 +307,7 @@ void mainloop(void *arg)
                 Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
                 chunk_position = game.content(chunk_position, 6);
                 chunk_position.ix = i; chunk_position.iy = j;
-                biometex = game.game.WorldGen.terrainGeneration(i, j);
+                biometex = game.data.WorldGen.terrainGeneration(i, j);
                 tiles[biometex].push_back(chunk_position);
                 
                 //Next determine secondary tile spawns
@@ -315,7 +316,7 @@ void mainloop(void *arg)
                 //load trees on grass tiles
                 if(biometex == 4 || biometex == 5){
                     
-                    if(game.game.WorldGen.treeGeneration(i, j)){
+                    if(game.data.WorldGen.treeGeneration(i, j)){
                         
                         chunk_position.noise = rand() % 10000;
                         trees.push_back(chunk_position);
@@ -324,21 +325,21 @@ void mainloop(void *arg)
 
                 //Rocks spawn on top of stone tiles
                 else if(biometex == 6){
-                    if(game.game.WorldGen.rockGeneration(i, j)){
+                    if(game.data.WorldGen.rockGeneration(i, j)){
                         rocks.push_back(chunk_position);
                     } 
                 }
 
                 //Generate fish popups on water only
                 else if(biometex == 0){
-                    if(game.game.WorldGen.fishGeneration(i, j, game.game.time_stepx, game.game.time_stepy)){
+                    if(game.data.WorldGen.fishGeneration(i, j, game.data.time_stepx, game.data.time_stepy)){
                         fishs.push_back(chunk_position);
                     } 
                 }
 
                 //load structures anywhere but water
                 if(biometex != 0){
-                    if(game.game.WorldGen.doorGeneration(i, j)){
+                    if(game.data.WorldGen.doorGeneration(i, j)){
                         std::string bID = game.rstring(10);
                         
                         structures.push_back(chunk_position);
@@ -357,14 +358,14 @@ void mainloop(void *arg)
 
                         //Entity creation
                         // for(unsigned int ii = 0; ii < occupant_count; ++ii){
-                        //     float n = game.game.noise.GetPerlinFractal(ii, -ii);
+                        //     float n = game.data.noise.GetPerlinFractal(ii, -ii);
                         //     Entity e {
                         //         .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
                         //         .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
                         //         .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
                         //         .persist = false, .timex = 0, .timey = 0, .index = ii, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
                         //         .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, 
-                        //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.game.Textures.Textures["characters"].size()) - 6),
+                        //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.data.Textures.Textures["characters"].size()) - 6),
                         //         .health = 100.f
                         //     };
                             
@@ -378,24 +379,24 @@ void mainloop(void *arg)
 
                         //     //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
                         //     e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
-                        //     n = (game.game.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
-                        //     n = (game.game.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
+                        //     n = (game.data.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
+                        //     n = (game.data.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
                         //     if(n < .45){
                         //         e.items["boat"] = 1;
                         //     }
-                        //     if(e.fast_texIndex > game.game.Textures.Textures["characters"].size() - 2){
+                        //     if(e.fast_texIndex > game.data.Textures.Textures["characters"].size() - 2){
                         //         e.items["fly"] = 1;
                         //     }
                         //     e.temp_speed = e.speed;
                         //     e.position.x = entity_spawn.x;
                         //     e.position.y = entity_spawn.y;
-                        //     game.game.entities.push_back(e);
+                        //     game.data.entities.push_back(e);
 
                         //     b.occupants[e.ID] = e;
                         // }
 
                         b.items["note"] = Position{300, 300};
-                        game.game.structures.push_back(b);
+                        game.data.structures.push_back(b);
                         //Structure spawns are based on a single tile, 
                         //  so we need to check each tile that the structure covers
                         //  and ignore that tile
@@ -411,7 +412,7 @@ void mainloop(void *arg)
             }
         }   
         //concat visible trees to the entities data 
-        //game.game.entities.insert(game.game.entities.end(), trees.begin(), trees.end());
+        //game.data.entities.insert(game.data.entities.end(), trees.begin(), trees.end());
 
 
         /*Tile renders*/
@@ -420,7 +421,7 @@ void mainloop(void *arg)
             for(auto tile : type.second){
 
                 tiletexr.x = tile.x; tiletexr.y = tile.y;
-                tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+                tiletexr.w = game.data.chunk_size; tiletexr.h = game.data.chunk_size; 
                 
                 //Start by drawing the tile type
                 //Will be a terrain tile or city tile
@@ -442,34 +443,34 @@ void mainloop(void *arg)
                 if(type.first == 0){ //water
                     resource_index = 3;
 
-                    steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*5)%6));
+                    steptexr.x = 192 + (256 * (static_cast<int>(game.data.time_stepx*5)%6));
                     steptexr.y = 1376;
 
-                    int left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
-                    int right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy);
-                    int up_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
-                    int down_tile = game.game.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
-                    int down_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
-                    int up_left_tile = game.game.WorldGen.terrainGeneration(tile.ix - 1, tile.iy - 1);
-                    int down_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy + 1);
-                    int up_right_tile = game.game.WorldGen.terrainGeneration(tile.ix + 1, tile.iy - 1);
+                    int left_tile = game.data.WorldGen.terrainGeneration(tile.ix - 1, tile.iy);
+                    int right_tile = game.data.WorldGen.terrainGeneration(tile.ix + 1, tile.iy);
+                    int up_tile = game.data.WorldGen.terrainGeneration(tile.ix, tile.iy - 1);
+                    int down_tile = game.data.WorldGen.terrainGeneration(tile.ix, tile.iy + 1);
+                    int down_left_tile = game.data.WorldGen.terrainGeneration(tile.ix - 1, tile.iy + 1);
+                    int up_left_tile = game.data.WorldGen.terrainGeneration(tile.ix - 1, tile.iy - 1);
+                    int down_right_tile = game.data.WorldGen.terrainGeneration(tile.ix + 1, tile.iy + 1);
+                    int up_right_tile = game.data.WorldGen.terrainGeneration(tile.ix + 1, tile.iy - 1);
 
                     if(left_tile == 0 && down_tile == 0 && down_left_tile != 0){
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
-                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1440;
                     }
                     else if(left_tile == 0 && up_tile == 0 && up_left_tile != 0){
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         
-                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1472;
                     }
 
@@ -477,18 +478,18 @@ void mainloop(void *arg)
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
-                        steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 128 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1440;
                     }
                     else if(right_tile == 0 && up_tile == 0 && up_right_tile != 0){
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
-                        steptexr.x = 128 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 128 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1472;
                     }
 
@@ -497,18 +498,18 @@ void mainloop(void *arg)
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         
-                        steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 192 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1344;
                     }
                     else if(left_tile == 0 && down_tile != 0 && right_tile == 0){
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
-                        steptexr.x = 192 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 192 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1408;
                     }
 
@@ -517,10 +518,10 @@ void mainloop(void *arg)
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
 
-                        steptexr.x = 224 + (256 * (static_cast<int>(game.game.time_stepx*10)%6));
+                        steptexr.x = 224 + (256 * (static_cast<int>(game.data.time_stepx*10)%6));
                         steptexr.y = 1376;
 
                         if(up_tile != 0){
@@ -536,10 +537,10 @@ void mainloop(void *arg)
                         //draw a sand tile, then draw the water tile on top
                         steptexr.x = 192; steptexr.y = 224;
                         steptexr.w = 32; steptexr.h = 32;
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][0].tex, &steptexr, &tiletexr);
                         //
 
-                        steptexr.x = 160 + (256 * (static_cast<int>(game.game.time_stepx)%6));
+                        steptexr.x = 160 + (256 * (static_cast<int>(game.data.time_stepx)%6));
                         steptexr.y = 1376;
 
                         if(up_tile != 0){
@@ -585,48 +586,48 @@ void mainloop(void *arg)
                         steptexr.w = 32; steptexr.h = 32;
                 }
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][resource_index].tex, &steptexr, &tiletexr);
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][resource_index].tex, &steptexr, &tiletexr);
             }
         }
 
         for(auto fish : fishs){
-            tiletexr.x = fish.x + (game.game.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.game.chunk_size/1.5)/4;
-            tiletexr.w = game.game.chunk_size/1.5; tiletexr.h = game.game.chunk_size/1.5; 
-            steptexr.x = 96 + ((static_cast<int>(game.game.time_stepx/100)) %3)*32; steptexr.y = 192;
+            tiletexr.x = fish.x + (game.data.chunk_size/1.5)/3; tiletexr.y = (fish.y) + (game.data.chunk_size/1.5)/4;
+            tiletexr.w = game.data.chunk_size/1.5; tiletexr.h = game.data.chunk_size/1.5; 
+            steptexr.x = 96 + ((static_cast<int>(game.data.time_stepx/100)) %3)*32; steptexr.y = 192;
             steptexr.w = 32; steptexr.h = 32; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &tiletexr);
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["popups"][0].tex, &steptexr, &tiletexr);
         }
         
         /*User renders*/
         // fill the chunk the user is currently in
         temp_rect.x = uchunk.x + 1;
         temp_rect.y = uchunk.y + 1;
-        temp_rect.w = game.game.chunk_size - 1;
-        temp_rect.h = game.game.chunk_size - 1;
+        temp_rect.w = game.data.chunk_size - 1;
+        temp_rect.h = game.data.chunk_size - 1;
         SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
         SDL_RenderFillRect(renderer, &temp_rect );
 
         // small rectangle for the user position
-        temp_rect.x = game.game.width/2 - ((game.game.chunk_size/5)/2);// - (game.game.size * .7); 
-        temp_rect.y = game.game.height/2;// - texheight;
-        temp_rect.w = game.game.chunk_size/3 - 1;
-        temp_rect.h = game.game.chunk_size/3 - 1;
+        temp_rect.x = game.data.width/2 - ((game.data.chunk_size/5)/2);// - (game.data.size * .7); 
+        temp_rect.y = game.data.height/2;// - texheight;
+        temp_rect.w = game.data.chunk_size/3 - 1;
+        temp_rect.h = game.data.chunk_size/3 - 1;
         SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
         SDL_RenderFillRect(renderer, &temp_rect );
 
         // mouse chunk
         temp_rect.x = game.user.mouse_chunk[0];
         temp_rect.y = game.user.mouse_chunk[1];
-        temp_rect.w = game.game.chunk_size+1;
-        temp_rect.h = game.game.chunk_size+1;
+        temp_rect.w = game.data.chunk_size+1;
+        temp_rect.h = game.data.chunk_size+1;
         SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
         SDL_RenderFillRect(renderer, &temp_rect);
 
         // mouse cursor
         temp_rect.x = game.user.mouse["x"];
         temp_rect.y = game.user.mouse["y"];
-        temp_rect.w = game.game.chunk_size/10;
-        temp_rect.h = game.game.chunk_size/10;
+        temp_rect.w = game.data.chunk_size/10;
+        temp_rect.h = game.data.chunk_size/10;
         SDL_SetRenderDrawColor(renderer, 0, 0, 123, 255 );
         SDL_RenderFillRect(renderer, &temp_rect );
 
@@ -634,77 +635,77 @@ void mainloop(void *arg)
         game.update_entities();
         //Only draw visible entities'
         t = 0;
-        for(Entity& entity : game.game.visible_entities){
+        for(Entity& entity : game.data.visible_entities){
 
             t++;
-            texheight = (game.game.chunk_size) + ((game.game.chunk_size) * .333);
+            texheight = (game.data.chunk_size) + ((game.data.chunk_size) * .333);
             
-            chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - (game.game.size * .7); 
-            chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - texheight;
-            chartexr.w = game.game.chunk_size; 
+            chartexr.x = (entity.local_position.x + (entity.chunkfx * game.data.chunk_size));// - (game.data.size * .7); 
+            chartexr.y = (entity.local_position.y + (entity.chunkfy * game.data.chunk_size));// - texheight;
+            chartexr.w = game.data.chunk_size; 
             chartexr.h = texheight;
             
             steptexr.x = entity.step * 32; steptexr.y = entity.texAng * 48;
             steptexr.w = 32; steptexr.h = 48; 
 
             ei = entity.texIndex + 8;
-            n = game.game.WorldGen.terrainGeneration(entity.chunk.x, entity.chunk.y);
+            n = game.data.WorldGen.terrainGeneration(entity.chunk.x, entity.chunk.y);
             if(n == 0){ // && entity.items["boat"] > 0){
                 if(entity.speed > 20 && entity.items["fly"] > 0) ei = entity.fast_texIndex;
                 else ei = entity.boat_texIndex;
-                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
-                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
+                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.data.chunk_size));// - game.data.chunk_size;
+                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.data.chunk_size));// - game.data.chunk_size*3;
 
-                chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+                chartexr.w = game.data.chunk_size*2; chartexr.h = texheight*2;
                 steptexr.x = 32 * (entity.step % 3); steptexr.y = entity.texAng * 32;
                 steptexr.w = 32; steptexr.h = 32; 
                 
             }
             else if(entity.speed > 20){
                 ei = entity.fast_texIndex;
-                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.game.chunk_size));// - game.game.chunk_size;
-                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.game.chunk_size));// - game.game.chunk_size*3;
-                chartexr.w = game.game.chunk_size*2; chartexr.h = texheight*2;
+                chartexr.x = (entity.local_position.x + (entity.chunkfx * game.data.chunk_size));// - game.data.chunk_size;
+                chartexr.y = (entity.local_position.y + (entity.chunkfy * game.data.chunk_size));// - game.data.chunk_size*3;
+                chartexr.w = game.data.chunk_size*2; chartexr.h = texheight*2;
                 steptexr.x = 32; steptexr.y = entity.texAng * 32;
                 steptexr.w = 32; steptexr.h = 32; 
             }
 
-            // if(game.game.mouse_entity.ID == entity.ID){
-            //     temp_rect.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size);
-            //     temp_rect.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
-            //     temp_rect.w = game.game.chunk_size;
-            //     temp_rect.h = game.game.chunk_size;
+            // if(game.data.mouse_entity.ID == entity.ID){
+            //     temp_rect.x = entity.local_position.x + (entity.chunkfx * game.data.chunk_size);
+            //     temp_rect.y = entity.local_position.y + (entity.chunkfy * game.data.chunk_size);
+            //     temp_rect.w = game.data.chunk_size;
+            //     temp_rect.h = game.data.chunk_size;
             //     SDL_SetRenderDrawColor(renderer, entity.color.r, entity.color.g, entity.color.b, 255 );
             //     SDL_RenderFillRect(renderer, &temp_rect);
             // // }
-            // temp_rect.x =  (entity.chunkfx * game.game.chunk_size);
-            // temp_rect.y =  (entity.chunkfy * game.game.chunk_size);
-            // temp_rect.w = game.game.chunk_size;
-            // temp_rect.h = game.game.chunk_size;
+            // temp_rect.x =  (entity.chunkfx * game.data.chunk_size);
+            // temp_rect.y =  (entity.chunkfy * game.data.chunk_size);
+            // temp_rect.w = game.data.chunk_size;
+            // temp_rect.h = game.data.chunk_size;
             // SDL_RenderFillRect(renderer, &temp_rect);
             
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["characters"][ei].tex, &steptexr, &chartexr);
 
             if(chartexr.x < game.user.mouse["x"] && game.user.mouse["x"] < chartexr.x + chartexr.w){
                 if(chartexr.y < game.user.mouse["y"] && game.user.mouse["y"] < chartexr.y+ chartexr.h){
-                    game.game.mouse_entity = entity;
+                    game.data.mouse_entity = entity;
                     if(game.user.mouse_down){
                         if(SDL_GetTicks() > game.user.timer + 3000)
                             send_alert(2); //
                         game.user.timer = SDL_GetTicks();
-                        //chartexr.x = entity.local_position.x + (entity.chunkfx * game.game.chunk_size) + 32; 
-                        //chartexr.y = entity.local_position.y + (entity.chunkfy * game.game.chunk_size);
-                        chartexr.x += game.game.chunk_size/3;
-                        chartexr.y += game.game.chunk_size/3;
-                        chartexr.w = game.game.chunk_size/3; 
-                        chartexr.h = game.game.chunk_size/3;
+                        //chartexr.x = entity.local_position.x + (entity.chunkfx * game.data.chunk_size) + 32; 
+                        //chartexr.y = entity.local_position.y + (entity.chunkfy * game.data.chunk_size);
+                        chartexr.x += game.data.chunk_size/3;
+                        chartexr.y += game.data.chunk_size/3;
+                        chartexr.w = game.data.chunk_size/3; 
+                        chartexr.h = game.data.chunk_size/3;
 
                         //This seeding sets the entity
                         srand(hasher(entity.ID));
 
                         steptexr.x = (rand() % 9) * 96; steptexr.y = (rand() % 10) * 32;
                         steptexr.w = 32; steptexr.h = 32; 
-                        SDL_RenderCopy(renderer, game.game.Textures.Textures["popups"][0].tex, &steptexr, &chartexr);
+                        SDL_RenderCopy(renderer, game.data.Textures.Textures["popups"][0].tex, &steptexr, &chartexr);
                         
                     }
                     
@@ -717,7 +718,7 @@ void mainloop(void *arg)
 
         std::sort(trees.begin(),trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
-        std::sort(game.game.structures.begin(),game.game.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
+        std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
 
         /*Secondary Tile renders*/
         for(auto tree : trees){
@@ -725,18 +726,18 @@ void mainloop(void *arg)
             chartexr.x = 0; 
             chartexr.y = 65 * (rand() % 8);
             chartexr.w = 64; chartexr.h = 64;
-            steptexr.x = tree.x - (game.game.chunk_size/2)*3; 
-            steptexr.y = tree.y - (game.game.chunk_size*3) - (game.game.chunk_size/2);
-            steptexr.w = game.game.chunk_size*4; steptexr.h = game.game.chunk_size*4; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
+            steptexr.x = tree.x - (game.data.chunk_size/2)*3; 
+            steptexr.y = tree.y - (game.data.chunk_size*3) - (game.data.chunk_size/2);
+            steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
-            if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.game.chunk_size){
-                if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.game.chunk_size){
+            if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.data.chunk_size){
+                if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.data.chunk_size){
                     if(game.user.mouse_down) send_alert(1);
 
                                     
-                    // if(uchunk.x + 1 >= (tree.x + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.game.chunk_size * 4))){
-                    //     if(uchunk.y + 1 >= (tree.y + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.game.chunk_size * 7))){
+                    // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
+                    //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
                     //         if(game.user.mouse_down) send_alert(0);
                     //     }
                     // }
@@ -748,18 +749,18 @@ void mainloop(void *arg)
             chartexr.x = 32; chartexr.y = 256;
             chartexr.w = 32; chartexr.h = 32;
             steptexr.x = rock.x; steptexr.y = rock.y;
-            steptexr.w = game.game.chunk_size*2; steptexr.h = game.game.chunk_size*2; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
+            steptexr.w = game.data.chunk_size*2; steptexr.h = game.data.chunk_size*2; 
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
         }
 
-        for(auto p : game.game.structures){
+        for(auto p : game.data.structures){
             //draw roof
             for(int r = 0; r < 6; ++r){
                 steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
                 steptexr.w = 32; steptexr.h = 128;
-                temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1];
-                temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+                temp_rect.x = p.screen_origin[0] + r*game.data.chunk_size; temp_rect.y = p.screen_origin[1];
+                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             }
 
             //draw front walls
@@ -773,9 +774,9 @@ void mainloop(void *arg)
 
                 steptexr.y = 1407 + (64 * p.wall_index);
                 steptexr.w = 32; steptexr.h = 64;
-                temp_rect.x = p.screen_origin[0] + r*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
-                temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 3; 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+                temp_rect.x = p.screen_origin[0] + r*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.data.chunk_size);
+                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             }
 
             //draw door, window and misc
@@ -784,9 +785,9 @@ void mainloop(void *arg)
             steptexr.x = 224;
             steptexr.y = 1407 + (64 * p.wall_index);
             steptexr.w = 32; steptexr.h = 64;
-            temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.game.chunk_size);
-            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size * 2; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+            temp_rect.x = p.screen_origin[0] + 3*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.data.chunk_size);
+            temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 2; 
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             
             //sign
             srand(hasher(p.ID));
@@ -795,9 +796,9 @@ void mainloop(void *arg)
             steptexr.x = 0 + (32 * sign_c);
             steptexr.y = 2624 + (32 * sign_r);
             steptexr.w = 32; steptexr.h = 32;
-            temp_rect.x = p.screen_origin[0] + 3*game.game.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.game.chunk_size);
-            temp_rect.w = game.game.chunk_size; temp_rect.h = game.game.chunk_size; 
-            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+            temp_rect.x = p.screen_origin[0] + 3*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.data.chunk_size);
+            temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size; 
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
 
             //check if the user's mouse is in the bounds of the structure
             
@@ -815,12 +816,12 @@ void mainloop(void *arg)
                 unlocked = true;
                 room = 3;//
             }
-            if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.game.chunk_size * 6){
-                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.game.chunk_size * 6){                    
+            if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.data.chunk_size * 6){
+                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.data.chunk_size * 6){                    
                     //Door position
                     //TODO
-                    if(uchunk.x + 1 >= (p.screen_origin[0] + (game.game.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.game.chunk_size * 4))){
-                        if(uchunk.y + 1 >= (p.screen_origin[1] + (game.game.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.game.chunk_size * 7))){
+                    if(uchunk.x + 1 >= (p.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.data.chunk_size * 4))){
+                        if(uchunk.y + 1 >= (p.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.data.chunk_size * 7))){
                             
                             if(game.user.mouse_down) {
                                 game.user.mouse_down = false;
@@ -828,7 +829,7 @@ void mainloop(void *arg)
                                 else {
                                     if(room == 2) send_alert(5);
                                     else {
-                                        if(!game.game.inside) {
+                                        if(!game.data.inside) {
                                             if(room == 1) {
                                                 p.type = "book"; 
                                                 send_alert(4);
@@ -839,11 +840,11 @@ void mainloop(void *arg)
                                             }
                                             p.start = SDL_GetTicks();
                                             p.step = 0;
-                                            game.game.inside = true;
-                                            p.user.x = game.game.chunk_size*3;
-                                            p.user.y = game.game.chunk_size*5;
-                                            game.game.active_interior = p;
-                                            game.game.chunk_size = game.game.chunk_sizes[2];
+                                            game.data.inside = true;
+                                            p.user.x = game.data.chunk_size*3;
+                                            p.user.y = game.data.chunk_size*5;
+                                            game.data.active_interior = p;
+                                            game.data.chunk_size = game.data.chunk_sizes[2];
 
                                             
                                         }
@@ -887,7 +888,7 @@ extern "C" {
                 retval = std::to_string(noise.GetPerlin(game.user.chunk[0], game.user.chunk[1])).c_str();
                 break;
             case 4:
-                retval = game.game.mouse_entity.ID.c_str();
+                retval = game.data.mouse_entity.ID.c_str();
                 break;
             case 5:
                 retval = std::to_string(game.user.items["fish"]).c_str();
@@ -910,12 +911,12 @@ int main(int argc, char *argv[])
 {
     //seed generator
     srand(time(NULL));
-    game.game.noise.SetSeed(rand() % 10000);
+    game.data.noise.SetSeed(rand() % 10000);
     
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_CreateWindowAndRenderer(game.game.width, game.game.height, 0, &window, &renderer);
+    SDL_CreateWindowAndRenderer(game.data.width, game.data.height, 0, &window, &renderer);
 
     context ctx;
     ctx.renderer = renderer;
@@ -926,13 +927,13 @@ int main(int argc, char *argv[])
     //emscripten_run_script("var ws = new WebSocket('wss://robauis.me/ws'); ws.onmessage = (e)=>{console.log(e.data);}");
 
     //load textures using TextureUtils
-    game.game.Textures.renderer = renderer;
-    game.game.Textures.loadTextures();
+    game.data.Textures.renderer = renderer;
+    game.data.Textures.loadTextures();
 
-    game.game.WorldGen.city_noise.SetSeed(rand() % 10000);
-    game.game.WorldGen.terrain_noise.SetSeed(rand() % 10000);
-    game.game.WorldGen.fish_noise.SetSeed(rand() % 10000);
-    game.game.WorldGen.tree_noise.SetSeed(rand() % 10000);
+    game.data.WorldGen.city_noise.SetSeed(rand() % 10000);
+    game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
+    game.data.WorldGen.fish_noise.SetSeed(rand() % 10000);
+    game.data.WorldGen.tree_noise.SetSeed(rand() % 10000);
 
     
 
