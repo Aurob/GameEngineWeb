@@ -1,5 +1,5 @@
 #define alphanum "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-#include "game.h"
+#include "Game.h"
 
 //TODO
 //This really needs to be a singleton
