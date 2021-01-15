@@ -242,15 +242,12 @@ void mainloop(void *arg)
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(game.game.active_interior.step) % 138] .tex, &steptexr, &tiletexr);
+                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(floor(game.game.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
                 game.game.active_interior.current = SDL_GetTicks();
                 if(game.game.active_interior.current > game.game.active_interior.start + 4000){
                     game.game.active_interior.step += .3;  
                 }
-                if(game.game.active_interior.current > game.game.active_interior.start + 7000){
-                    game.game.active_interior.step += .6;  
-                }
-                if(game.game.active_interior.current > game.game.active_interior.start + 18000){
+                if(game.game.active_interior.current > game.game.active_interior.start + 18500){
                     game.game.active_interior.step += 2.5;  
                 }
                 else game.game.active_interior.step += .1;    
@@ -258,8 +255,7 @@ void mainloop(void *arg)
             }
 
             //Draws user data
-            temp_rect.x = game.game.width/3 + (game.game.active_interior.user.x - game.game.chunk_size/5);
-            temp_rect.y = game.game.height/3 + (game.game.active_interior.user.y - game.game.chunk_size/5);
+            tiletexr.x = game.game.width/3 + (3 * game.game.chunk_size); tiletexr.y = game.game.height/3 + (2 * game.game.chunk_size);
             temp_rect.w = game.game.chunk_size/5;
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
