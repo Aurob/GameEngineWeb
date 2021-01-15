@@ -278,7 +278,7 @@ void Game::update_pos(){
                     tile.texture.w = 32; tile.texture.h = 32;
             }
             else if(biometex == 5){ //grass
-                    tile.resource_index = 7;
+                    tile.resource_index = 1;
                     tile.texture.x = 32; tile.texture.y = 64;
                     tile.texture.w = 64; tile.texture.h = 64;
             }
