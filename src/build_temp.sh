@@ -1,8 +1,8 @@
 #!/bin/bash
 echo "compile commenced at:" $(date)
+args="${@:2}"
 
-if [ $1 = "wasm" ] 
-then
+if [ $# -gt 0 ]; then
   emcc -std=c++1z $1.cpp StructureUtils.cpp FastNoise.cpp TextureUtils.cpp WorldUtils.cpp Game.cpp -s WASM=1 -s USE_SDL=2 -O3 -o $1.js \
   -s EXPORTED_FUNCTIONS="['_main', '_get_info', '_ecount']" \
   -s EXTRA_EXPORTED_RUNTIME_METHODS=["cwrap"] \
@@ -12,5 +12,20 @@ then
   -lSDL \
   --preload-file ../Resources \
   -s ASSERTIONS=1
-  echo "compile concluded at:" $(date)
+
+  if [ $? -eq 0 ]; then
+      echo OK
+      sudo git add $args
+      sudo git commit -m "building"
+      sudo git push
+
+      if [ $? -eq 1 ]; then
+        echo FAIL
+      fi      
+
+  else
+      echo FAIL
+  fi
+else
+  echo "Invalid number of arguments passed"
 fi
