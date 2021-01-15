@@ -16,6 +16,7 @@ struct Position
     float noise;
     int ix;
     int iy;
+    int type;
 };
 
 struct Entity

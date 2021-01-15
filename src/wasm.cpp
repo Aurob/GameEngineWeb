@@ -580,140 +580,151 @@ void mainloop(void *arg)
             }
         }  
 
-        //TODO
-        //Each of the secondary tiles could be combined into a single vector
-
-        std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
-        //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
-        std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
-
         /*Secondary Tile renders*/
-        for(auto tree : game.data.trees){
-            srand(floor(tree.noise));
-            chartexr.x = 0; 
-            chartexr.y = 65 * (rand() % 8);
-            chartexr.w = 64; chartexr.h = 64;
-            steptexr.x = tree.x - (game.data.chunk_size/2)*3; 
-            steptexr.y = tree.y - (game.data.chunk_size*3) - (game.data.chunk_size/2);
-            steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
-            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
+        std::sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){ return a.y<b.y; });
+        //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
+        //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
+        //std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
+        for(auto obj : game.data.renderable){
+            if(obj.type == 0) {
+                srand(floor(obj.noise));
+                chartexr.x = 0; 
+                chartexr.y = 65 * (rand() % 8);
+                chartexr.w = 64; chartexr.h = 64;
+                steptexr.x = obj.x - (game.data.chunk_size/2)*3; 
+                steptexr.y = obj.y - (game.data.chunk_size*3) - (game.data.chunk_size/2);
+                steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
-            if(tree.x < game.user.mouse["x"] && game.user.mouse["x"] < tree.x + game.data.chunk_size){
-                if(tree.y < game.user.mouse["y"] && game.user.mouse["y"] < tree.y + game.data.chunk_size){
-                    if(game.user.mouse_down) send_alert(1);
+                if(obj.x < game.user.mouse["x"] && game.user.mouse["x"] < obj.x + game.data.chunk_size){
+                    if(obj.y < game.user.mouse["y"] && game.user.mouse["y"] < obj.y + game.data.chunk_size){
+                        if(game.user.mouse_down) send_alert(1);
 
-                                    
-                    // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
-                    //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
-                    //         if(game.user.mouse_down) send_alert(0);
-                    //     }
-                    // }
+                                        
+                        // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
+                        //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
+                        //         if(game.user.mouse_down) send_alert(0);
+                        //     }
+                        // }
+                    }
                 }
             }
-        }
 
-        for(auto rock : game.data.rocks){
-            chartexr.x = 32; chartexr.y = 256;
-            chartexr.w = 32; chartexr.h = 32;
-            steptexr.x = rock.x; steptexr.y = rock.y;
-            steptexr.w = game.data.chunk_size*2; steptexr.h = game.data.chunk_size*2; 
-            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
-        }
+            else if(obj.type == 2){
+                srand(game.hasher(std::to_string(obj.ix) + std::to_string(obj.iy)));
+                std::string bID = game.rstring(10);
+                Building b;
+                b.global_origin[0] = obj.ix;
+                b.global_origin[1] = obj.iy;
 
-        for(auto p : game.data.structures){
-            //draw roof
-            for(int r = 0; r < 6; ++r){
-                steptexr.x = 32 * p.roof_index; steptexr.y = 2240;
-                steptexr.w = 32; steptexr.h = 128;
-                temp_rect.x = p.screen_origin[0] + r*game.data.chunk_size; temp_rect.y = p.screen_origin[1];
-                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
-                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-            }
+                b.screen_origin[0] = obj.x;
+                b.screen_origin[1] = obj.y;
 
-            //draw front walls
-            for(int r = 0; r < 6; ++r){
-                if(r == 0)
-                    steptexr.x = 0; 
-                else if(r == 5)
-                    steptexr.x = 64;
-                else steptexr.x = 32;
+                b.roof_index = rand() % 6;
+                b.wall_index = rand() % 12;
+                b.ID = bID;
+
+                int occupant_count = rand() % 10; //10 is the max occupant count
+
+                //data.structures.push_back(b);
+
+                //draw roof
+                for(int r = 0; r < 6; ++r){
+                    steptexr.x = 32 * b.roof_index; steptexr.y = 2240;
+                    steptexr.w = 32; steptexr.h = 128;
+                    temp_rect.x = b.screen_origin[0] + r*game.data.chunk_size; temp_rect.y = b.screen_origin[1];
+                    temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+                }
+
+                //draw front walls
+                for(int r = 0; r < 6; ++r){
+                    if(r == 0)
+                        steptexr.x = 0; 
+                    else if(r == 5)
+                        steptexr.x = 64;
+                    else steptexr.x = 32;
 
 
-                steptexr.y = 1407 + (64 * p.wall_index);
+                    steptexr.y = 1407 + (64 * b.wall_index);
+                    steptexr.w = 32; steptexr.h = 64;
+                    temp_rect.x = b.screen_origin[0] + r*game.data.chunk_size; 
+                    temp_rect.y = b.screen_origin[1] + (3*game.data.chunk_size);
+                    temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
+                    SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
+                }
+
+                //draw door, window and misc
+
+                //door
+                steptexr.x = 224;
+                steptexr.y = 1407 + (64 * b.wall_index);
                 steptexr.w = 32; steptexr.h = 64;
-                temp_rect.x = p.screen_origin[0] + r*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.data.chunk_size);
-                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 3; 
+                temp_rect.x = b.screen_origin[0] + 3*game.data.chunk_size; 
+                temp_rect.y = b.screen_origin[1] + (4*game.data.chunk_size);
+                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 2; 
                 SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-            }
+                
+                //sign
+                srand(game.hasher(b.ID));
+                int sign_c = (rand() % 7);
+                int sign_r = (rand() % 2);
+                steptexr.x = 0 + (32 * sign_c);
+                steptexr.y = 2624 + (32 * sign_r);
+                steptexr.w = 32; steptexr.h = 32;
+                temp_rect.x = b.screen_origin[0] + (3*game.data.chunk_size); 
+                temp_rect.y = b.screen_origin[1] + (3*game.data.chunk_size);
+                temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size; 
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
 
-            //draw door, window and misc
-
-            //door
-            steptexr.x = 224;
-            steptexr.y = 1407 + (64 * p.wall_index);
-            steptexr.w = 32; steptexr.h = 64;
-            temp_rect.x = p.screen_origin[0] + 3*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (4*game.data.chunk_size);
-            temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size * 2; 
-            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-            
-            //sign
-            srand(game.hasher(p.ID));
-            int sign_c = (rand() % 7);
-            int sign_r = (rand() % 2);
-            steptexr.x = 0 + (32 * sign_c);
-            steptexr.y = 2624 + (32 * sign_r);
-            steptexr.w = 32; steptexr.h = 32;
-            temp_rect.x = p.screen_origin[0] + 3*game.data.chunk_size; temp_rect.y = p.screen_origin[1] + (3*game.data.chunk_size);
-            temp_rect.w = game.data.chunk_size; temp_rect.h = game.data.chunk_size; 
-            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
-
-            //check if the user's mouse is in the bounds of the structure
-            
-            bool unlocked = false;
-            int room = -1;
-            if(sign_c == 3 && sign_r == 1){
-                unlocked = true;
-                room = 1;
-            }
-            if(sign_c == 7 && sign_r == 1){
-                unlocked = true;
-                room = 2;
-            }
-            if(sign_c == 1 && sign_r == 1){
-                unlocked = true;
-                room = 3;//
-            }
-            if(p.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < p.screen_origin[0] + game.data.chunk_size * 6){
-                if(p.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < p.screen_origin[1] + game.data.chunk_size * 6){                    
-                    //Door position
-                    //TODO
-                    if(uchunk.x + 1 >= (p.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (p.screen_origin[0] + (game.data.chunk_size * 4))){
-                        if(uchunk.y + 1 >= (p.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (p.screen_origin[1] + (game.data.chunk_size * 7))){
-                            
-                            if(game.user.mouse_down) {
-                                game.user.mouse_down = false;
-                                if(!unlocked) send_alert(0);
-                                else {
-                                    if(room == 2) send_alert(5);
+                //check if the user's mouse is in the bounds of the structure
+                
+                bool unlocked = false;
+                int room = -1;
+                if(sign_c == 3 && sign_r == 1){
+                    unlocked = true;
+                    room = 1;
+                }
+                if(sign_c == 7 && sign_r == 1){
+                    unlocked = true;
+                    room = 2;
+                }
+                if(sign_c == 1 && sign_r == 1){
+                    unlocked = true;
+                    room = 3;//
+                }
+                if(b.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < b.screen_origin[0] + game.data.chunk_size * 6){
+                    if(b.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < b.screen_origin[1] + game.data.chunk_size * 6){                    
+                        //Door position
+                        //TODO
+                        if(uchunk.x + 1 >= (b.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (b.screen_origin[0] + (game.data.chunk_size * 4))){
+                            if(uchunk.y + 1 >= (b.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (b.screen_origin[1] + (game.data.chunk_size * 7))){
+                                
+                                if(game.user.mouse_down) {
+                                    game.user.mouse_down = false;
+                                    if(!unlocked) send_alert(0);
                                     else {
-                                        if(!game.data.inside) {
-                                            if(room == 1) {
-                                                p.type = "book"; 
-                                                send_alert(4);
-                                            }
-                                            if(room == 3) {
-                                                p.type = "shrek"; 
-                                                send_alert(6);
-                                            }
-                                            p.start = SDL_GetTicks();
-                                            p.step = 0;
-                                            game.data.inside = true;
-                                            p.user.x = game.data.chunk_size*3;
-                                            p.user.y = game.data.chunk_size*5;
-                                            game.data.active_interior = p;
-                                            game.data.chunk_size = game.data.chunk_sizes[2];
+                                        if(room == 2) send_alert(5);
+                                        else {
+                                            if(!game.data.inside) {
+                                                if(room == 1) {
+                                                    b.type = "book"; 
+                                                    send_alert(4);
+                                                }
+                                                if(room == 3) {
+                                                    b.type = "shrek"; 
+                                                    send_alert(6);
+                                                }
+                                                b.start = SDL_GetTicks();
+                                                b.step = 0;
+                                                game.data.inside = true;
+                                                b.user.x = game.data.chunk_size*3;
+                                                b.user.y = game.data.chunk_size*5;
+                                                game.data.active_interior = b;
+                                                game.data.chunk_size = game.data.chunk_sizes[2];
 
-                                            
+                                                
+                                            }
                                         }
                                     }
                                 }
@@ -723,6 +734,18 @@ void mainloop(void *arg)
                 }
             }
         }
+
+        
+
+        for(auto rock : game.data.rocks){
+            chartexr.x = 32; chartexr.y = 256;
+            chartexr.w = 32; chartexr.h = 32;
+            steptexr.x = rock.x; steptexr.y = rock.y;
+            steptexr.w = game.data.chunk_size*2; steptexr.h = game.data.chunk_size*2; 
+            SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &chartexr, &steptexr);
+        }
+
+        
     }
 
     //finally draw everything to the screen

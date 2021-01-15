@@ -60,6 +60,7 @@ struct GameOBJ
     std::vector<Position> fishs;
     std::vector<Building> structures;
     std::vector<Entity> visible_entities;
+    std::vector<Position> renderable;
 };
 
 struct User
