@@ -255,20 +255,12 @@ void mainloop(void *arg)
             }
 
             //Draws user data
-            temp_rect.x = game.game.width/3 + (3 * game.game.chunk_size); 
-            temp_rect.y = game.game.height/3 + (2 * game.game.chunk_size);
+            temp_rect.x = game.game.width/3 + game.game.active_interior.user.x; 
+            temp_rect.y = game.game.height/3 + game.game.active_interior.user.y;
             temp_rect.w = game.game.chunk_size/5;
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
-
-            temp_rect.x = game.game.width/3 + (game.game.chunk_size*3);
-            temp_rect.y = game.game.height/3 + (game.game.chunk_size*6);
-            temp_rect.w = game.game.chunk_size;
-            temp_rect.h = game.game.chunk_size;
-            SDL_SetRenderDrawColor(renderer, 100, 234, 34, 255 );
-            SDL_RenderFillRect(renderer, &temp_rect );
-
         }
 
     }
