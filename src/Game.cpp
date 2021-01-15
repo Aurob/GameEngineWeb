@@ -228,8 +228,8 @@ void Game::update_pos(){
     /*Tile loading*/
     bool skip;
     int biometex;
-    for (int i = user.chunks[0][0] - 2; i < user.chunks[1][0] + 2; i++) {
-        for (int j = user.chunks[0][1] - 2; j < user.chunks[3][1] + 2; j++) {
+    for (int i = user.chunks[0][0] - 6; i < user.chunks[1][0] + 6; i++) {
+        for (int j = user.chunks[0][1] - 6; j < user.chunks[3][1] + 6; j++) {
             //seed srand with the tile position
             srand(hasher(std::to_string(i) + std::to_string(j)));
             
