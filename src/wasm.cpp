@@ -247,7 +247,7 @@ void mainloop(void *arg)
                 if(game.game.active_interior.current > game.game.active_interior.start + 4000){
                     game.game.active_interior.step += .3;  
                 }
-                if(game.game.active_interior.current > game.game.active_interior.start + 17800){
+                if(game.game.active_interior.current > game.game.active_interior.start + 17650){
                     game.game.active_interior.step += 2.5;  
                 }
                 else game.game.active_interior.step += .1;    
