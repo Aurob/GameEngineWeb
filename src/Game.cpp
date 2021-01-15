@@ -57,16 +57,20 @@ Position Game::getChunkFromCoord(float x, float y) {
     return Position{ xchunk, ychunk, true };
 }
 
-
-//Batch updates game values
-void Game::update_pos(){
+void Game::clean_data(){
     data.structures.clear();
+    data.fish.clear();
     data.tiles.clear();
     data.rocks.clear();
     data.trees.clear();
     data.structures.clear();
     data.ignored_tiles.clear();
     data.tiles.clear();
+}
+
+//Batch updates game values
+void Game::update_pos(){
+    clean_data();
     //update global position
     //TODO check if the user moves onto a tile they shouldn't
     // i.e Trees, Strucutres, Water Tiles

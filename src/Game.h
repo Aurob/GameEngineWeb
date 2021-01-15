@@ -94,5 +94,6 @@ class Game {
     void update_pos();
     void update_inside();
     void update_entities();
+    void clean_data();
     std::string rstring(size_t);
 };
