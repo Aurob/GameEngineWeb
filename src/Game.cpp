@@ -61,6 +61,8 @@ Position Game::getChunkFromCoord(float x, float y) {
 //Batch updates game values
 void Game::update_pos(){
     data.structures.clear();
+    data.tiles.clear();
+
     //update global position
     //TODO check if the user moves onto a tile they shouldn't
     // i.e Trees, Strucutres, Water Tiles
@@ -217,8 +219,8 @@ void Game::update_pos(){
     /*Tile loading*/
     bool skip;
     int biometex;
-    for (int i = user.chunks[0][0] - 1; i < user.chunks[1][0] + 1; i++) {
-        for (int j = user.chunks[0][1] - 1; j < user.chunks[3][1] + 1; j++) {
+    for (int i = game.user.chunks[0][0] - 6; i < game.user.chunks[1][0] + 1; i++) {
+            for (int j = game.user.chunks[0][1] - 6; j < game.user.chunks[3][1] + 1; j++) {
             //seed srand with the tile position
             srand(hasher(std::to_string(i) + std::to_string(j)));
             
