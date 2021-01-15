@@ -247,7 +247,7 @@ void mainloop(void *arg)
                 if(game.game.active_interior.current > game.game.active_interior.start + 4000){
                     game.game.active_interior.step += .3;  
                 }
-                if(game.game.active_interior.current > game.game.active_interior.start + 18500){
+                if(game.game.active_interior.current > game.game.active_interior.start + 18100){
                     game.game.active_interior.step += 2.5;  
                 }
                 else game.game.active_interior.step += .1;    
@@ -714,7 +714,7 @@ void mainloop(void *arg)
         for(auto tree : trees){
             srand(floor(tree.noise));
             chartexr.x = 0; 
-            chartexr.y = 65 * (rand() % 7);
+            chartexr.y = 65 * (rand() % 8);
             chartexr.w = 64; chartexr.h = 64;
             steptexr.x = tree.x - (game.game.chunk_size/2)*3; 
             steptexr.y = tree.y - (game.game.chunk_size*3) - (game.game.chunk_size/2);
@@ -781,7 +781,7 @@ void mainloop(void *arg)
             
             //sign
             srand(hasher(p.ID));
-            int sign_c = (rand() % 8);
+            int sign_c = (rand() % 7);
             int sign_r = (rand() % 2);
             steptexr.x = 0 + (32 * sign_c);
             steptexr.y = 2624 + (32 * sign_r);
