@@ -59,7 +59,7 @@ Position Game::getChunkFromCoord(float x, float y) {
 
 void Game::clean_data(){
     data.structures.clear();
-    data.fish.clear();
+    data.fishs.clear();
     data.tiles.clear();
     data.rocks.clear();
     data.trees.clear();
