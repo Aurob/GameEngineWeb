@@ -218,7 +218,7 @@ void mainloop(void *arg)
         else {
 
             roomx = (game.game.width - (game.game.chunk_size*6))/2;
-            roomy = (game.game.height - (game.game.chunk_size*6))/2
+            roomy = (game.game.height - (game.game.chunk_size*6))/2;
 
             for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
                 for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
