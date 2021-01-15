@@ -218,7 +218,7 @@ void mainloop(void *arg)
             // small rectangle for the user position
             for (int i = game.user.chunks[0][0]; i < game.user.chunks[1][0] + 1; i++) {
                 for (int j = game.user.chunks[0][1]; j < game.user.chunks[3][1] + 1; j++) {
-                    tiletexr.x = game.game.width/3 + (i * game.game.chunk_size); tiletexr.y = game.game.height/3 + (j * game.game.chunk_size);
+                    tiletexr.x = ((game.game.width/game.game.chunk_size)/2) + (i * game.game.chunk_size); tiletexr.y = ((game.game.hieght/game.game.chunk_size)/2) + (j * game.game.chunk_size);
                     tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
                     steptexr.x = 0; steptexr.y = 1152;
                     steptexr.w = 32; steptexr.h = 32; 
@@ -229,7 +229,7 @@ void mainloop(void *arg)
             if(game.game.active_interior.type == "book"){
                 //book room
                 if(game.game.active_interior.items.size() > 0){
-                    tiletexr.x = game.game.width/3 + (game.game.chunk_size * 2.5); tiletexr.y = game.game.height/3 + (game.game.chunk_size * 2.5);
+                    tiletexr.x =  ((game.game.width/game.game.chunk_size)/2) + (game.game.chunk_size * 2.5); tiletexr.y = ((game.game.hieght/game.game.chunk_size)/2) + (game.game.chunk_size * 2.5);
                     tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size*.625; 
                     steptexr.x = 64; steptexr.y = 3808;
                     steptexr.w = 32; steptexr.h = 20; 
@@ -237,33 +237,35 @@ void mainloop(void *arg)
                 }
             }
             else if(game.game.active_interior.type == "shrek"){
-                tiletexr.x = game.game.width/3 + (3 * game.game.chunk_size); tiletexr.y = game.game.height/3 + (2 * game.game.chunk_size);
+                tiletexr.x =  ((game.game.width/game.game.chunk_size)/2) + (3 * game.game.chunk_size); tiletexr.y = ((game.game.hieght/game.game.chunk_size)/2) + (2 * game.game.chunk_size);
                 tiletexr.w = game.game.chunk_size*2; tiletexr.h = game.game.chunk_size*2; 
                 steptexr.x = 0; steptexr.y = 0;
                 steptexr.w = 304; steptexr.h = 282; 
 
-                SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(floor(game.game.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
-                game.game.active_interior.current = SDL_GetTicks();
-                if(game.game.active_interior.current > game.game.active_interior.start + 4000){
-                    game.game.active_interior.step += .3;  
-                }
-                if(game.game.active_interior.current > game.game.active_interior.start + 17650){
-                    game.game.active_interior.step += 2.5;  
-                }
-                if(game.game.active_interior.current > game.game.active_interior.start + 1000) game.game.active_interior.step += .1;    
                 
+                game.game.active_interior.current = SDL_GetTicks();
+                if(game.game.active_interior.current < game.game.active_interior.start + 105000){
+                    if(game.game.active_interior.current > game.game.active_interior.start + 4000){
+                        game.game.active_interior.step += .3;  
+                    }
+                    if(game.game.active_interior.current > game.game.active_interior.start + 17650){
+                        game.game.active_interior.step += 2.5;  
+                    }
+                    if(game.game.active_interior.current > game.game.active_interior.start + 1000) game.game.active_interior.step += .1;    
+                    SDL_RenderCopy(renderer, game.game.Textures.Textures["shrek"][static_cast<int>(floor(game.game.active_interior.step)) % 138].tex, &steptexr, &tiletexr);
+                }
             }
 
             //Draws user data
-            temp_rect.x = game.game.width/3 + game.game.active_interior.user.x; 
-            temp_rect.y = game.game.height/3 + game.game.active_interior.user.y;
+            temp_rect.x = ((game.game.width/game.game.chunk_size)/2) + game.game.active_interior.user.x; 
+            temp_rect.y = ((game.game.hieght/game.game.chunk_size)/2) + game.game.active_interior.user.y;
             temp_rect.w = game.game.chunk_size/5;
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
 
-            tiletexr.x = game.game.width/3 + (game.game.chunk_size*3); 
-            tiletexr.y = game.game.height/3 + (game.game.chunk_size*6);
+            tiletexr.x = ((game.game.width/game.game.chunk_size)/2) + (game.game.chunk_size*3); 
+            tiletexr.y = ((game.game.hieght/game.game.chunk_size)/2) + (game.game.chunk_size*6);
             tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
             steptexr.x = 160; steptexr.y = 1152;
             steptexr.w = 32; steptexr.h = 32; 
