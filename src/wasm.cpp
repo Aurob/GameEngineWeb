@@ -255,7 +255,8 @@ void mainloop(void *arg)
             }
 
             //Draws user data
-            tiletexr.x = game.game.width/3 + (3 * game.game.chunk_size); tiletexr.y = game.game.height/3 + (2 * game.game.chunk_size);
+            temp_rect.x = game.game.width/3 + (3 * game.game.chunk_size); 
+            temp_rect.y = game.game.height/3 + (2 * game.game.chunk_size);
             temp_rect.w = game.game.chunk_size/5;
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
