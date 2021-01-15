@@ -66,6 +66,7 @@ void Game::clean_data(){
     data.structures.clear();
     data.ignored_tiles.clear();
     data.tiles.clear();
+    data.renderable.clear();
 }
 
 //Batch updates game values
