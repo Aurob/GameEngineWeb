@@ -1,11 +1,10 @@
 #!/bin/bash
-echo "compile commenced at:" $(date)
-
 mv ../index.html ../index_temp.html
 mv ../index_building.html ../index.html 
 
-if [ $1 = "wasm" ] 
-then
+args="${@:2}"
+if [ $# -gt 0 ]; then
+  echo "compile commenced at:" $(date)
   emcc -std=c++1z $1.cpp StructureUtils.cpp FastNoise.cpp TextureUtils.cpp WorldUtils.cpp Game.cpp -s WASM=1 -s USE_SDL=2 -O3 -o $1.js \
   -s EXPORTED_FUNCTIONS="['_main', '_get_info', '_ecount']" \
   -s EXTRA_EXPORTED_RUNTIME_METHODS=["cwrap"] \
@@ -15,9 +14,16 @@ then
   -lSDL \
   --preload-file ../Resources \
   -s ASSERTIONS=1
-  echo "compile concluded at:" $(date)
-fi
 
-mv wasm.js wasm.data wasm.wasm ../
-mv ../index.html ../index_building.html
-mv ../index_temp.html ../index.html
+  if [ $? -eq 0 ]; then
+      echo OK
+      mv wasm.js wasm.data wasm.wasm ../
+      mv ../index.html ../index_building.html
+      mv ../index_temp.html ../index.html
+  else
+      echo FAIL
+  fi
+else
+  echo "Invalid number of arguments passed"
+fi
+  echo "compile concluded at:" $(date)

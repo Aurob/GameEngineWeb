@@ -228,8 +228,8 @@ void Game::update_pos(){
     /*Tile loading*/
     bool skip;
     int biometex;
-    for (int i = user.chunks[0][0] - 6; i < user.chunks[1][0] + 1; i++) {
-            for (int j = user.chunks[0][1] - 6; j < user.chunks[3][1] + 1; j++) {
+    for (int i = user.chunks[0][0] - 2; i < user.chunks[1][0] + 2; i++) {
+        for (int j = user.chunks[0][1] - 2; j < user.chunks[3][1] + 2; j++) {
             //seed srand with the tile position
             srand(hasher(std::to_string(i) + std::to_string(j)));
             
@@ -252,7 +252,44 @@ void Game::update_pos(){
             chunk_position = content(chunk_position, 6);
             chunk_position.ix = i; chunk_position.iy = j;
             biometex = data.WorldGen.terrainGeneration(i, j);
-            data.tiles[biometex].push_back(chunk_position);
+
+            SubTexture tile;
+            tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
+            tile.texture.w = data.chunk_size; tile.texture.h = data.chunk_size;     
+
+            if(biometex == 1){ //sand
+                    tile.resource_index = 0;
+                    tile.texture.x = 192; tile.texture.y = 224;
+                    tile.texture.w = 32; tile.texture.h = 32;
+            }
+            else if(biometex == 2){ //dark sand
+                    tile.resource_index = 1;
+                    tile.texture.x = 192; tile.texture.y = 32;
+                    tile.texture.w = 32; tile.texture.h = 32;
+            }
+            else if(biometex == 3){ //dirt
+                    tile.resource_index = 0;
+                    tile.texture.x = 192; tile.texture.y = 32;
+                    tile.texture.w = 32; tile.texture.h = 32;
+            }
+            else if(biometex == 4){ //dark grass
+                    tile.resource_index = 1;
+                    tile.texture.x = 192; tile.texture.y = 1184;
+                    tile.texture.w = 32; tile.texture.h = 32;
+            }
+            else if(biometex == 5){ //grass
+                    tile.resource_index = 7;
+                    TileEdge grass_edges = get_tileEdges(i, j);
+                    tile.texture.x = 32; tile.texture.y = 64;
+                    tile.texture.w = 64; tile.texture.h = 64;
+            }
+            else if(biometex == 6){ //stone
+                    tile.resource_index = 0;
+                    tile.texture.x = 192; tile.texture.y = 416;
+                    tile.texture.w = 32; tile.texture.h = 32;
+            }
+
+            data.tiles.push_back(tile);
 
             //load trees on grass tiles
             if(biometex == 4 || biometex == 5){
@@ -435,6 +472,19 @@ void Game::update_entities(){
         }
         ++index;
     }
+}
+
+TileEdge Game::get_tileEdges(int x, int y){
+    TileEdge edges;
+    edges.left_tile = data.WorldGen.terrainGeneration(x - 1, y);
+    edges.right_tile = data.WorldGen.terrainGeneration(x + 1, y);
+    edges.up_tile = data.WorldGen.terrainGeneration(x, y - 1);
+    edges.down_tile = data.WorldGen.terrainGeneration(x, y + 1);
+    edges.down_left_tile = data.WorldGen.terrainGeneration(x - 1, y + 1);
+    edges.up_left_tile = data.WorldGen.terrainGeneration(x - 1, y - 1);
+    edges.down_right_tile = data.WorldGen.terrainGeneration(x + 1, y + 1);
+    edges.up_right_tile = data.WorldGen.terrainGeneration(x + 1, y - 1);
+    return edges;
 }
 
 std::string Game::rstring(size_t length){

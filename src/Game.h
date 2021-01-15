@@ -53,7 +53,7 @@ struct GameOBJ
 
     Building active_interior;
     bool inside{false};
-    std::unordered_map<int, std::vector<Position>> tiles;
+    std::vector<SubTexture> tiles;
     std::vector<std::vector<int>> ignored_tiles;
     std::vector<Position> trees;
     std::vector<Position> rocks;
@@ -82,6 +82,17 @@ struct User
     int timer;
 };
 
+struct TileEdge {
+    int left_tile;
+    int right_tile;
+    int up_tile;
+    int down_tile;
+    int down_left_tile;
+    int up_left_tile;
+    int down_right_tile;
+    int up_right_tile;
+};
+
 bool zorder(const Entity&, const Entity&);
 
 class Game {
@@ -96,5 +107,6 @@ class Game {
     void update_inside();
     void update_entities();
     void clean_data();
+    TileEdge get_tileEdges(int, int);
     std::string rstring(size_t);
 };

@@ -16,6 +16,13 @@ struct Texture
     SDL_Texture *tex = NULL;
 };
 
+struct SubTexture
+{
+    SDL_Rect screen;
+    SDL_Rect texture;
+    int resource_index;
+};
+
 class TextureUtils {
     public:
         SDL_Renderer *renderer;
