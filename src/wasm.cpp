@@ -832,7 +832,7 @@ void mainloop(void *arg)
                                             p.step = 0;
                                             game.game.inside = true;
                                             p.user.x = game.game.chunk_size*3;
-                                            p.user.y = game.game.chunk_size*6;
+                                            p.user.y = game.game.chunk_size*5;
                                             game.game.active_interior = p;
                                             game.game.chunk_size = game.game.chunk_sizes[2];
 
