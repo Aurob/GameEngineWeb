@@ -163,7 +163,6 @@ float texheight;
 int t;
 bool skip;    
 int roomx, roomy;
-std::hash<std::string> hasher;
 void mainloop(void *arg)
 {   
     SDL_Event event;
@@ -283,140 +282,8 @@ void mainloop(void *arg)
 
     }
     else {
-        /*Tile loading*/
-        for (int i = game.user.chunks[0][0] - 6; i < game.user.chunks[1][0] + 1; i++) {
-            for (int j = game.user.chunks[0][1] - 6; j < game.user.chunks[3][1] + 1; j++) {
-                
-                srand(hasher(std::to_string(i) + std::to_string(j)));
-                //Used to skip drawing of a tile
-                //Clicking trees/rocks causes that tile to be skipped
-                //TODO
-                //Store the reason for skipping the tile so it can be drawn?
-                skip = false;
-                for(auto structure : ignored_tiles){
-                    if(i == structure[0] && j == structure[1]){
-                        skip = true;
-                        break;
-                    }
-                }
-                //This could be used to limit the size of the world
-                //if(i > 100) skip = true;
-                if(skip) continue;
-
-                //Get the screen coordinates of the current tile
-                Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
-                chunk_position = game.content(chunk_position, 6);
-                chunk_position.ix = i; chunk_position.iy = j;
-                biometex = game.data.WorldGen.terrainGeneration(i, j);
-                tiles[biometex].push_back(chunk_position);
-                
-                //Next determine secondary tile spawns
-                //(fish, trees, rocks, etc..)
-            
-                //load trees on grass tiles
-                if(biometex == 4 || biometex == 5){
-                    
-                    if(game.data.WorldGen.treeGeneration(i, j)){
-                        
-                        chunk_position.noise = rand() % 10000;
-                        trees.push_back(chunk_position);
-                    }
-                }
-
-                //Rocks spawn on top of stone tiles
-                else if(biometex == 6){
-                    if(game.data.WorldGen.rockGeneration(i, j)){
-                        rocks.push_back(chunk_position);
-                    } 
-                }
-
-                //Generate fish popups on water only
-                else if(biometex == 0){
-                    if(game.data.WorldGen.fishGeneration(i, j, game.data.time_stepx, game.data.time_stepy)){
-                        fishs.push_back(chunk_position);
-                    } 
-                }
-
-                //load structures anywhere but water
-                if(biometex != 0){
-                    if(game.data.WorldGen.doorGeneration(i, j)){
-                        std::string bID = game.rstring(10);
-                        
-                        structures.push_back(chunk_position);
-                        Building b;
-                        b.global_origin[0] = i;
-                        b.global_origin[1] = j;
-
-                        b.screen_origin[0] = chunk_position.x;
-                        b.screen_origin[1] = chunk_position.y;
-
-                        b.roof_index = rand() % 6;
-                        b.wall_index = rand() % 12;
-                        b.ID = bID;
-
-                        int occupant_count = rand() % 10; //10 is the max occupant count
-
-                        //Entity creation
-                        // for(unsigned int ii = 0; ii < occupant_count; ++ii){
-                        //     float n = game.data.noise.GetPerlinFractal(ii, -ii);
-                        //     Entity e {
-                        //         .speed = (static_cast<float>((rand() % 30 < 5) ? (rand() % 15) + 15 : rand() % 15)),
-                        //         .size = 10, .directionx = 1 - ((rand() % 10 < 5) ? 1 : 0), .directiony = 1 - ((rand() % 10 < 5) ? 1 : 0), 
-                        //         .color = SDL_Color{static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256), static_cast<Uint8>(rand() % 256)},
-                        //         .persist = false, .timex = 0, .timey = 0, .index = ii, .hasTex = true, .texIndex = rand() % MAX_char, .texAng = 0,
-                        //         .ID = game.rstring(10), .boat_texIndex = static_cast<unsigned int>(rand() % 6) + 18, 
-                        //         .fast_texIndex = (rand() % 6) + (static_cast<int>(game.data.Textures.Textures["characters"].size()) - 6),
-                        //         .health = 100.f
-                        //     };
-                            
-                        //     if(e.speed < 20){
-                        //         e.fast_texIndex = e.texIndex;
-                        //     }
-                        //     Position entity_spawn = Position{
-                        //         b.screen_origin[0] + static_cast<float>(rand() % (100 - -100) + -100), 
-                        //         b.screen_origin[1] + static_cast<float>(rand() % (100 - -100) + -100)
-                        //     };
-
-                        //     //Position entity_spawn = Position{static_cast<float>((rand()%100) - fmod(n*400, 100000)*1000), static_cast<float>((rand()%100)*fmod(n*400, 100000)*1000 - fmod(n*400, 10000)*1000)};
-                        //     e.chunk = game.getChunkFromCoord(entity_spawn.x, entity_spawn.y);
-                        //     n = (game.data.noise.GetPerlin((e.chunk.x), (e.chunk.y)) - -1) / (1 - -1);
-                        //     n = (game.data.noise.GetPerlinFractal((e.chunk.x)+pow(n,2), (e.chunk.y)+pow(n,2)) - -1) / (1 - -1);
-                        //     if(n < .45){
-                        //         e.items["boat"] = 1;
-                        //     }
-                        //     if(e.fast_texIndex > game.data.Textures.Textures["characters"].size() - 2){
-                        //         e.items["fly"] = 1;
-                        //     }
-                        //     e.temp_speed = e.speed;
-                        //     e.position.x = entity_spawn.x;
-                        //     e.position.y = entity_spawn.y;
-                        //     game.data.entities.push_back(e);
-
-                        //     b.occupants[e.ID] = e;
-                        // }
-
-                        b.items["note"] = Position{300, 300};
-                        game.data.structures.push_back(b);
-                        //Structure spawns are based on a single tile, 
-                        //  so we need to check each tile that the structure covers
-                        //  and ignore that tile
-                        //TODO
-                        for(int ii = i; ii < i + 6; ++ii){
-                            for(int jj = j; jj < j + 6; ++jj){
-                                if(ii != i && jj != j)
-                                    ignored_tiles.push_back(std::vector<int>{ii, jj});
-                            }
-                        }
-                    }
-                }
-            }
-        }   
-        //concat visible trees to the entities data 
-        //game.data.entities.insert(game.data.entities.end(), trees.begin(), trees.end());
-
-
         /*Tile renders*/
-        for(auto type : tiles){
+        for(auto type : game.data.tiles){
             
             for(auto tile : type.second){
 
@@ -701,7 +568,7 @@ void mainloop(void *arg)
                         chartexr.h = game.data.chunk_size/3;
 
                         //This seeding sets the entity
-                        srand(hasher(entity.ID));
+                        srand(game.hasher(entity.ID));
 
                         steptexr.x = (rand() % 9) * 96; steptexr.y = (rand() % 10) * 32;
                         steptexr.w = 32; steptexr.h = 32; 
@@ -790,7 +657,7 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][4].tex, &steptexr, &temp_rect);
             
             //sign
-            srand(hasher(p.ID));
+            srand(game.hasher(p.ID));
             int sign_c = (rand() % 7);
             int sign_r = (rand() % 2);
             steptexr.x = 0 + (32 * sign_c);

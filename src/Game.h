@@ -53,6 +53,8 @@ struct GameOBJ
 
     Building active_interior;
     bool inside{false};
+    std::unordered_map<int, std::vector<Position>> tiles;
+    std::vector<std::vector<int>> ignored_tiles;
 };
 
 struct User
@@ -80,6 +82,7 @@ class Game {
     public:
     GameOBJ data;
     User user;
+    std::hash<std::string> hasher;
     Game();
     Position content(Position&, int);
     Position getChunkFromCoord(float, float);

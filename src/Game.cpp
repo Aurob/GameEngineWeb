@@ -5,7 +5,7 @@
 //This really needs to be a singleton
 Game::Game(){
     //Begin defining game settings
-    game = GameOBJ{
+    data = GameOBJ{
         .speed = 10,
         .xoffset = 0, .yoffset = 0,
         .width = 1000, .height = 1000,
@@ -26,7 +26,6 @@ Game::Game(){
 //returns the screen x,y coordinate of a specified chunk
 Position Game::content(Position& chunk, int bg_render = 0){
 
-    //Unnecessary re-initialization 
     data.dx = (data.xoffset < 0) ? data.chunk_size + data.xoffset : data.xoffset;
     data.dy = (data.yoffset < 0) ? data.chunk_size + data.yoffset : data.yoffset;
 
@@ -212,6 +211,37 @@ void Game::update_pos(){
 
         if(data.WorldGen.doorGeneration(data.i+1, data.j+1)){
             printf("Clicking structure");
+        }
+    }
+
+    /*Tile loading*/
+    bool skip;
+    int biometex;
+    for (int i = user.chunks[0][0] - 1; i < user.chunks[1][0] + 1; i++) {
+        for (int j = user.chunks[0][1] - 1; j < user.chunks[3][1] + 1; j++) {
+            //seed srand with the tile position
+            srand(hasher(std::to_string(i) + std::to_string(j)));
+            
+            //Clicking trees/rocks causes that tile to be skipped
+            //TODO
+            //Store the reason for skipping the tile so it can be drawn?
+            skip = false;
+            for(auto structure : data.ignored_tiles){
+                if(i == structure[0] && j == structure[1]){
+                    skip = true;
+                    break;
+                }
+            }
+            //This could be used to limit the size of the world
+            //if(i > 100) skip = true;
+            if(skip) continue;
+
+            //Get the screen coordinates of the current tile
+            Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
+            chunk_position = content(chunk_position, 6);
+            chunk_position.ix = i; chunk_position.iy = j;
+            biometex = data.WorldGen.terrainGeneration(i, j);
+            data.tiles[biometex].push_back(chunk_position);
         }
     }
 }
