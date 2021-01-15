@@ -261,6 +261,14 @@ void mainloop(void *arg)
             temp_rect.h = game.game.chunk_size/5;
             SDL_SetRenderDrawColor(renderer, 231, 134, 34, 255 );
             SDL_RenderFillRect(renderer, &temp_rect );
+
+            tiletexr.x = game.game.width/3 + (game.game.chunk_size*3); 
+            tiletexr.y = game.game.height/3 + (game.game.chunk_size*6);
+            tiletexr.w = game.game.chunk_size; tiletexr.h = game.game.chunk_size; 
+            steptexr.x = 160; steptexr.y = 1152;
+            steptexr.w = 32; steptexr.h = 32; 
+            SDL_RenderCopy(renderer, game.game.Textures.Textures["tiles"][4].tex, &steptexr, &tiletexr);
+
         }
 
     }
