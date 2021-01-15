@@ -471,7 +471,7 @@ void mainloop(void *arg)
         temp_rect.y = uchunk.y + 1;
         temp_rect.w = game.data.chunk_size - 1;
         temp_rect.h = game.data.chunk_size - 1;
-        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 128 );
+        SDL_SetRenderDrawColor(renderer, 34, 234, 134, 128 );
         SDL_RenderFillRect(renderer, &temp_rect );
 
         // small rectangle for the user position
