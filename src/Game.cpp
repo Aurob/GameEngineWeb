@@ -281,7 +281,7 @@ void Game::update_pos(){
                     tile.resource_index = 7;
                     TileEdge grass_edges = get_tileEdges(i, j);
                     tile.texture.x = 32; tile.texture.y = 64;
-                    tile.texture.w = 64; tile.texture.h = 64;
+                    tile.texture.w = 32; tile.texture.h = 32;
                     // if(grass_edges.right_tile == 5){
                     //     tile.texture.w += 32;
                     // }
