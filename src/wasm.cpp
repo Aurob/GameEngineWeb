@@ -210,7 +210,7 @@ void mainloop(void *arg)
 
     if(game.game.inside) {
 
-        if((game.game.active_interior.user.x > game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*6){
+        if((game.game.active_interior.user.x >= game.game.chunk_size*3 && game.game.active_interior.user.x < game.game.chunk_size*4) && game.game.active_interior.user.y > game.game.chunk_size*6){
             send_alert(7);
             game.game.inside = false;
         }
@@ -247,7 +247,7 @@ void mainloop(void *arg)
                 if(game.game.active_interior.current > game.game.active_interior.start + 4000){
                     game.game.active_interior.step += .3;  
                 }
-                if(game.game.active_interior.current > game.game.active_interior.start + 18100){
+                if(game.game.active_interior.current > game.game.active_interior.start + 17800){
                     game.game.active_interior.step += 2.5;  
                 }
                 else game.game.active_interior.step += .1;    
