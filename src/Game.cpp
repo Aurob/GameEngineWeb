@@ -257,14 +257,8 @@ void Game::update_pos(){
             //This could be used to limit the size of the world
             if(i >  100) {
                 tile.resource_index = 8;
-                if(i > 110) {
-                    tile.texture.x = 32; tile.texture.y = 0;
-                    tile.texture.w = 32; tile.texture.h = 32;
-                }
-                else {
-                    tile.texture.x = 0; tile.texture.y = 0;
-                    tile.texture.w = 32; tile.texture.h = 32;
-                }
+                tile.texture.x = 32; tile.texture.y = 0;
+                tile.texture.w = 32; tile.texture.h = 32;
                 data.tiles.push_back(tile);
 
                 continue;
