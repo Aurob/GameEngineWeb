@@ -130,8 +130,8 @@ EM_JS(void, talk, (int type), {
 
         case 5:
             //Shows a hidden iframe, then closes it after 15 seconds
-            document.getElementById("overlay").innerHTML = '<iframe width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>';
-            setTimeout(function(){document.getElementById("overlay").innerHTML = ""},15e3);
+            document.getElementById("overlay").innerHTML = '<iframe style="margin-left:0px" width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>';
+            setTimeout(function(){document.getElementById("overlay").innerHTML = ""},30e3);
             break;
         
         case 6:
