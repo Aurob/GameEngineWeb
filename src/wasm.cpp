@@ -609,9 +609,7 @@ extern "C" {
         return game.user.owned_entities.size();
     }
     int get_pos(int type) {
-        if(type == 0) return game.user.mouse["x"];
-        else if(type == 1) return game.user.mouse["y"];
-        else return -1;
+        return 123123;
     }
     const char* get_info(int type){
         const char* retval;
