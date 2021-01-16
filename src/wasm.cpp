@@ -84,6 +84,7 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
                 case SDLK_a: game.user.keyState[2] = true; break;
                 case SDLK_s: game.user.keyState[3] = true; break;
                 case SDLK_w: game.user.keyState[4] = true; break;
+                case SDLK_m: game.data.map_mode = true; break;
                 case SDLK_LSHIFT: game.user.keyState[5] = true; break;
                 default: break;
             }
