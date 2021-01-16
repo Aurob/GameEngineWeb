@@ -104,12 +104,6 @@ void Game::update_pos(){
         user.directiony = -1;
     } 
 
-    if(data.map_mode) {
-        std::cout << "Map mode?" << std::endl;
-        data.temp_chunk_size = data.current_chunk_size;
-        data.current_chunk_size = -1;
-        data.chunk_size = 1;
-    }
     //update camera offsets
     if(data.current_chunk_size != data.default_chk){
         data.xoffset = (fmod(user.globalx, static_cast<float>(data.chunk_sizes[data.default_chk])) / static_cast<float>(data.chunk_sizes[data.default_chk])) * static_cast<float>(data.chunk_size);
