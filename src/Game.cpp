@@ -100,7 +100,7 @@ void Game::update_pos(){
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        user.globaly-=data.speed * ((user.keyState[5]) ? 15 : 1); //W
+        user.globaly-=data.speed * ((user.keyState[5]) ? ((game.data.map_mode) ? 150 : 15) : 1); //W
         user.directiony = -1;
     } 
 
