@@ -171,8 +171,6 @@ void mainloop(void *arg)
         srand(game.data.seed);
         game.data.noise.SetSeed(rand() % 10000);
         //load textures using TextureUtils
-        game.data.Textures.renderer = renderer;
-        game.data.Textures.loadTextures();
 
         game.data.WorldGen.city_noise.SetSeed(rand() % 10000);
         game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
@@ -648,8 +646,6 @@ extern "C" {
 
 int main(int argc, char *argv[])
 {
-    
-    
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -663,6 +659,9 @@ int main(int argc, char *argv[])
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
     //emscripten_run_script("var ws = new WebSocket('wss://robauis.me/ws'); ws.onmessage = (e)=>{console.log(e.data);}");
     
+    game.data.Textures.renderer = renderer;
+    game.data.Textures.loadTextures();
+
     emscripten_set_main_loop_arg(mainloop, &ctx, fps, simulate_infinite_loop);
     
     SDL_DestroyRenderer(renderer);
