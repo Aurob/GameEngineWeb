@@ -105,6 +105,7 @@ void Game::update_pos(){
     } 
 
     if(data.map_mode) {
+        std::cout << "Map mode?" << std::endl;
         data.current_chunk_size = -1;
         data.chunk_size = 2;
     }
