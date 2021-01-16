@@ -257,6 +257,11 @@ void Game::update_pos(){
             tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
             tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;     
 
+            if(biometex == 0){ //water
+                    tile.resource_index = 3;
+                    tile.texture.x = 192; tile.texture.y = 224;
+                    tile.texture.w = 32*6; tile.texture.h = 32;
+            }
             if(biometex == 1){ //sand
                     tile.resource_index = 0;
                     tile.texture.x = 192; tile.texture.y = 224;
