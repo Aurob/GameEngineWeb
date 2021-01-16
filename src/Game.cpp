@@ -259,8 +259,8 @@ void Game::update_pos(){
 
             if(biometex == 0){ //water
                     tile.resource_index = 3;
-                    tile.texture.x = 192; tile.texture.y = 224;
-                    tile.texture.w = 32*6; tile.texture.h = 32;
+                    tile.texture.x = 32*6; tile.texture.y = 224;
+                    tile.texture.w = 32; tile.texture.h = 32;
             }
             if(biometex == 1){ //sand
                     tile.resource_index = 0;
