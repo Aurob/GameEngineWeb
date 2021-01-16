@@ -245,6 +245,15 @@ void Game::update_pos(){
             }
             if(skip) continue;
             SubTexture tile;
+
+            //Get the screen coordinates of the current tile
+            Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
+            chunk_position = content(chunk_position, 6);
+            chunk_position.ix = i; chunk_position.iy = j;
+            biometex = data.WorldGen.terrainGeneration(i, j);
+            tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
+            tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
+
             //This could be used to limit the size of the world
             if(i >  100 || i < -100) {
                 tile.resource_index = 8;
@@ -253,18 +262,6 @@ void Game::update_pos(){
                 data.tiles.push_back(tile);
                 continue;
             }
-
-            //Get the screen coordinates of the current tile
-            Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
-            chunk_position = content(chunk_position, 6);
-            chunk_position.ix = i; chunk_position.iy = j;
-            biometex = data.WorldGen.terrainGeneration(i, j);
-
-            
-            tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
-            tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
-
-                 
 
             if(biometex == 0){ //water
                     tile.resource_index = 3;
