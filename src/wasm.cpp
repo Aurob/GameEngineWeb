@@ -84,7 +84,15 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
                 case SDLK_a: game.user.keyState[2] = true; break;
                 case SDLK_s: game.user.keyState[3] = true; break;
                 case SDLK_w: game.user.keyState[4] = true; break;
-                case SDLK_m: game.data.map_mode = (game.data.map_mode) ? false : true; break;
+                case SDLK_m: 
+                    if(game.data.map_mode)  {
+                        game.data.current_chunk_size = game.data.temp_chunk_size;
+                        game.data.map_mode = false;
+                    }
+                    else {
+                        game.data.map_mode = true;
+                    }
+                    break;
                 case SDLK_LSHIFT: game.user.keyState[5] = true; break;
                 default: break;
             }

@@ -106,8 +106,9 @@ void Game::update_pos(){
 
     if(data.map_mode) {
         std::cout << "Map mode?" << std::endl;
+        data.temp_chunk_size = data.current_chunk_size;
         data.current_chunk_size = -1;
-        data.chunk_size = 2;
+        data.chunk_size = 1;
     }
     //update camera offsets
     if(data.current_chunk_size != data.default_chk){

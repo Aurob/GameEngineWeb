@@ -64,6 +64,7 @@ struct GameOBJ
     std::vector<Position> renderable;
 
     bool map_mode{};
+    int temp_chunk_size;
 };
 
 struct User
