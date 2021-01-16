@@ -165,7 +165,7 @@ bool skip;
 int roomx, roomy;
 void mainloop(void *arg)
 {   
-    if(!game.game.seeded || game.game.seed != get_seed_value()) {
+    if(!game.data.seeded || game.data.seed != get_seed_value()) {
         //seed generator
         srand(get_seed_value());
         game.data.noise.SetSeed(rand() % 10000);
