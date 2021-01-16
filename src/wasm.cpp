@@ -608,15 +608,15 @@ extern "C" {
     int ecount(){
         return game.user.owned_entities.size();
     }
+    int get_pos(int type) {
+        if(type == 0) return game.user.mouse["x"];
+        else if(type == 1) return game.user.mouse["y"];
+        else return 0;
+    }
     const char* get_info(int type){
         const char* retval;
         FastNoise noise;
         switch(type){
-            case 0:
-                std::string pos = std::to_string(game.user.mouse["x"]) + std::to_string(", ") + std::to_string(game.user.mouse["y"]);
-                retval = pos.c_str();
-                break;
-
             case 1:
                 retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
                 break;
