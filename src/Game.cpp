@@ -145,8 +145,10 @@ void Game::update_pos(){
     user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
 
     int tile = data.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
-    if(!user.keyState[5] && (tile == 0 || ((tile == 4 || tile == 5) 
-        && data.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))){
+    if((!user.keyState[5] && (tile == 0 || ((tile == 4 || tile == 5) && 
+        data.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))) ||
+        user.chunk[0] >= 100 || user.chunk[0] <= 100){
+
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
         data.xoffset = temp_xoff; data.yoffset = temp_yoff;
@@ -164,8 +166,6 @@ void Game::update_pos(){
 
         user.chunk[0] = user.chunks[0][0] + floor(static_cast<float>(user.chunks[1][0] - user.chunks[0][0]) / 2);
         user.chunk[1] = user.chunks[0][1] + floor(static_cast<float>(user.chunks[2][1] - user.chunks[0][1]) / 2);
-
-        return;
     }
 
     data.uchunk = getChunkFromCoord(user.globalx, user.globaly);
@@ -255,9 +255,9 @@ void Game::update_pos(){
             tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
 
             //This could be used to limit the size of the world
-            if(i >  100) {
+            if(i >  100 || i < -100) {
                 tile.resource_index = 8;
-                if(i > 110) {
+                if(i > 110 || i < -110) {
                     continue;
                 }
                 else {
