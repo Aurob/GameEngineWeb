@@ -130,7 +130,7 @@ EM_JS(void, talk, (int type), {
 
         case 5:
             //Shows a hidden iframe, then closes it after 15 seconds
-            document.getElementById("overlay").innerHTML = '<iframe style="margin-left:0px" width="100%" height="1000px" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>';
+            document.getElementById("overlay").innerHTML = '<iframe style="margin-left:0px" width="500px" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>';
             setTimeout(function(){document.getElementById("overlay").innerHTML = ""},30e3);
             break;
         
@@ -611,7 +611,7 @@ extern "C" {
     int get_pos(int type) {
         if(type == 0) return game.user.mouse["x"];
         else if(type == 1) return game.user.mouse["y"];
-        else return 0;
+        else return -1;
     }
     const char* get_info(int type){
         const char* retval;
