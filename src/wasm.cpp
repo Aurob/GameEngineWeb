@@ -605,10 +605,14 @@ void mainloop(void *arg)
 // Begin JS/C bridges
 
 extern "C" {
-    int ecount(){
+    int ecount() {
         return game.user.owned_entities.size();
     }
-    const char* get_info(int type){
+
+    int get_global(int type) {
+        return 0;
+    }
+    const char* get_info(int type) {
         const char* retval;
         FastNoise noise;
         switch(type){

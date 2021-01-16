@@ -78,6 +78,7 @@
             onRuntimeInitialized: function(){
                 get_info = Module.cwrap('get_info', 'string', ['number']);
                 ecount = Module.cwrap('ecount', 'number', ['']);
+                get_global = Module.cwrap('get_global', 'number', ['number']);
             },
             canvas: (function() { return document.getElementById('canvas'); })()
         };
