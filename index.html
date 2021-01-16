@@ -123,9 +123,14 @@
             }, 10);
         });
 
+        var seed = 0;
         function getSeed(){
-            return document.getElementById("seed").value.hashCode();
+            return seed;
         }
+        function setSeed(_seed){
+            seed = String(_seed).hashCode();
+        }
+
         function showrick(){//
             document.getElementById("#overlay").style.display = "block";
         }
