@@ -258,8 +258,7 @@ void Game::update_pos(){
             if(i >  100) {
                 tile.resource_index = 8;
                 if(i > 110) {
-                    tile.texture.x = 0; tile.texture.y = 0;
-                    tile.texture.w = 32; tile.texture.h = 32;
+                    continue;
                 }
                 else {
                     tile.texture.x = 0; tile.texture.y = 0;
