@@ -167,7 +167,8 @@ void mainloop(void *arg)
 {   
     if(!game.data.seeded || game.data.seed != get_seed_value()) {
         //seed generator
-        srand(get_seed_value());
+        game.data.seed = get_seed_value();
+        srand(game.data.seed);
         game.data.noise.SetSeed(rand() % 10000);
         //load textures using TextureUtils
         game.data.Textures.renderer = renderer;
@@ -177,6 +178,7 @@ void mainloop(void *arg)
         game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
         game.data.WorldGen.fish_noise.SetSeed(rand() % 10000);
         game.data.WorldGen.tree_noise.SetSeed(rand() % 10000);
+        game.data.seeded = true;
     }
 
     SDL_Event event;

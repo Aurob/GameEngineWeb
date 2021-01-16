@@ -49,8 +49,9 @@ struct GameOBJ
     
     Position uchunk;
 
+    bool seeded{false};
+    int seed;
     
-
     Building active_interior;
     bool inside{false};
     std::vector<SubTexture> tiles;
