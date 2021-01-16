@@ -168,6 +168,7 @@ void mainloop(void *arg)
     if(!game.data.seeded || game.data.seed != get_seed_value()) {
         //seed generator
         game.data.seed = get_seed_value();
+        std::cout << game.data.seed << std::endl;
         srand(game.data.seed);
         game.data.noise.SetSeed(rand() % 10000);
         //load textures using TextureUtils
