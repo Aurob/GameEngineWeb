@@ -147,7 +147,7 @@ void Game::update_pos(){
     int tile = data.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
     if((!user.keyState[5] && (tile == 0 || ((tile == 4 || tile == 5) && 
         data.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))) ||
-        user.chunk[0] >= 100 || user.chunk[0] <= -100){
+        user.chunk[0] > 100 || user.chunk[0] < -100){
 
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
@@ -261,7 +261,7 @@ void Game::update_pos(){
                     continue;
                 }
                 else {
-                    tile.texture.x = 0; tile.texture.y = 0;
+                    tile.texture.x = 32 * (rand() % 2); tile.texture.y = 32 * (rand() % 3);
                     tile.texture.w = 32; tile.texture.h = 32;
                 }
                 data.tiles.push_back(tile);
