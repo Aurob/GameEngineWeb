@@ -177,6 +177,7 @@ void mainloop(void *arg)
         game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
         game.data.WorldGen.fish_noise.SetSeed(rand() % 10000);
         game.data.WorldGen.tree_noise.SetSeed(rand() % 10000);
+        game.data.WorldGen.rock_noise.SetSeed(rand() % 10000);
         game.data.seeded = true;
     }
 

@@ -106,7 +106,7 @@
         }
 
         $(document).ready(function(){
-            
+            if(window.location.search) setSeed(window.location.search);
             ctx.canvas.width = 1000;
             ctx.canvas.height = window.innerHeight;
             setInterval(()=>{
