@@ -147,7 +147,7 @@ void Game::update_pos(){
     int tile = data.WorldGen.terrainGeneration(user.chunk[0], user.chunk[1]);
     if((!user.keyState[5] && (tile == 0 || ((tile == 4 || tile == 5) && 
         data.WorldGen.treeGeneration(user.chunk[0], user.chunk[1])))) ||
-        user.chunk[0] >= 100 || user.chunk[0] <= 100){
+        user.chunk[0] >= 100 || user.chunk[0] <= -100){
 
         user.globalx = tempx; user.globaly = tempy;
         user.directionx = temp_directionx; user.directiony = temp_directiony;
