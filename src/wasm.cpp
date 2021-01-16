@@ -516,7 +516,7 @@ void mainloop(void *arg)
                 
                 //sign
                 srand(game.hasher(b.ID));
-                int sign_c = (rand() % 7);
+                int sign_c = (rand() % 8);
                 int sign_r = (rand() % 2);
                 steptexr.x = 0 + (32 * sign_c);
                 steptexr.y = 2624 + (32 * sign_r);
