@@ -613,7 +613,8 @@ extern "C" {
         FastNoise noise;
         switch(type){
             case 0:
-                retval = (std::to_string(game.user.mouse["x"]) + ", " + std::to_string(game.user.mouse["y"])).c_str();
+                std::string pos = std::to_string(game.user.mouse["x"]) + std::to_string(", ") + std::to_string(game.user.mouse["y"]);
+                retval = pos.c_str();
                 break;
 
             case 1:
