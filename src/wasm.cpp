@@ -93,8 +93,8 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
     return -1;
 }
 
-EM_JS(int, get_icon_index, (), {
-    return getIcon();
+EM_JS(int, get_seed_value, (), {
+    return getSeed();
 });
 
 EM_JS(void, talk, (int type), {
@@ -165,6 +165,20 @@ bool skip;
 int roomx, roomy;
 void mainloop(void *arg)
 {   
+    if(!game.game.seeded || game.game.seed != get_seed_value()) {
+        //seed generator
+        srand(get_seed_value());
+        game.data.noise.SetSeed(rand() % 10000);
+        //load textures using TextureUtils
+        game.data.Textures.renderer = renderer;
+        game.data.Textures.loadTextures();
+
+        game.data.WorldGen.city_noise.SetSeed(rand() % 10000);
+        game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
+        game.data.WorldGen.fish_noise.SetSeed(rand() % 10000);
+        game.data.WorldGen.tree_noise.SetSeed(rand() % 10000);
+    }
+
     SDL_Event event;
     //Handle events
     while (SDL_PollEvent(&event)) {
@@ -632,9 +646,7 @@ extern "C" {
 
 int main(int argc, char *argv[])
 {
-    //seed generator
-    srand(time(NULL));
-    game.data.noise.SetSeed(rand() % 10000);
+    
     
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
@@ -648,19 +660,7 @@ int main(int argc, char *argv[])
     const int simulate_infinite_loop = 1; // call the function repeatedly
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
     //emscripten_run_script("var ws = new WebSocket('wss://robauis.me/ws'); ws.onmessage = (e)=>{console.log(e.data);}");
-
-    //load textures using TextureUtils
-    game.data.Textures.renderer = renderer;
-    game.data.Textures.loadTextures();
-
-    game.data.WorldGen.city_noise.SetSeed(rand() % 10000);
-    game.data.WorldGen.terrain_noise.SetSeed(rand() % 10000);
-    game.data.WorldGen.fish_noise.SetSeed(rand() % 10000);
-    game.data.WorldGen.tree_noise.SetSeed(rand() % 10000);
-
     
-
-
     emscripten_set_main_loop_arg(mainloop, &ctx, fps, simulate_infinite_loop);
     
     SDL_DestroyRenderer(renderer);
