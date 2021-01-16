@@ -73,13 +73,11 @@
     <!-- Allow the C++ to access the canvas element and some C++ methods --> 
     <script type='text/javascript'>
         var get_info;
-        var get_pos;
         var ecount;
         var Module = {
             onRuntimeInitialized: function(){
                 get_info = Module.cwrap('get_info', 'string', ['number']);
                 ecount = Module.cwrap('ecount', 'number', ['']);
-                get_pos = Module.cwrap('get_pos', 'number' ['number']);
             },
             canvas: (function() { return document.getElementById('canvas'); })()
         };

@@ -608,13 +608,13 @@ extern "C" {
     int ecount(){
         return game.user.owned_entities.size();
     }
-    int get_pos(int type) {
-        return 123123;
-    }
     const char* get_info(int type){
         const char* retval;
         FastNoise noise;
         switch(type){
+            case 0:
+                break;
+
             case 1:
                 retval = (std::to_string(static_cast<int>(game.user.globalx)) + ", " + std::to_string(static_cast<int>(game.user.globaly))).c_str();
                 break;
