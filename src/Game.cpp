@@ -244,7 +244,7 @@ void Game::update_pos(){
                 }
             }
             //This could be used to limit the size of the world
-            if(i >  100|| i < -100) skip = true;
+            // if(i >  100|| i < -100) skip = true;
             if(skip) continue;
 
             //Get the screen coordinates of the current tile
