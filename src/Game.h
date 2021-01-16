@@ -63,7 +63,7 @@ struct GameOBJ
     std::vector<Entity> visible_entities;
     std::vector<Position> renderable;
 
-    bool map_mode;
+    bool map_mode{};
 };
 
 struct User
