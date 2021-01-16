@@ -62,6 +62,8 @@ struct GameOBJ
     std::vector<Building> structures;
     std::vector<Entity> visible_entities;
     std::vector<Position> renderable;
+
+    bool map_mode;
 };
 
 struct User
