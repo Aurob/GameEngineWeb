@@ -284,7 +284,7 @@ void Game::update_pos(){
             }
             else if(biometex == 5){ //grass
                     tile.resource_index = 1;
-                    tile.texture.x = 192; tile.texture.y = 992;
+                    tile.texture.x = 192; tile.texture.y = 800;
                     tile.texture.w = 32; tile.texture.h = 32;
             }
             else if(biometex == 6){ //stone
