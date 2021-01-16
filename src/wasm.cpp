@@ -610,7 +610,7 @@ extern "C" {
     }
 
     int get_global(int type) {
-        return (type == 0) ? game.user.mouse["x"] : ((type == 1) ? game.user.mouse["y"] : -1);
+        return (type == 0) ? static_cast<int>(game.user.globalx) : ((type == 1) ? static_cast<int>(game.user.globaly)  : -1);
     }
     const char* get_info(int type) {
         const char* retval;
