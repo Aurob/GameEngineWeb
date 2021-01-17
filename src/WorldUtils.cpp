@@ -11,7 +11,7 @@ WorldUtils::WorldUtils(){
     fish_noise.SetFractalOctaves(12);
     fish_noise.SetFractalLacunarity(0.0);
 
-    terrain_noise.SetNoiseType(FastNoise::Cubic);
+    terrain_noise.SetNoiseType(FastNoise::Value);
     terrain_noise.SetFractalType(FastNoise::RigidMulti);
     terrain_noise.SetFractalOctaves(13);
     // terrain_noise.SetFractalLacunarity(2);
