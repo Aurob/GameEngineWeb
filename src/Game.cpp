@@ -71,7 +71,7 @@ void Game::clean_data(){
 
 //Batch updates game values
 void Game::update_pos(){
-    clean_data();
+    
     //update global position
     //TODO check if the user moves onto a tile they shouldn't
     // i.e Trees, Strucutres, Water Tiles
@@ -137,6 +137,13 @@ void Game::update_pos(){
 
     user.chunks[3][0] = data.xchunk2; user.chunks[3][1] = data.ychunk2;
 
+    //If the user hasn't moved to changed the view, don't dont do anything
+    if(user.chunks[0][0] == temp_xchunk1 && user.chunks[0][1] == temp_xchunk2) return;
+
+    //otherwise, clear all the temp data and recalculate what to render
+    clean_data();
+
+    
     //Set the user's chunk
     //Simply calculated by finding the center most chunk, not from the user's global position
     //TODO
