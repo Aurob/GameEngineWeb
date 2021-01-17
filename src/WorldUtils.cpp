@@ -14,7 +14,7 @@ WorldUtils::WorldUtils(){
     terrain_noise.SetNoiseType(FastNoise::Cellular);
     terrain_noise.SetFractalType(FastNoise::FBM);
     
-    terrain_noise.SetFrequency(.0001);
+    terrain_noise.SetFrequency(.032);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
