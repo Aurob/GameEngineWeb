@@ -10,9 +10,6 @@ WorldUtils::WorldUtils(){
     fish_noise.SetFrequency(.004);
     fish_noise.SetFractalOctaves(12);
     fish_noise.SetFractalLacunarity(0.0);
-
-    terrain_noise.SetNoiseType(FastNoise::Cellular);
-    terrain_noise.SetFractalType(FastNoise::FBM);
     
     terrain_noise.SetFrequency(.032);
 }
