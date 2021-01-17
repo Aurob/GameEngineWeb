@@ -11,12 +11,12 @@ WorldUtils::WorldUtils(){
     fish_noise.SetFractalOctaves(12);
     fish_noise.SetFractalLacunarity(0.0);
     
-    terrain_noise.SetFrequency(.022);
+    terrain_noise.SetFrequency(.012);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
     //
-    n = (terrain_noise.GetPerlin((i), (j)) - -1) / (1 - -1);
+    n = (terrain_noise.GetPerlinFractal((i), (j)) - -1) / (1 - -1);
     n = (terrain_noise.GetPerlinFractal((i)+pow(n,2), (j)+pow(n,2)) - -1) / (1 - -1);
 
     if (n < 0.45) return 0; //water
