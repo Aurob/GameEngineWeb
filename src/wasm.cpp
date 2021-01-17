@@ -600,6 +600,13 @@ void mainloop(void *arg)
         
     }
 
+    temp_rect.x = 0;
+    temp_rect.y = 0;
+    temp_rect.w = game.data.width;
+    temp_rect.h = game.data.height;
+    SDL_SetRenderDrawColor(renderer, 134, 134, 134, 10 );
+    SDL_RenderFillRect(renderer, &temp_rect);
+
     //finally draw everything to the screen
     SDL_RenderPresent(renderer);
     ctx->iteration++;
