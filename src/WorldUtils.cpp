@@ -13,12 +13,8 @@ WorldUtils::WorldUtils(){
 
     terrain_noise.SetNoiseType(FastNoise::Cellular);
     terrain_noise.SetFractalType(FastNoise::FBM);
-    terrain_noise.SetFractalLacunarity(2.6);
-    terrain_noise.SetFractalGain(.9);
-    terrain_noise.SetCellularDistanceFunction(FastNoise::Euclidean);
-    terrain_noise.SetCellularReturnType(FastNoise::CellValue);
     
-    terrain_noise.SetFrequency(.001);
+    terrain_noise.SetFrequency(.0001);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
