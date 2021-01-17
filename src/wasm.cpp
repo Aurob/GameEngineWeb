@@ -437,7 +437,7 @@ void mainloop(void *arg)
         for(auto obj : game.data.renderable){
 
             //tree
-            if(obj.type == 0) {
+            if(obj.type == 0 && game.data.chunk_size != 2) {
                 srand(floor(obj.noise));
                 chartexr.x = 0; 
                 chartexr.y = 65 * (rand() % 8);
