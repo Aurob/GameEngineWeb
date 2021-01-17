@@ -13,10 +13,10 @@ WorldUtils::WorldUtils(){
 
     terrain_noise.SetNoiseType(FastNoise::Cubic);
     terrain_noise.SetFractalType(FastNoise::RigidMulti);
-    // terrain_noise.SetFractalOctaves(13);
+    terrain_noise.SetFractalOctaves(13);
     // terrain_noise.SetFractalLacunarity(2);
     // terrain_noise.SetFractalGain(.7);
-    terrain_noise.SetFrequency(.005);
+    terrain_noise.SetFrequency(.05);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
