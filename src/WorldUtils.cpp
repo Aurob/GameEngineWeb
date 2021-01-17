@@ -16,7 +16,7 @@ WorldUtils::WorldUtils(){
     terrain_noise.SetFractalOctaves(13);
     // terrain_noise.SetFractalLacunarity(2);
     // terrain_noise.SetFractalGain(.7);
-    terrain_noise.SetFrequency(.05);
+    terrain_noise.SetFrequency(.005);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
