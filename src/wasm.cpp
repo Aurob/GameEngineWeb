@@ -435,11 +435,13 @@ void mainloop(void *arg)
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
         //std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
         for(auto obj : game.data.renderable){
+
+            //tree
             if(obj.type == 0) {
                 srand(floor(obj.noise));
                 chartexr.x = 0; 
                 chartexr.y = 65 * (rand() % 8);
-                chartexr.w = 64; chartexr.h = 64;
+                chartexr.w = 72; chartexr.h = 65;
                 steptexr.x = obj.x - (game.data.chunk_size/2)*3; 
                 steptexr.y = obj.y - (game.data.chunk_size*3) - (game.data.chunk_size/2);
                 steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
@@ -459,6 +461,7 @@ void mainloop(void *arg)
                 }
             }
 
+            //building
             else if(obj.type == 2){
                 srand(game.hasher(std::to_string(obj.ix) + std::to_string(obj.iy)));
                 std::string bID = game.rstring(10);
