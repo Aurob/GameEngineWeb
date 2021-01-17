@@ -11,12 +11,14 @@ WorldUtils::WorldUtils(){
     fish_noise.SetFractalOctaves(12);
     fish_noise.SetFractalLacunarity(0.0);
 
-    terrain_noise.SetNoiseType(FastNoise::Value);
-    terrain_noise.SetFractalType(FastNoise::RigidMulti);
-    terrain_noise.SetFractalOctaves(13);
-    // terrain_noise.SetFractalLacunarity(2);
-    // terrain_noise.SetFractalGain(.7);
-    terrain_noise.SetFrequency(.005);
+    terrain_noise.SetNoiseType(FastNoise::Cellular);
+    terrain_noise.SetFractalType(FastNoise::FBM);
+    terrain_noise.SetFractalLacunarity(2.6);
+    terrain_noise.SetFractalGain(.9);
+    terrain_noise.SetCellularDistanceFunction(FastNoise::Euclidean);
+    terrain_noise.SetCellularReturnType(FastNoise::CellValue);
+    
+    terrain_noise.SetFrequency(.001);
 }
 
 int WorldUtils::terrainGeneration(int i, int j){
