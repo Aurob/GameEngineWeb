@@ -255,9 +255,9 @@ void Game::update_pos(){
             tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
 
             //This could be used to limit the size of the world
-            if(i >  100 || i < -100) {
+            if(i >  1000 || i < -1000) {
                 tile.resource_index = 8;
-                if(i > 110 || i < -110) {
+                if(i > 1050 || i < -1050) {
                     continue;
                 }
                 else {
