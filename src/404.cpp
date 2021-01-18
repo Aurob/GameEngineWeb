@@ -31,7 +31,7 @@ void mainloop(void *arg)
         for(int y = 0; y < 1000; ++y){
             temp_rect.x = x;
             temp_rect.y = y;
-            if(rand() % (1000*1000) < 1000) SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
+            if(rand() % (2) == 1) SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
             else SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255 );
             SDL_RenderFillRect(renderer, &temp_rect);
         }
