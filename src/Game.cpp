@@ -321,6 +321,7 @@ void Game::update_pos(){
                     
                     chunk_position.noise = rand() % 10000;
                     chunk_position.type = 0;
+                    chunk_position.visible = false; // causes the tree to sway
                     data.trees.push_back(chunk_position);
                     data.renderable.push_back(chunk_position);
                 }
