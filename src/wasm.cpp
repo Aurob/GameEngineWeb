@@ -621,7 +621,7 @@ void mainloop(void *arg)
         
     }
 
-    for(Entity& entity : game.visible_entities){
+    for(Entity& entity : game.data.visible_entities){
         chartexr.x = 0; chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
         steptexr.x = entity.position.x; steptexr.y = entity.position.y;
