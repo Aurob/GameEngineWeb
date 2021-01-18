@@ -426,79 +426,23 @@ void Game::update_entities(){
 
     //Possible performance hit
     std::sort(data.entities.begin(), data.entities.end(), zorder);
-    
-    //Unnecessary re-initializations
-    unsigned int index;
-    float n;
-    
+        
     //Possible performance hit
     data.visible_entities.clear();
 
     for(Entity& entity : data.entities){
 
-        if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
-            data.entities.erase(data.entities.begin()+index);
-            index++;
-            continue;
-        }
+        // if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
+        //     data.entities.erase(data.entities.begin()+index);
+        //     index++;
+        //     continue;
+        // }
         //Check if the entity is within n chunks of the user's visible range
-        entity.local_position = content(entity.chunk, 5);
-        if(entity.local_position.visible){
-            data.visible_entities.push_back(entity);
+       
+        data.visible_entities.push_back(entity);
 
-            entity.old_pos = entity.position;
-
-            entity.position.x += (entity.speed * entity.directionx);// + (n * 2);
-            entity.position.y += (entity.speed * entity.directiony);// + (n * 2);
-            entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-
-            n = (data.noise.GetPerlin((entity.chunk.x), (entity.chunk.y)) - -1) / (1 - -1);
-            n = (data.noise.GetPerlinFractal((entity.chunk.x)+pow(n,2), (entity.chunk.y)+pow(n,2)) - -1) / (1 - -1);
-
-            if(entity.ID == data.mouse_entity.ID && user.mouse_down){
-                entity.speed = 0;
-                if(entity.chunk.x == user.chunk[0] && entity.chunk.x == user.chunk[1]){
-                    entity.interacting = true;
-                    
-                }
-            }else entity.speed = entity.temp_speed;
-
-            //If entity hits water and doesn't have a boat, switch directions
-            if(n < .45 && entity.items["boat"] < 1){
-                entity.position.x = entity.old_pos.x;
-                entity.position.y = entity.old_pos.y;
-                
-                entity.directionx *= (rand() % 100 < 20) ? -1 : 1;
-                entity.directiony *= (rand() % 100 < 20) ? -1 : 1;
-                entity.timex *= 10;
-                entity.timey *= 10;
-                entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-            }
-
-            entity.chunkfx = abs((entity.chunk.x * data.chunk_sizes[3]) - (entity.position.x)) / data.chunk_sizes[3];
-            entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
-
-            //set walk direction and update texture
-            if(rand() % 1000 < 5){
-                entity.directionx *= -1;
-                entity.timex = 0;
-                if(entity.directionx > 0) entity.texAng = 2;
-                if(entity.directionx < 0) entity.texAng = 1;
-            }
-            if(rand() % 1000 < 5){
-                entity.directiony *= -1;
-                entity.timey = 0;
-                if(entity.directiony > 0) entity.texAng = 0;
-                if(entity.directiony < 0) entity.texAng = 3;
-            }
-
-            entity.step = (rand() % 1000 < n *50) ? (entity.step+1) : entity.step;
-            entity.step%=4;
-            entity.timex += .5;
-            entity.timey += .5;
-
-        }
-        ++index;
+        entity.position.x += (entity.speed * entity.directionx);
+        entity.position.y += (entity.speed * entity.directiony);
     }
 }
 
