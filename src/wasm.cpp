@@ -446,8 +446,8 @@ void mainloop(void *arg)
                 chartexr.x = 0; 
                 chartexr.y = 65 * (rand() % 8);
                 chartexr.w = 72; chartexr.h = 65;
-                steptexr.x = obj.x - (game.data.chunk_size/2)*3; 
-                steptexr.y = obj.y - (game.data.chunk_size*3) - (game.data.chunk_size/2);
+                steptexr.x = obj.x - (game.data.chunk_size); 
+                steptexr.y = obj.y - (game.data.chunk_size*3);
                 steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
                 SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
