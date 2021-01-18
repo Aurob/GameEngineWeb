@@ -430,7 +430,7 @@ void mainloop(void *arg)
         }  
 
         /*Secondary Tile renders*/
-        std::stable_sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){
+        std::sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){
             if(a.x == b.x) return a.y < b.y;
             else if(a.y == b.y)  return a.x > b.x;
             else return a.y < b.y;  
