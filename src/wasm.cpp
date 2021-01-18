@@ -464,7 +464,7 @@ void mainloop(void *arg)
 
                 chartexr.x = 0; 
                 if(obj.visible){
-                    if(obj.time + 3000 > SDL_GetTicks()) obj.visible = false;
+                    if(obj.time + 3000 < SDL_GetTicks()) obj.visible = false;
                     else chartexr.x = 0 + (72 * (((SDL_GetTicks()/100)) % 4)); 
                 }
                 chartexr.y = 65 * (rand() % 8);
