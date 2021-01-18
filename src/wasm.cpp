@@ -431,11 +431,7 @@ void mainloop(void *arg)
 
         /*Secondary Tile renders*/
         std::sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){ 
-            if(a.y < b.y){
-                if(a.x < b.x) return true;
-                return true;
-            }
-            return false;
+            return (a.type == 0 && b.type == 0 && a.y < b.y);
         });
         //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
@@ -456,7 +452,9 @@ void mainloop(void *arg)
                 if(obj.x < game.user.mouse["x"] && game.user.mouse["x"] < obj.x + game.data.chunk_size){
                     if(obj.y < game.user.mouse["y"] && game.user.mouse["y"] < obj.y + game.data.chunk_size){
                         if(game.user.mouse_down) send_alert(1);
-
+                        Position bird{obj.x, obj.y - game.data.chunk_size*2};
+                        
+                        game.data.visble_entities.push_back(bird);
                                         
                         // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
                         //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
