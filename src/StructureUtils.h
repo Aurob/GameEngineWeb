@@ -50,6 +50,8 @@ struct Entity
     Position old_pos;
     float health;
     bool interacting;
+    int time;
+    int type;
 };
 
 struct Building {

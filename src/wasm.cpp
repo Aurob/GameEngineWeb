@@ -451,6 +451,11 @@ void mainloop(void *arg)
                             if(!obj.visible) {
                                 obj.visible = true;
                                 obj.time = SDL_GetTicks();
+                                Entity bird;
+                                bird.chunk = Position{obj.ix, obj.iy};
+                                bird.speed = rand() % 10;
+                                bird.time = SDL_GetTicks();
+                                game.data.entities.push_back(bird);
                             }
                         }
                                         
@@ -616,6 +621,13 @@ void mainloop(void *arg)
         
     }
 
+    for(Entity& entity : game.visible_entities){
+        chartexr.x = 0; chartexr.y = 0;
+        chartexr.w = 32; chartexr.h = 32;
+        steptexr.x = entity.position.x; steptexr.y = entity.position.y;
+        steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
+        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
+    }
     // temp_rect.x = 0;
     // temp_rect.y = 0;
     // temp_rect.w = game.data.width;

@@ -433,10 +433,14 @@ void Game::update_entities(){
     
     //Possible performance hit
     data.visible_entities.clear();
-    
+
     for(Entity& entity : data.entities){
 
-
+        if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
+            data.entities.erase(data.entites.begin()+index);
+            index++;
+            continue;
+        }
         //Check if the entity is within n chunks of the user's visible range
         entity.local_position = content(entity.chunk, 5);
         if(entity.local_position.visible){
