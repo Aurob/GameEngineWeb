@@ -454,7 +454,7 @@ void mainloop(void *arg)
                         if(game.user.mouse_down) send_alert(1);
                         Position bird{obj.x, obj.y - game.data.chunk_size*2};
                         
-                        game.data.visble_entities.push_back(bird);
+                        game.data.visible_entities.push_back(bird);
                                         
                         // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
                         //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
