@@ -462,11 +462,12 @@ void mainloop(void *arg)
                     }
                 }
 
-                chartexr.x = 0; 
-                if(obj.visible){
-                    if(obj.time + 3000 > SDL_GetTicks()) obj.visible = false;
-                    else chartexr.x = 0 + (72 * (rand() % 4)); 
-                }
+                // chartexr.x = 0; 
+                // if(obj.visible){
+                //     if(obj.time + 3000 > SDL_GetTicks()) obj.visible = false;
+                //     else chartexr.x = 0 + (72 * (rand() % 4)); 
+                // }
+                chartexr.x = 72 * (rand() % 4); 
                 chartexr.y = 65 * (rand() % 8);
                 chartexr.w = 72; chartexr.h = 65;
                 steptexr.x = (obj.x - (game.data.chunk_size)) + (rand() % (game.data.chunk_size/2)); 
