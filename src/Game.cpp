@@ -437,7 +437,7 @@ void Game::update_entities(){
     for(Entity& entity : data.entities){
 
         if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
-            data.entities.erase(data.entites.begin()+index);
+            data.entities.erase(data.entities.begin()+index);
             index++;
             continue;
         }
