@@ -17,6 +17,7 @@ struct Position
     int ix;
     int iy;
     int type;
+    int time;
 };
 
 struct Entity
