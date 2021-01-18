@@ -430,8 +430,8 @@ void mainloop(void *arg)
         }  
 
         /*Secondary Tile renders*/
-        std::stable_sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){a.x > b.x});
-        std::stable_sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){a.y < b.y});
+        std::stable_sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){a.x > b.x;});
+        std::stable_sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){a.y < b.y;});
         //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
         //std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
