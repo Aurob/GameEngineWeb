@@ -438,23 +438,21 @@ void mainloop(void *arg)
         //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
         //std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
-        for(auto obj : game.data.renderable){
+        for(auto & obj : game.data.renderable){
 
             //tree
             if(obj.type == 0 && game.data.chunk_size != 2) {
                 srand(floor(obj.noise));
-                chartexr.x = 0; 
-                chartexr.y = 65 * (rand() % 8);
-                chartexr.w = 72; chartexr.h = 65;
-                steptexr.x = (obj.x - (game.data.chunk_size)) + (rand() % (game.data.chunk_size/2)); 
-                steptexr.y = (obj.y - (game.data.chunk_size*3)) - (rand() % (game.data.chunk_size/2)); ;
-                steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
-                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
                 if(obj.x < game.user.mouse["x"] && game.user.mouse["x"] < obj.x + game.data.chunk_size){
                     if(obj.y < game.user.mouse["y"] && game.user.mouse["y"] < obj.y + game.data.chunk_size){
-                        if(game.user.mouse_down) send_alert(1);
-                        Position bird{obj.x, obj.y - game.data.chunk_size*2};
+                        if(game.user.mouse_down) {
+                            //send_alert(1);
+                            if(!obj.visible) {
+                                obj.visible = true;
+                                obj.time = SDL_GetTicks();
+                            }
+                        }
                                         
                         // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
                         //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
@@ -463,6 +461,20 @@ void mainloop(void *arg)
                         // }
                     }
                 }
+
+                chartexr.x = 0; 
+                if(obj.visible){
+                    if(obj.time + 3000 > SDL_GetTicks()) obj.visible = false;
+                    else chartexr.x = 0 + (72 * (rand() % 4)); 
+                }
+                chartexr.y = 65 * (rand() % 8);
+                chartexr.w = 72; chartexr.h = 65;
+                steptexr.x = (obj.x - (game.data.chunk_size)) + (rand() % (game.data.chunk_size/2)); 
+                steptexr.y = (obj.y - (game.data.chunk_size*3)) - (rand() % (game.data.chunk_size/2)); ;
+                steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
+
+                
             }
 
             //building
