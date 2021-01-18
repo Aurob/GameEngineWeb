@@ -88,7 +88,8 @@ std::vector<std::string> char_files{
     "Resources/character/pipo-van_c_1.png",
     "Resources/character/pipo-balloon_1.png",
     "Resources/character/pipo-balloon_b_1.png",
-    "Resources/character/pipo-balloon_c_1.png"
+    "Resources/character/pipo-balloon_c_1.png",
+    "Resources/character/bird_3_robin.png"
 };
 
 std::vector<std::string> tile_files {
