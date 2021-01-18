@@ -348,16 +348,16 @@ void mainloop(void *arg)
         SDL_RenderFillRect(renderer, &temp_rect );
 
         /*Secondary Tile renders*/
+
+        //Sort everything from right to left
+        // then sort from top to bottom
         std::sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){
             if(a.x == b.x) return a.y < b.y;
             else if(a.y == b.y)  return a.x > b.x;
             else return a.y < b.y;  
         });
-        //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
-        //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
-        //std::sort(game.data.structures.begin(),game.data.structures.end(), [](Building &a, Building &b){ return a.screen_origin[0]<b.screen_origin[1]; });
+        
         for(auto & obj : game.data.renderable){
-
             //tree
             if(obj.type == 0 && game.data.chunk_size != 2) {
                 srand(floor(obj.noise));
@@ -543,13 +543,7 @@ void mainloop(void *arg)
     }
 
     game.update_entities();
-    for(Entity& entity : game.data.visible_entities){
-        chartexr.x = 0; chartexr.y = 0;
-        chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = entity.position.x; steptexr.y = entity.position.y;
-        steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
-        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
-    }
+    
     // temp_rect.x = 0;
     // temp_rect.y = 0;
     // temp_rect.w = game.data.width;
