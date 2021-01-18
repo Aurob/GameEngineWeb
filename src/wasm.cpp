@@ -452,7 +452,7 @@ void mainloop(void *arg)
                                 obj.visible = true;
                                 obj.time = SDL_GetTicks();
                                 Entity bird;
-                                bird.chunk = Position{obj.ix, obj.iy};
+                                bird.chunk = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
                                 bird.speed = rand() % 10;
                                 bird.time = SDL_GetTicks();
                                 game.data.entities.push_back(bird);
