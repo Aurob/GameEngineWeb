@@ -19,7 +19,7 @@ struct context
 const int MAX_char = 8;
 
 //
-Game game{};
+Game game;
 
 std::vector<Texture> icons;
 std::vector<Texture> charicons;
@@ -431,7 +431,7 @@ void mainloop(void *arg)
 
         /*Secondary Tile renders*/
         std::sort(game.data.renderable.begin(), game.data.renderable.end(), [](Position &a, Position &b){ 
-            return (a.type == 0 && b.type == 0 && a.y < b.y);
+            return (a.type == 0 && b.type == 0 && a.x > b.x && a.y < b.y);
         });
         //std::sort(game.data.trees.begin(),game.data.trees.end(), [](Position &a, Position &b){ return a.y<b.y || a.y==b.y && a.noise<b.noise; });
         //std::sort(rocks.begin(),rocks.end(), [](Position &a, Position &b){ return a.y<b.y; });
