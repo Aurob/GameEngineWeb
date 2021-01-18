@@ -1,0 +1,42 @@
+#include <emscripten.h>
+#include <cstdlib>
+#include <time.h>
+#include <math.h>
+#include <stdlib.h>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
+struct context
+{
+    SDL_Renderer *renderer;
+    int iteration;
+};
+
+
+int main(int argc, char *argv[])
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    //SDL_CreateWindowAndRenderer(1000, 1000, 0, &window, &renderer);
+
+    context ctx;
+    ctx.renderer = renderer;
+    ctx.iteration = 0;
+
+    const int simulate_infinite_loop = 1; // call the function repeatedly
+    const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
+    //emscripten_run_script("var ws = new WebSocket('wss://robauis.me/ws'); ws.onmessage = (e)=>{console.log(e.data);}");
+
+    //emscripten_set_main_loop_arg(mainloop, &ctx, fps, simulate_infinite_loop);
+    
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
+}
