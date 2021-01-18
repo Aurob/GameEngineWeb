@@ -24,15 +24,16 @@ void mainloop(void *arg)
     SDL_RenderClear(renderer);
 
     SDL_Rect temp_rect;
-    temp_rect.w = 1;
-    temp_rect.h = 1;
+    temp_rect.w = 10;
+    temp_rect.h = 10;
 
-    for(int x = 0; x < 1000; ++x){
-        for(int y = 0; y < 1000; ++y){
+    for(int x = 0; x < 1000; x+=10){
+        for(int y = 0; y < 1000; y+=10){
             temp_rect.x = x;
             temp_rect.y = y;
-            if(rand() % (2) == 1) SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
-            else SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255 );
+            int g = rand() % 255;
+            SDL_SetRenderDrawColor(renderer, g, g, g, 255 );
+
             SDL_RenderFillRect(renderer, &temp_rect);
         }
     }
