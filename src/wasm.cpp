@@ -367,6 +367,8 @@ void mainloop(void *arg)
                         if(game.user.mouse_down) {
                             //send_alert(1);
                             if(!obj.visible) {
+                                obj.visible = true;
+                                obj.time = SDL_GetTicks();
                             }
                         }
                                         
