@@ -443,7 +443,7 @@ void Game::update_entities(){
             entity.step%=4;
             entity.timex += .5;
             entity.timey += .5;
-            game.visible_entities.push_back(entity);
+            data.visible_entities.push_back(entity);
         }
        
     }
