@@ -544,7 +544,7 @@ void mainloop(void *arg)
         
     }
 
-    // game.update_entities();
+    ame.update_entities();
     for(Entity& entity : game.data.entities){
         std::cout << entity.type << std::endl;
         chartexr.x = 0; chartexr.y = 0;
