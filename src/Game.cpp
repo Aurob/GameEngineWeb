@@ -425,25 +425,27 @@ void Game::update_inside(){
 void Game::update_entities(){
     unsigned int index{};
     //Possible performance hit
-    std::sort(data.entities.begin(), data.entities.end(), zorder);
+    //std::sort(data.entities.begin(), data.entities.end(), zorder);
         
     //Possible performance hit
     data.visible_entities.clear();
 
     for(Entity& entity : data.entities){
 
-        if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
-            data.entities.erase(data.entities.begin()+index);
-            index++;
-            continue;
-        }
-        //Check if the entity is within n chunks of the user's visible range
-       
-        
+       if(content(entity.chunk, 10).visible){
+            Position old_pos = Position{entity.position.x, entity.position.y};
 
-        entity.position.x += (entity.speed * entity.directionx);
-        entity.position.y += (entity.speed * entity.directiony);
-        data.visible_entities.push_back(entity);
+            entity.position.x += (entity.speed * entity.directionx);
+            entity.position.y += (entity.speed * entity.directiony);
+            entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
+
+            entity.step = (rand() % 1000 < 50) ? (entity.step+1) : entity.step;
+            entity.step%=4;
+            entity.timex += .5;
+            entity.timey += .5;
+            game.visible_entities.push_back(entity);
+        }
+       
     }
 }
 
