@@ -369,6 +369,16 @@ void mainloop(void *arg)
                             if(!obj.visible) {
                                 obj.visible = true;
                                 obj.time = SDL_GetTicks();
+
+                                
+                                Entity bird;
+                                bird.position.x = obj.x;
+                                bird.position.y = obj.y;
+                                bird.speed = rand() % 10;
+                                bird.directionx = -1;
+                                bird.directiony = 1;
+                                bird.time = SDL_GetTicks();
+                                game.data.entities.push_back(bird);
                             }
                         }
                                         
