@@ -374,7 +374,7 @@ void mainloop(void *arg)
                                 Entity bird;
                                 bird.position.x = obj.x;
                                 bird.position.y = obj.y;
-                                bird.speed = rand() % 10;
+                                bird.speed = 4;
                                 bird.directionx = -1;
                                 bird.directiony = 1;
                                 bird.time = SDL_GetTicks();
@@ -545,14 +545,14 @@ void mainloop(void *arg)
     }
 
     // game.update_entities();
-    // for(Entity& entity : game.data.visible_entities){
-    //     std::cout << entity.type << std::endl;
-    //     chartexr.x = 0; chartexr.y = 0;
-    //     chartexr.w = 32; chartexr.h = 32;
-    //     steptexr.x = entity.position.x; steptexr.y = entity.position.y;
-    //     steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
-    //     SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
-    // }
+    for(Entity& entity : game.data.entities){
+        std::cout << entity.type << std::endl;
+        chartexr.x = 0; chartexr.y = 0;
+        chartexr.w = 32; chartexr.h = 32;
+        steptexr.x = entity.position.x; steptexr.y = entity.position.y;
+        steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
+        SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
+    }
     // temp_rect.x = 0;
     // temp_rect.y = 0;
     // temp_rect.w = game.data.width;
