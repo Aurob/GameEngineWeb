@@ -372,8 +372,8 @@ void mainloop(void *arg)
 
                                 
                                 Entity bird;
-                                bird.chunk.x = obj.ix;
-                                bird.chunk.y = obj.iy;
+                                bird.position.x = obj.x;
+                                bird.position.y = obj.y;
                                 bird.speed = 4;
                                 bird.directionx = -1;
                                 bird.directiony = 1;
