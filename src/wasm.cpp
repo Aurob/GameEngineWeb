@@ -545,11 +545,11 @@ void mainloop(void *arg)
     }
 
     game.update_entities();
-    for(Entity& entity : game.data.entities){
+    for(Entity& entity : game.data.visible_entities){
         //std::cout << entity.type << std::endl;
         chartexr.x = 0; chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = entity.position.x; steptexr.y = entity.position.y;
+        steptexr.x = entity.position.x; steptexr.y = entity.position.y - game.chunk_size*2;
         steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
         SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
     }
