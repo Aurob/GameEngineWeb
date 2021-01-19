@@ -432,18 +432,15 @@ void Game::update_entities(){
 
     for(Entity& entity : data.entities){
 
-       if(1){
-            entity.position.x += (entity.speed * entity.directionx);
-            entity.position.y += (entity.speed * entity.directiony);
-            entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
+        entity.position.x += (entity.speed * entity.directionx);
+        entity.position.y += (entity.speed * entity.directiony);
+        entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
 
-            entity.step = (rand() % 1000 < 50) ? (entity.step+1) : entity.step;
-            entity.step%=4;
-            entity.timex += .5;
-            entity.timey += .5;
-            data.visible_entities.push_back(entity);
-        }
-       
+        entity.step = (rand() % 1000 < 50) ? (entity.step+1) : entity.step;
+        entity.step%=4;
+        entity.timex += .5;
+        entity.timey += .5;
+        data.visible_entities.push_back(entity);       
     }
 }
 

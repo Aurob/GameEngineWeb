@@ -377,7 +377,8 @@ void mainloop(void *arg)
                                 bird.speed = 4;
                                 bird.directionx = -1;
                                 bird.directiony = 1;
-                                bird.time = SDL_GetTicks();
+                                bird.timex = 0;
+                                bird.timey = 0;
                                 game.data.entities.push_back(bird);
                             }
                         }
