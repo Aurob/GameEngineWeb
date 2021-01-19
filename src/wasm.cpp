@@ -19,7 +19,7 @@ struct context
 const int MAX_char = 8;
 
 //
-Game game;
+Game game{};
 
 std::vector<Texture> icons;
 std::vector<Texture> charicons;
