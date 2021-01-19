@@ -432,9 +432,7 @@ void Game::update_entities(){
 
     for(Entity& entity : data.entities){
 
-       if(content(entity.chunk, 10).visible){
-            Position old_pos = Position{entity.position.x, entity.position.y};
-
+       if(1){
             entity.position.x += (entity.speed * entity.directionx);
             entity.position.y += (entity.speed * entity.directiony);
             entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
