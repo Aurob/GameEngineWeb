@@ -423,7 +423,7 @@ void Game::update_inside(){
 //despawn any entites outside of render distance
 //update positions for visible entities
 void Game::update_entities(){
-
+    unsigned int index{};
     //Possible performance hit
     std::sort(data.entities.begin(), data.entities.end(), zorder);
         
