@@ -367,16 +367,6 @@ void mainloop(void *arg)
                         if(game.user.mouse_down) {
                             //send_alert(1);
                             if(!obj.visible) {
-                                obj.visible = true;
-                                obj.time = SDL_GetTicks();
-                                Entity bird;
-                                bird.position.x = obj.x;
-                                bird.position.y = obj.y;
-                                bird.speed = rand() % 10;
-                                bird.directionx = -1;
-                                bird.directiony = 1;
-                                bird.time = SDL_GetTicks();
-                                game.data.entities.push_back(bird);
                             }
                         }
                                         
@@ -389,6 +379,10 @@ void mainloop(void *arg)
                 }
 
                 chartexr.x = 0; 
+                if(obj.visible){
+                    if(obj.time + 3000 < SDL_GetTicks()) obj.visible = false;
+                    else chartexr.x = 0 + (72 * (((SDL_GetTicks()/100)) % 4)); 
+                }
                 chartexr.y = 65 * (rand() % 8);
                 chartexr.w = 72; chartexr.h = 65;
                 steptexr.x = (obj.x - (game.data.chunk_size)) + (rand() % (game.data.chunk_size/2)); 
