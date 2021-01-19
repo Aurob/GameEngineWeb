@@ -432,17 +432,18 @@ void Game::update_entities(){
 
     for(Entity& entity : data.entities){
 
-        // if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
-        //     data.entities.erase(data.entities.begin()+index);
-        //     index++;
-        //     continue;
-        // }
+        if(entity.type == 1 && entity.time + 5000 < SDL_GetTicks()) {
+            data.entities.erase(data.entities.begin()+index);
+            index++;
+            continue;
+        }
         //Check if the entity is within n chunks of the user's visible range
        
-        data.visible_entities.push_back(entity);
+        
 
         entity.position.x += (entity.speed * entity.directionx);
         entity.position.y += (entity.speed * entity.directiony);
+        data.visible_entities.push_back(entity);
     }
 }
 
