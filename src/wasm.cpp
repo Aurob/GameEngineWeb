@@ -389,12 +389,12 @@ void mainloop(void *arg)
 
                     Entity bird;
                     if(obj.x >= game.data.width/2)
-                        bird.position.x = game.user.position.x + (obj.x - (game.data.width/2));
+                        bird.position.x = game.user.globalx + (obj.x - (game.data.width/2));
                     else
-                        bird.position.x = game.user.position.x - (obj.x);
+                        bird.position.x = game.user.globalx - (obj.x);
 
                     if(obj.y >= game.data.width/2)
-                        bird.position.y = game.user.globalx + (obj.y - (game.data.height/2));
+                        bird.position.y = game.user.globaly + (obj.y - (game.data.height/2));
                     else
                         bird.position.y = game.user.gloably - (obj.y);    
 
