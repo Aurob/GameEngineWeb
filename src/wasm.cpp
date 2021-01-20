@@ -389,14 +389,14 @@ void mainloop(void *arg)
 
                     Entity bird;
                     if(obj.x >= game.data.width/2)
-                        bird.position.x = game.user.globalx + (obj.x - (game.data.width/2));
+                        bird.position.x = game.user.globalx + (obj.x - (game.data.width/2) - game.data.chunk_size*2);
                     else
-                        bird.position.x = game.user.globalx - (obj.x);
+                        bird.position.x = game.user.globalx - (obj.x) - game.data.chunk_size*2;
 
-                    if(obj.y >= game.data.width/2)
-                        bird.position.y = game.user.globaly + (obj.y - (game.data.height/2));
+                    if(obj.y >= game.data.height/2)
+                        bird.position.y = game.user.globaly + (obj.y - (game.data.height/2) - game.data.chunk_size*2);
                     else
-                        bird.position.y = game.user.globaly - (obj.y);    
+                        bird.position.y = game.user.globaly - (obj.y) - game.data.chunk_size*2;    
 
                     bird.speed = 4;
                     bird.directionx = (rand() % 20 < 10) ? -1 : 1;
@@ -550,8 +550,7 @@ void mainloop(void *arg)
 
         chartexr.x = 32; chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = (p.x);  
-        steptexr.y = (p.y);
+        steptexr.x = (p.x + (entity.chunkfx * game.chunk_size)); steptexr.y = (p.y + (entity.chunkfy * game.chunk_size));
         steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
         SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
     }
