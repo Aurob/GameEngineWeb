@@ -456,8 +456,8 @@ void Game::update_entities(){
         entity.position.x += (entity.speed * entity.directionx);
         entity.position.y += (entity.speed * entity.directiony);
         entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-        entity.chunkfx = abs((entity.chunk.x * game.chunk_sizes[3]) - (entity.position.x)) / game.chunk_sizes[3];
-        entity.chunkfy = abs((entity.chunk.y * game.chunk_sizes[3]) - (entity.position.y)) / game.chunk_sizes[3];
+        entity.chunkfx = abs((entity.chunk.x * data.chunk_sizes[3]) - (entity.position.x)) / data.chunk_sizes[3];
+        entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
 
         // entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
 
