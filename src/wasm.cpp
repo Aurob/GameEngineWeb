@@ -394,9 +394,9 @@ void mainloop(void *arg)
                         bird.position.x = game.user.position.x - (obj.x);
 
                     if(obj.y >= game.data.width/2)
-                        bird.position.y = game.user.position.y + (obj.y - (game.data.height/2));
+                        bird.position.y = game.user.globalx + (obj.y - (game.data.height/2));
                     else
-                        bird.position.y = game.user.position.y - (obj.y);    
+                        bird.position.y = game.user.gloably - (obj.y);    
 
                     bird.chunk = game.getChunkFromCoord(bird.position.x, bird.position.y);
                     bird.speed = 4;
