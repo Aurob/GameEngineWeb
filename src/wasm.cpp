@@ -573,7 +573,12 @@ extern "C" {
     int ecount() {
         return game.user.owned_entities.size();
     }
-
+    //
+    int set_pos(int x, int y) {
+        game.user.globalx = x;
+        game.user.globaly = y;
+        return 1;
+    }
     int get_global(int type) {
         return (type == 0) ? static_cast<int>(game.user.globalx) : ((type == 1) ? static_cast<int>(game.user.globaly)  : -1);
     }
