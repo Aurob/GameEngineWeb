@@ -263,9 +263,8 @@ void Game::update_pos(){
 
             //This could be used to limit the size of the world
             if(abs(i) >  1000) {
-                if(abs(i) <= 1050) {
-                    //meant to resemble the inner wall
-                    if(abs(i) < 1025){
+                if(abs(i) <= 1030){                   //meant to resemble the inner wall
+                    if(abs(i) <= 1005){
                         tile.resource_index = 8;
                         tile.texture.x = 96; tile.texture.y = 64;
                         tile.texture.w = 32; tile.texture.h = 32;
