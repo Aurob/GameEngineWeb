@@ -537,7 +537,7 @@ void mainloop(void *arg)
     game.update_entities();
     for(Entity& entity : game.data.visible_entities){
         //std::cout << entity.type << std::endl;
-        Position p = game.content(entity.chunk);
+        Position p = game.content(entity.chunk, 0);
         chartexr.x = (p.x + (entity.chunkfx * game.data.chunk_size)); 
         chartexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));
          
