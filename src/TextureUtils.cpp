@@ -102,7 +102,8 @@ std::vector<std::string> tile_files {
     "Resources/tiles/ground_tiles.png",
     "Resources/tiles/metal.png",
     "Resources/tiles/bird_3_robin.png",
-    "Resources/tiles/scifi.png"
+    "Resources/tiles/scifi.png",
+    "Resources/tiles/starsmall.png"
 };
 
 std::vector<std::string> animal_files {
