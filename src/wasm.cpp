@@ -394,7 +394,7 @@ void mainloop(void *arg)
                         Entity bird;
                         bird.position.x = p.x;
                         bird.position.y = p.y;
-                        bird.chunk = game.getChunkFromCoord(p);
+                        bird.chunk = game.getChunkFromCoord(p.x, p.y);
                         bird.speed = 4;
                         bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                         bird.directiony = (rand() % 20 < 10) ? -1 : 1;
