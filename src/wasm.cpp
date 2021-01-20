@@ -143,6 +143,8 @@ EM_JS(void, talk, (int type), {
             document.getElementById("overlay").innerHTML = "";
             break;
 
+        case 8:
+            alert("It's some kind of access port...");
         default:
             break;
     }
