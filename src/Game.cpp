@@ -262,16 +262,26 @@ void Game::update_pos(){
             tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
 
             //This could be used to limit the size of the world
-            if(i >  1000 || i < -1000) {
-                if(i > 1050 || i < -1050) {
-                    tile.resource_index = 11;
-                    tile.texture.x = 64 * (rand() % 10); tile.texture.y = 64 * (rand() % 10);
-                    tile.texture.w = 64; tile.texture.h = 64;
+            if(abs(i) >  1000) {
+                if(abs(i) <= 1050) {
+                    //meant to resemble the inner wall
+                    if(abs(i) > 1075){
+                        tile.resource_index = 8;
+                        tile.texture.x = 96; tile.texture.y = 64;
+                        tile.texture.w = 32; tile.texture.h = 32;
+                    }
+                    //meant to resemble the top of the wall
+                    else{
+                        tile.resource_index = 10;
+                        tile.texture.x = 64 * (rand() % 7); tile.texture.y = 64 * (rand() % 26);
+                        tile.texture.w = 64; tile.texture.h = 64;
+                    }
                     //continue;
                 }
+                //outer space
                 else {
-                    tile.resource_index = 10;
-                    tile.texture.x = 64 * (rand() % 7); tile.texture.y = 64 * (rand() % 26);
+                    tile.resource_index = 11;
+                    tile.texture.x = 64 * (rand() % 10); tile.texture.y = 64 * (rand() % 10);
                     tile.texture.w = 64; tile.texture.h = 64;
                 }
                 data.tiles.push_back(tile);
