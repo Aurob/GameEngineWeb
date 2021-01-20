@@ -454,7 +454,7 @@ void Game::update_entities(){
     data.visible_entities.clear();
 
     for(Entity& entity : data.entities){
-        if(content(entity.chunk, 0)) {
+        if(content(entity.chunk, 0).visible) {
             entity.position.x += (entity.speed * entity.directionx);
             entity.position.y += (entity.speed * entity.directiony);
             entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
