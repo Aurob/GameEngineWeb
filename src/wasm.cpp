@@ -537,7 +537,7 @@ void mainloop(void *arg)
         
     }
 
-    game.update_entities();
+    game.update_entities();//
     for(Entity& entity : game.data.visible_entities){
         //std::cout << entity.type << std::endl;
         Position p = game.content(entity.chunk, 0);
