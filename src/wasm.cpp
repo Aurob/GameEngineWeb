@@ -310,7 +310,7 @@ void mainloop(void *arg)
                 if(temp_screen.x < game.user.mouse["x"] && game.user.mouse["x"] < temp_screen.x + game.data.chunk_size){
                     if(temp_screen.y < game.user.mouse["y"] && game.user.mouse["y"] < temp_screen.y + game.data.chunk_size){
                         if(game.user.mouse_down) {
-                            alert(1);
+                            send_alert(1);
                         }
                     }
                 }
