@@ -391,8 +391,8 @@ void mainloop(void *arg)
                         bird.position.x = obj.x;
                         bird.position.y = obj.y;
                         bird.speed = 4;
-                        bird.directionx = (rand() % 2 < 1) ? -1 : 1;
-                        bird.directiony = (rand() % 2 < 1) ? -1 : 1;
+                        bird.directionx = (rand() % 20 < 10) ? -1 : 1;
+                        bird.directiony = (rand() % 20 < 10) ? -1 : 1;
                         bird.timex = 0;
                         bird.timey = 0;
                         game.data.entities.push_back(bird);
@@ -537,7 +537,7 @@ void mainloop(void *arg)
     game.update_entities();
     for(Entity& entity : game.data.visible_entities){
         //std::cout << entity.type << std::endl;
-        chartexr.x = 0; chartexr.y = 0;
+        chartexr.x = 32 * (entiy.time_stepx % 3); chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
         steptexr.x = entity.position.x; steptexr.y = entity.position.y - game.data.chunk_size*2;
         steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
