@@ -304,6 +304,17 @@ void mainloop(void *arg)
             temp_tex = tile.texture;
             temp_screen = tile.screen;
             SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &temp_tex, &temp_screen);
+
+            if(tile.special) {
+                
+                if(temp_screen.x < game.user.mouse["x"] && game.user.mouse["x"] < temp_screen.x + game.data.chunk_size){
+                    if(temp_screen.y < game.user.mouse["y"] && game.user.mouse["y"] < temp_screen.y + game.data.chunk_size){
+                        if(game.user.mouse_down) {
+                            alert(1);
+                        }
+                    }
+                }
+            }
         }
 
         for(auto fish : game.data.fishs){
