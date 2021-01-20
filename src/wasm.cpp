@@ -384,15 +384,21 @@ void mainloop(void *arg)
 
                 if(game.check_click(obj.x, obj.y)) {
                     srand(time(NULL));
-                    chartexr.y = 65 * (rand() % 8);
+                    chartexr.x = 72 * (rand() % 4);
                     obj.time = SDL_GetTicks();
-                    Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
-                    p = game.content(p, 0);
 
                     Entity bird;
-                    bird.position.x = p.x;
-                    bird.position.y = p.y;
-                    bird.chunk = game.getChunkFromCoord(p.x, p.y);
+                    if(obj.x >= game.data.width/2)
+                        bird.position.x = game.user.position.x + (obj.x - (game.data.width/2));
+                    else
+                        bird.position.x = game.user.position.x - (obj.x);
+
+                    if(obj.y >= game.data.width/2)
+                        bird.position.y = game.user.position.y + (obj.y - (game.data.height/2));
+                    else
+                        bird.position.y = game.user.position.y - (obj.y);    
+
+                    bird.chunk = game.getChunkFromCoord(bird.position.x, bird.position.y);
                     bird.speed = 4;
                     bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                     bird.directiony = (rand() % 20 < 10) ? -1 : 1;
