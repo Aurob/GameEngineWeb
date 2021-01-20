@@ -460,9 +460,6 @@ void Game::update_entities(){
         entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
 
         // entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-
-        entity.step = (rand() % 1000 < 50) ? (entity.step+1) : entity.step;
-        entity.step%=4;
         entity.timex += .5;
         entity.timey += .5;
         data.visible_entities.push_back(entity);       

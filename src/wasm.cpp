@@ -390,6 +390,8 @@ void mainloop(void *arg)
                         Entity bird;
                         bird.position.x = obj.x;
                         bird.position.y = obj.y;
+                        bird.chunk.x = obj.ix;
+                        bird.chunk.y = obj.iy;
                         bird.speed = 4;
                         bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                         bird.directiony = (rand() % 20 < 10) ? -1 : 1;
@@ -538,12 +540,11 @@ void mainloop(void *arg)
     for(Entity& entity : game.data.visible_entities){
         //std::cout << entity.type << std::endl;
         Position p = game.content(entity.chunk, 0);
-        chartexr.x = (p.x + (entity.chunkfx * game.data.chunk_size)); 
-        chartexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));
-         
-        //chartexr.x = 32 * (entiy.time_stepx % 3); chartexr.y = 0;
+
+        chartexr.x = 32 * (entiy.time_stepx % 3); chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = entity.position.x; steptexr.y = entity.position.y - game.data.chunk_size*2;
+        steptexr.x = (p.x + (entity.chunkfx * game.data.chunk_size));  
+        steptexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));
         steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
         SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
     }
