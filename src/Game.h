@@ -111,6 +111,7 @@ class Game {
     void update_inside();
     void update_entities();
     void clean_data();
+    bool check_click(float, float);
     TileEdge get_tileEdges(int, int);
     std::string rstring(size_t);
 };

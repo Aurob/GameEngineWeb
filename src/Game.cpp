@@ -465,6 +465,18 @@ void Game::update_entities(){
     }
 }
 
+bool Game::check_click(float x, float y) {
+    if(x < game.user.mouse["x"] && game.user.mouse["x"] < x + game.data.chunk_size){
+        if(y < game.user.mouse["y"] && game.user.mouse["y"] <y + game.data.chunk_size){
+            if(game.user.mouse_down) {
+                game.user.mouse_down = false;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 TileEdge Game::get_tileEdges(int x, int y){
     TileEdge edges;
     edges.left_tile = data.WorldGen.terrainGeneration(x - 1, y);

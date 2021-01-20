@@ -308,13 +308,8 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &temp_tex, &temp_screen);
 
             if(tile.special) {
-                
-                if(temp_screen.x < game.user.mouse["x"] && game.user.mouse["x"] < temp_screen.x + game.data.chunk_size){
-                    if(temp_screen.y < game.user.mouse["y"] && game.user.mouse["y"] < temp_screen.y + game.data.chunk_size){
-                        if(game.user.mouse_down) {
-                            send_alert(1);
-                        }
-                    }
+                if(game.check_click(temp_screen.x, temp_screen.y)) {
+                    send_alert(8);
                 }
             }
         }
@@ -375,32 +370,20 @@ void mainloop(void *arg)
             if(obj.type == 0 && game.data.chunk_size != 2) {
                 srand(floor(obj.noise));
 
-                if(obj.x < game.user.mouse["x"] && game.user.mouse["x"] < obj.x + game.data.chunk_size){
-                    if(obj.y < game.user.mouse["y"] && game.user.mouse["y"] < obj.y + game.data.chunk_size){
-                        if(game.user.mouse_down) {
-                            //send_alert(1);
-                            if(!obj.visible) {
-                                obj.visible = true;
-                                obj.time = SDL_GetTicks();
+                if(game.check_click(obj.x, obj.y)) {
+                    if(!obj.visible) {
+                        obj.visible = true;
+                        obj.time = SDL_GetTicks();
 
-                                
-                                Entity bird;
-                                bird.position.x = obj.x;
-                                bird.position.y = obj.y;
-                                bird.speed = 4;
-                                bird.directionx = -1;
-                                bird.directiony = 1;
-                                bird.timex = 0;
-                                bird.timey = 0;
-                                game.data.entities.push_back(bird);
-                            }
-                        }
-                                        
-                        // if(uchunk.x + 1 >= (tree.x + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (tree.x + (game.data.chunk_size * 4))){
-                        //     if(uchunk.y + 1 >= (tree.y + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (tree.y  + (game.data.chunk_size * 7))){
-                        //         if(game.user.mouse_down) send_alert(0);
-                        //     }
-                        // }
+                        Entity bird;
+                        bird.position.x = obj.x;
+                        bird.position.y = obj.y;
+                        bird.speed = 4;
+                        bird.directionx = -1;
+                        bird.directiony = 1;
+                        bird.timex = 0;
+                        bird.timey = 0;
+                        game.data.entities.push_back(bird);
                     }
                 }
 
@@ -503,39 +486,34 @@ void mainloop(void *arg)
                     unlocked = true;
                     room = 3;//
                 }
-                if(b.screen_origin[0] < game.user.mouse["x"] && game.user.mouse["x"] < b.screen_origin[0] + game.data.chunk_size * 6){
-                    if(b.screen_origin[1] < game.user.mouse["y"] && game.user.mouse["y"] < b.screen_origin[1] + game.data.chunk_size * 6){                    
-                        //Door position
-                        //TODO
-                        if(uchunk.x + 1 >= (b.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (b.screen_origin[0] + (game.data.chunk_size * 4))){
-                            if(uchunk.y + 1 >= (b.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (b.screen_origin[1] + (game.data.chunk_size * 7))){
-                                
-                                if(game.user.mouse_down) {
-                                    game.user.mouse_down = false;
-                                    if(!unlocked) send_alert(0);
-                                    else {
-                                        if(room == 2) send_alert(5);
-                                        else {
-                                            if(!game.data.inside) {
-                                                if(room == 1) {
-                                                    b.type = "book"; 
-                                                    send_alert(4);
-                                                }
-                                                if(room == 3) {
-                                                    b.type = "shrek"; 
-                                                    send_alert(6);
-                                                }
-                                                b.start = SDL_GetTicks();
-                                                b.step = 0;
-                                                game.data.inside = true;
-                                                b.user.x = game.data.chunk_size*3;
-                                                b.user.y = game.data.chunk_size*5;
-                                                game.data.active_interior = b;
-                                                game.data.chunk_size = game.data.chunk_sizes[2];
+                if(game.check_click(static_cast<float>(b.screen_origin[0]), static_cast<float>(b.screen_origin[1]))) {
+                     //Door position
+                    //TODO
+                    if(uchunk.x + 1 >= (b.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (b.screen_origin[0] + (game.data.chunk_size * 4))){
+                        if(uchunk.y + 1 >= (b.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (b.screen_origin[1] + (game.data.chunk_size * 7))){
 
-                                                
-                                            }
+                            if(!unlocked) send_alert(0);
+                            else {
+                                if(room == 2) send_alert(5);
+                                else {
+                                    if(!game.data.inside) {
+                                        if(room == 1) {
+                                            b.type = "book"; 
+                                            send_alert(4);
                                         }
+                                        if(room == 3) {
+                                            b.type = "shrek"; 
+                                            send_alert(6);
+                                        }
+                                        b.start = SDL_GetTicks();
+                                        b.step = 0;
+                                        game.data.inside = true;
+                                        b.user.x = game.data.chunk_size*3;
+                                        b.user.y = game.data.chunk_size*5;
+                                        game.data.active_interior = b;
+                                        game.data.chunk_size = game.data.chunk_sizes[2];
+
+                                        
                                     }
                                 }
                             }
