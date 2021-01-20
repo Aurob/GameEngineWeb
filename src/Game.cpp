@@ -268,7 +268,7 @@ void Game::update_pos(){
                     continue;
                 }
                 else {
-                    tile.texture.x = 64 * (rand() % 8); tile.texture.y = 64 * (rand() % 26);
+                    tile.texture.x = 64 * (rand() % 7); tile.texture.y = 64 * (rand() % 26);
                     tile.texture.w = 64; tile.texture.h = 64;
                 }
                 data.tiles.push_back(tile);
