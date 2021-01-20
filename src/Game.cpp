@@ -269,8 +269,8 @@ void Game::update_pos(){
                         //secret entrance spawn check
                         tile.texture.x = 96; tile.texture.y = 64;
                         tile.texture.w = 32; tile.texture.h = 32;
-                        if(abs(i) == 1001) {
-                            if(rand() % 1000000 < 10) {
+                        if(abs(i) == 1002) {
+                            if(rand() % 100 < 10) {
                                 tile.special = true;
                                 tile.texture.x = 64; tile.texture.y = 64;
                                 tile.texture.w = 32; tile.texture.h = 32;
