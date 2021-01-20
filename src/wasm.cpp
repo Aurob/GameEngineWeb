@@ -380,23 +380,21 @@ void mainloop(void *arg)
                 steptexr.x = (obj.x - (game.data.chunk_size)) + (rand() % (game.data.chunk_size/2)); 
                 steptexr.y = (obj.y - (game.data.chunk_size*3)) - (rand() % (game.data.chunk_size/2));
                 steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
-                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
+               
 
                 if(game.check_click(obj.x, obj.y)) {
+                    srand(time(NULL));
+                    chartexr.y = 65 * (rand() % 8);
                     if(!obj.visible) {
                         obj.visible = true;
                         obj.time = SDL_GetTicks();
-
-                        srand(time(NULL));
                         Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
                         p = game.content(p, 0);
 
                         Entity bird;
                         bird.position.x = p.x;
                         bird.position.y = p.y;
-
-                        bird.chunk.x = obj.ix;
-                        bird.chunk.y = obj.iy;
+                        bird.chunk = game.getChunkFromCoord(p);
                         bird.speed = 4;
                         bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                         bird.directiony = (rand() % 20 < 10) ? -1 : 1;
@@ -406,6 +404,7 @@ void mainloop(void *arg)
                         game.data.entities.push_back(bird);
                     }
                 }
+                SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
             }
 
             //building

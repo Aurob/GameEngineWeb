@@ -251,6 +251,7 @@ void Game::update_pos(){
                 }
             }
             if(skip) continue;
+            
             SubTexture tile;
             tile.special = false;
             //Get the screen coordinates of the current tile
