@@ -398,7 +398,6 @@ void mainloop(void *arg)
                     else
                         bird.position.y = game.user.globaly - (obj.y);    
 
-                    bird.chunk = game.getChunkFromCoord(bird.position.x, bird.position.y);
                     bird.speed = 4;
                     bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                     bird.directiony = (rand() % 20 < 10) ? -1 : 1;
