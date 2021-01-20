@@ -466,15 +466,15 @@ void Game::update_entities(){
 }
 
 bool Game::check_click(float x, float y) {
-    if(x < game.user.mouse["x"] && game.user.mouse["x"] < x + game.data.chunk_size){
-        if(y < game.user.mouse["y"] && game.user.mouse["y"] <y + game.data.chunk_size){
-            if(game.user.mouse_down) {
-                game.user.mouse_down = false;
+    if(x < data.user.mouse["x"] && data.user.mouse["x"] < x + data.chunk_size){
+        if(y < data.user.mouse["y"] && data.user.mouse["y"] <y + data.chunk_size){
+            if(data.user.mouse_down) {
+                data.user.mouse_down = false;
                 return true;
             }
         }
     }
-    return false;
+    return false;//
 }
 
 TileEdge Game::get_tileEdges(int x, int y){
