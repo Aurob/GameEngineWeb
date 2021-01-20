@@ -74,11 +74,13 @@
     <script type='text/javascript'>
         var get_info;
         var ecount;
+        var set_pos;
         var Module = {
             onRuntimeInitialized: function(){
                 get_info = Module.cwrap('get_info', 'string', ['number']);
                 ecount = Module.cwrap('ecount', 'number', ['']);
                 get_global = Module.cwrap('get_global', 'number', ['number']);
+                set_pos = Module.cwrap('set_pos', 'number', ['number', 'number']);
             },
             canvas: (function() { return document.getElementById('canvas'); })()
         };
