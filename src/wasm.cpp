@@ -370,23 +370,6 @@ void mainloop(void *arg)
             if(obj.type == 0 && game.data.chunk_size != 2) {
                 srand(floor(obj.noise));
 
-                if(game.check_click(obj.x, obj.y)) {
-                    if(!obj.visible) {
-                        obj.visible = true;
-                        obj.time = SDL_GetTicks();
-
-                        Entity bird;
-                        bird.position.x = obj.x;
-                        bird.position.y = obj.y;
-                        bird.speed = 4;
-                        bird.directionx = -1;
-                        bird.directiony = 1;
-                        bird.timex = 0;
-                        bird.timey = 0;
-                        game.data.entities.push_back(bird);
-                    }
-                }
-
                 chartexr.x = 0; 
                 if(obj.visible){
                     if(obj.time + 3000 < SDL_GetTicks()) obj.visible = false;
@@ -399,7 +382,22 @@ void mainloop(void *arg)
                 steptexr.w = game.data.chunk_size*4; steptexr.h = game.data.chunk_size*4; 
                 SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
 
-                
+                if(game.check_click(obj.x, obj.y)) {
+                    if(!obj.visible) {
+                        obj.visible = true;
+                        obj.time = SDL_GetTicks();
+
+                        Entity bird;
+                        bird.position.x = obj.x;
+                        bird.position.y = obj.y;
+                        bird.speed = 4;
+                        bird.directionx = (rand() % 2 < 1) ? -1 : 1;
+                        bird.directiony = (rand() % 2 < 1) ? -1 : 1;
+                        bird.timex = 0;
+                        bird.timey = 0;
+                        game.data.entities.push_back(bird);
+                    }
+                }
             }
 
             //building
