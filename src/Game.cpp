@@ -252,7 +252,7 @@ void Game::update_pos(){
             }
             if(skip) continue;
             SubTexture tile;
-
+            tile.special = false;
             //Get the screen coordinates of the current tile
             Position chunk_position{static_cast<float>(i), static_cast<float>(j)};
             chunk_position = content(chunk_position, 6);
