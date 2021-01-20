@@ -387,15 +387,16 @@ void mainloop(void *arg)
                         obj.visible = true;
                         obj.time = SDL_GetTicks();
 
+                        Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
+                        p = game.content(p, 0);
                         srand(time(NULL));
                         Entity bird;
-                        bird.position.x = obj.x;
-                        bird.position.y = obj.y;
-                        bird.chunk.x = obj.ix;
-                        bird.chunk.y = obj.iy;
+                        bird.position.x = p.x;
+                        bird.position.y = p.y;
                         bird.speed = 4;
                         bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                         bird.directiony = (rand() % 20 < 10) ? -1 : 1;
+                        bird.time = 0;
                         bird.timex = 0;
                         bird.timey = 0;
                         game.data.entities.push_back(bird);

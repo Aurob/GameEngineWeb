@@ -343,6 +343,8 @@ void Game::update_pos(){
                     chunk_position.noise = rand() % 10000;
                     chunk_position.type = 0;
                     chunk_position.visible = false; // causes the tree to sway
+                    chunk_position.ix = i;
+                    chunk_position.iy = j;
                     data.trees.push_back(chunk_position);
                     data.renderable.push_back(chunk_position);
                 }
@@ -452,17 +454,20 @@ void Game::update_entities(){
     data.visible_entities.clear();
 
     for(Entity& entity : data.entities){
+        if(content(entity.chunk, 0)) {
+            entity.position.x += (entity.speed * entity.directionx);
+            entity.position.y += (entity.speed * entity.directiony);
+            entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
+            entity.chunkfx = abs((entity.chunk.x * data.chunk_sizes[3]) - (entity.position.x)) / data.chunk_sizes[3];
+            entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
 
-        entity.position.x += (entity.speed * entity.directionx);
-        entity.position.y += (entity.speed * entity.directiony);
-        entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-        entity.chunkfx = abs((entity.chunk.x * data.chunk_sizes[3]) - (entity.position.x)) / data.chunk_sizes[3];
-        entity.chunkfy = abs((entity.chunk.y * data.chunk_sizes[3]) - (entity.position.y)) / data.chunk_sizes[3];
-
-        // entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
-        entity.timex += .5;
-        entity.timey += .5;
-        data.visible_entities.push_back(entity);       
+            // entity.chunk = getChunkFromCoord(entity.position.x, entity.position.y);
+            entity.timex += .5;
+            entity.timey += .5;
+            data.visible_entities.push_back(entity);     
+        }
+        else if(entity.time > 5000) data.entities.erase(data.entities.begin()+index);
+        index++;
     }
 }
 
