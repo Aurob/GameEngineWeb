@@ -466,10 +466,10 @@ void Game::update_entities(){
 }
 
 bool Game::check_click(float x, float y) {
-    if(x < data.user.mouse["x"] && data.user.mouse["x"] < x + data.chunk_size){
-        if(y < data.user.mouse["y"] && data.user.mouse["y"] <y + data.chunk_size){
-            if(data.user.mouse_down) {
-                data.user.mouse_down = false;
+    if(x < user.mouse["x"] && mouse["x"] < x + data.chunk_size){
+        if(y < user.mouse["y"] && user.mouse["y"] <y + data.chunk_size){
+            if(user.mouse_down) {
+                user.mouse_down = false;
                 return true;
             }
         }
