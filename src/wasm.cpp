@@ -541,7 +541,7 @@ void mainloop(void *arg)
         //std::cout << entity.type << std::endl;
         Position p = game.content(entity.chunk, 0);
 
-        chartexr.x = 32 * (entiy.time_stepx % 3); chartexr.y = 0;
+        chartexr.x = 32 * (entity.time_stepx % 3); chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
         steptexr.x = (p.x + (entity.chunkfx * game.data.chunk_size));  
         steptexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));
