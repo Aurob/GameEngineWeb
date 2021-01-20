@@ -387,12 +387,16 @@ void mainloop(void *arg)
                         obj.visible = true;
                         obj.time = SDL_GetTicks();
 
+                        srand(time(NULL));
                         Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
                         p = game.content(p, 0);
-                        srand(time(NULL));
+
                         Entity bird;
                         bird.position.x = p.x;
                         bird.position.y = p.y;
+
+                        bird.chunk.x = obj.ix;
+                        bird.chunk.y = obj.iy;
                         bird.speed = 4;
                         bird.directionx = (rand() % 20 < 10) ? -1 : 1;
                         bird.directiony = (rand() % 20 < 10) ? -1 : 1;
@@ -543,7 +547,7 @@ void mainloop(void *arg)
         //std::cout << entity.type << std::endl;
         Position p = game.content(entity.chunk, 0);
 
-        chartexr.x = 32 * rand() % 3; chartexr.y = 0;
+        chartexr.x = 32; chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
         steptexr.x = (p.x + (entity.chunkfx * game.data.chunk_size));  
         steptexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));

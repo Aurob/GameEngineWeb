@@ -345,7 +345,7 @@ void Game::update_pos(){
                     chunk_position.visible = false; // causes the tree to sway
                     chunk_position.ix = i;
                     chunk_position.iy = j;
-                    data.trees.push_back(chunk_position);
+                    //data.trees.push_back(chunk_position);
                     data.renderable.push_back(chunk_position);
                 }
             }
