@@ -549,8 +549,8 @@ void mainloop(void *arg)
 
         chartexr.x = 32; chartexr.y = 0;
         chartexr.w = 32; chartexr.h = 32;
-        steptexr.x = (p.x + (entity.chunkfx * game.data.chunk_size));  
-        steptexr.y = (p.y + (entity.chunkfy * game.data.chunk_size));
+        steptexr.x = (p.x);  
+        steptexr.y = (p.y);
         steptexr.w = game.data.chunk_size; steptexr.h = game.data.chunk_size; 
         SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][9].tex, &chartexr, &steptexr);
     }
