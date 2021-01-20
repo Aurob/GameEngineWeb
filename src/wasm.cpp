@@ -385,24 +385,21 @@ void mainloop(void *arg)
                 if(game.check_click(obj.x, obj.y)) {
                     srand(time(NULL));
                     chartexr.y = 65 * (rand() % 8);
-                    if(!obj.visible) {
-                        obj.visible = true;
-                        obj.time = SDL_GetTicks();
-                        Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
-                        p = game.content(p, 0);
+                    obj.time = SDL_GetTicks();
+                    Position p = Position{static_cast<float>(obj.ix), static_cast<float>(obj.iy)};
+                    p = game.content(p, 0);
 
-                        Entity bird;
-                        bird.position.x = p.x;
-                        bird.position.y = p.y;
-                        bird.chunk = game.getChunkFromCoord(p.x, p.y);
-                        bird.speed = 4;
-                        bird.directionx = (rand() % 20 < 10) ? -1 : 1;
-                        bird.directiony = (rand() % 20 < 10) ? -1 : 1;
-                        bird.time = 0;
-                        bird.timex = 0;
-                        bird.timey = 0;
-                        game.data.entities.push_back(bird);
-                    }
+                    Entity bird;
+                    bird.position.x = p.x;
+                    bird.position.y = p.y;
+                    bird.chunk = game.getChunkFromCoord(p.x, p.y);
+                    bird.speed = 4;
+                    bird.directionx = (rand() % 20 < 10) ? -1 : 1;
+                    bird.directiony = (rand() % 20 < 10) ? -1 : 1;
+                    bird.time = 0;
+                    bird.timex = 0;
+                    bird.timey = 0;
+                    game.data.entities.push_back(bird);
                 }
                 SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][5].tex, &chartexr, &steptexr);
             }

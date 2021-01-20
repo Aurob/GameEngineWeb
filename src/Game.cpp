@@ -251,7 +251,7 @@ void Game::update_pos(){
                 }
             }
             if(skip) continue;
-            
+
             SubTexture tile;
             tile.special = false;
             //Get the screen coordinates of the current tile
@@ -343,7 +343,6 @@ void Game::update_pos(){
                     
                     chunk_position.noise = rand() % 10000;
                     chunk_position.type = 0;
-                    chunk_position.visible = false; // causes the tree to sway
                     chunk_position.ix = i;
                     chunk_position.iy = j;
                     //data.trees.push_back(chunk_position);
