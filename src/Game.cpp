@@ -263,13 +263,13 @@ void Game::update_pos(){
 
             //This could be used to limit the size of the world
             if(i >  1000 || i < -1000) {
-                tile.resource_index = 8;
+                tile.resource_index = 10;
                 if(i > 1050 || i < -1050) {
                     continue;
                 }
                 else {
-                    tile.texture.x = 32 * (rand() % 2); tile.texture.y = 32 * (rand() % 3);
-                    tile.texture.w = 32; tile.texture.h = 32;
+                    tile.texture.x = 64 * (rand() % 8); tile.texture.y = 64 * (rand() % 26);
+                    tile.texture.w = 64; tile.texture.h = 64;
                 }
                 data.tiles.push_back(tile);
 
