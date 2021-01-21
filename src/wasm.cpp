@@ -313,11 +313,9 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &temp_tex, &temp_screen);
 
             if(tile.special) {
-                if(tile.type == 1) {
-                    send_alert(12);
-                }
                 if(game.check_click(temp_screen.x, temp_screen.y)) {
-                    send_alert(8);
+                    if(tile.type == 21) send_alert(9);
+                    else send_alert(8);
                 }
             }
         }

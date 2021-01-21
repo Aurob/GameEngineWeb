@@ -262,9 +262,16 @@ void Game::update_pos(){
             tile.screen.x = chunk_position.x; tile.screen.y = chunk_position.y;
             tile.screen.w = data.chunk_size; tile.screen.h = data.chunk_size;
 
+            if(i == 42 && j == 42) {
+                tile.resource_index = 4;
+                tile.texture.x = 192; tile.texture.y = 3424;
+                tile.texture.w = 32; tile.texture.h = 32;
+                tile.type = 21;
+                tile.special = true;
+            }
             //This could be used to limit the size of the world
-            if(abs(i) >  1000) {
-                if(abs(i) <= 1030) {                   //meant to resemble the inner wall
+            else if(abs(i) >  1000) {
+                if(abs(i) <= 1030) {                   
                     if(abs(i) <= 1005) {
                         tile.resource_index = 8;
                         //secret entrance spawn check
@@ -334,14 +341,6 @@ void Game::update_pos(){
                     tile.texture.w = 32; tile.texture.h = 32;
             }
 
-            if(i == 42 && j == 42) {
-                tile.resource_index = 4;
-                tile.texture.x = 192; tile.texture.y = 3424;
-                tile.texture.w = 32; tile.texture.h = 32;
-                tile.type = 1;
-                tile.special = true;
-                skip = true;
-            }
             data.tiles.push_back(tile);
 
             if(!skip) {
