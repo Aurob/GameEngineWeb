@@ -145,6 +145,11 @@ EM_JS(void, talk, (int type), {
 
         case 8:
             alert("It's some kind of access port...");
+            break;
+
+        case 9:
+            alert("Note");
+            break;    
         default:
             break;
     }
@@ -308,6 +313,9 @@ void mainloop(void *arg)
             SDL_RenderCopy(renderer, game.data.Textures.Textures["tiles"][tile.resource_index].tex, &temp_tex, &temp_screen);
 
             if(tile.special) {
+                if(tile.type == 1) {
+                    send_alert(12);
+                }
                 if(game.check_click(temp_screen.x, temp_screen.y)) {
                     send_alert(8);
                 }

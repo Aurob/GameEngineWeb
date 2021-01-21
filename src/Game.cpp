@@ -334,54 +334,64 @@ void Game::update_pos(){
                     tile.texture.w = 32; tile.texture.h = 32;
             }
 
+            if(i == 42069 && j == 42069) {
+                tile.resource_index = 4;
+                tile.texture.x = 192; tile.texture.y = 3424;
+                tile.texture.w = 32; tile.texture.h = 32;
+                tile.type = 1;
+                skip = true;
+            }
             data.tiles.push_back(tile);
 
-            //load trees on grass tiles
-            if(biometex == 4 || biometex == 5){
-                
-                if(data.WorldGen.treeGeneration(i, j)){
+            if(!skip) {
+                //load trees on grass tiles
+                if(biometex == 4 || biometex == 5){
                     
-                    chunk_position.noise = rand() % 10000;
-                    chunk_position.type = 0;
-                    chunk_position.ix = i;
-                    chunk_position.iy = j;
-                    //data.trees.push_back(chunk_position);
-                    data.renderable.push_back(chunk_position);
+                    if(data.WorldGen.treeGeneration(i, j)){
+                        
+                        chunk_position.noise = rand() % 10000;
+                        chunk_position.type = 0;
+                        chunk_position.ix = i;
+                        chunk_position.iy = j;
+                        //data.trees.push_back(chunk_position);
+                        data.renderable.push_back(chunk_position);
+                    }
                 }
-            }
 
-            //Rocks spawn on top of stone tiles
-            else if(biometex == 6){
-                if(data.WorldGen.rockGeneration(i, j)){
-                    data.rocks.push_back(chunk_position);
-                } 
-            }
+                //Rocks spawn on top of stone tiles
+                else if(biometex == 6){
+                    if(data.WorldGen.rockGeneration(i, j)){
+                        data.rocks.push_back(chunk_position);
+                    } 
+                }
 
-            //Generate fish popups on water only
-            else if(biometex == 0){
-                if(data.WorldGen.fishGeneration(i, j, data.time_stepx, data.time_stepy)){
-                    data.fishs.push_back(chunk_position);
-                } 
-            }
+                //Generate fish popups on water only
+                else if(biometex == 0){
+                    if(data.WorldGen.fishGeneration(i, j, data.time_stepx, data.time_stepy)){
+                        data.fishs.push_back(chunk_position);
+                    } 
+                }
 
-            //load structures anywhere but water
-            if(biometex != 0){
-                if(data.WorldGen.doorGeneration(i, j)){
-                    chunk_position.type = 2;
-                    chunk_position.ix = i; chunk_position.iy = j;
-                    data.renderable.push_back(chunk_position);
-                    //Structure spawns are based on a single tile, 
-                    //  so we need to check each tile that the structure covers
-                    //  and ignore that tile
-                    //TODO
-                    for(int ii = i; ii < i + 6; ++ii){
-                        for(int jj = j; jj < j + 6; ++jj){
-                            if(ii != i && jj != j)
-                                data.ignored_tiles.push_back(std::vector<int>{ii, jj});
+                //load structures anywhere but water
+                if(biometex != 0){
+                    if(data.WorldGen.doorGeneration(i, j)){
+                        chunk_position.type = 2;
+                        chunk_position.ix = i; chunk_position.iy = j;
+                        data.renderable.push_back(chunk_position);
+                        //Structure spawns are based on a single tile, 
+                        //  so we need to check each tile that the structure covers
+                        //  and ignore that tile
+                        //TODO
+                        for(int ii = i; ii < i + 6; ++ii){
+                            for(int jj = j; jj < j + 6; ++jj){
+                                if(ii != i && jj != j)
+                                    data.ignored_tiles.push_back(std::vector<int>{ii, jj});
+                            }
                         }
                     }
                 }
             }
+            
         }
     }
 }

@@ -22,6 +22,7 @@ struct SubTexture
     SDL_Rect texture;
     int resource_index;
     bool special;
+    int type;
 };
 
 class TextureUtils {
