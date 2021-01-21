@@ -334,7 +334,7 @@ void Game::update_pos(){
                     tile.texture.w = 32; tile.texture.h = 32;
             }
 
-            if(i == 42069 && j == 42069) {
+            if(i == 42 && j == 42) {
                 tile.resource_index = 4;
                 tile.texture.x = 192; tile.texture.y = 3424;
                 tile.texture.w = 32; tile.texture.h = 32;
