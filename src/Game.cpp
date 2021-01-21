@@ -339,6 +339,7 @@ void Game::update_pos(){
                 tile.texture.x = 192; tile.texture.y = 3424;
                 tile.texture.w = 32; tile.texture.h = 32;
                 tile.type = 1;
+                tile.special = true;
                 skip = true;
             }
             data.tiles.push_back(tile);
