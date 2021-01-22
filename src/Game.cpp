@@ -115,8 +115,11 @@ void Game::update_pos(){
         data.zoom_mody = floor(user.globaly / static_cast<float>(data.chunk_sizes[data.default_chk])) - floor(user.globaly / static_cast<float>(data.chunk_size));
     }
     else{
-        data.xoffset = floor(fmod(user.globalx, static_cast<float>(data.chunk_size)));
-        data.yoffset = floor(fmod(user.globaly, static_cast<float>(data.chunk_size)));
+        //data.xoffset = floor(fmod(user.globalx, static_cast<float>(data.chunk_size)));
+        //data.yoffset = floor(fmod(user.globaly, static_cast<float>(data.chunk_size)));
+        data.xoffset = (static_cast<float>(data.chunk_size)/user.globalx) * static_cast<float>(data.chunk_size);
+        data.yoffset = (static_cast<float>(data.chunk_size)/user.globaly) * static_cast<float>(data.chunk_size);
+        
         data.zoom_modx = 0;
         data.zoom_mody = 0;
     }
