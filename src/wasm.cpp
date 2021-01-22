@@ -48,16 +48,14 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
             //Temporarily disabling zooming while inside
             //if(!game.data.inside){
                 if(event->wheel.y < 0) {
+                    game.data.current_chunk_size--;
                     if(game.data.current_chunk_size < 0) {
                         game.data.map_mode = true;
-                        game.data.current_chunk_size--;
-                    }
-                    else if(game.data.current_chunk_size > 0) {
-                        game.data.current_chunk_size--;
+                        
                     }
                 }
                 else if(event->wheel.y > 0) {
-                    if(game.data.current_chunk_size < 0) {
+                    if(game.data.current_chunk_size >= 0) {
                         game.data.map_mode = false;
                     }
                     if(game.data.current_chunk_size < 5) game.data.current_chunk_size++;
