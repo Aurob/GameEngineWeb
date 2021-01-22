@@ -499,7 +499,7 @@ void mainloop(void *arg)
                     unlocked = true;
                     room = 3;//
                 }
-                if(game.check_click(temp_rect.x, temp_rect.y))) {
+                if(game.check_click(temp_rect.x, temp_rect.y)) {
                     std::cout << "AHHH!" << std::endl;
                     //Door position
                     //TODO
