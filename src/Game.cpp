@@ -6,7 +6,7 @@
 Game::Game(){
     //Begin defining game settings
     data = GameOBJ{
-        .speed = 1,
+        .speed = .1,
         .xoffset = 0, .yoffset = 0,
         .width = 1280, .height = 768,
         .chunk_sizes = std::vector<int>{1, 2, 4, 8, 32, 64},
