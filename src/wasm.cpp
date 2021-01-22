@@ -47,9 +47,21 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
         case SDL_MOUSEWHEEL:
             //Temporarily disabling zooming while inside
             //if(!game.data.inside){
-                if(event->wheel.y < 0 && game.data.current_chunk_size > 0) game.data.current_chunk_size--;
-                if(event->wheel.y > 0 && game.data.current_chunk_size < 5) game.data.current_chunk_size++;
-                
+                if(event->wheel.y < 0) {
+                    if(game.data.current_chunk_size < 0) {
+                        game.data.map_mode = true;
+                        game.data.current_chunk_size--;
+                    }
+                    else if(game.data.current_chunk_size > 0) {
+                        game.data.current_chunk_size--;
+                    }
+                }
+                else if(event->wheel.y > 0) {
+                    if(game.data.current_chunk_size < 0) {
+                        game.data.map_mode = false;
+                    }
+                    if(game.data.current_chunk_size < 5) game.data.current_chunk_size++;
+                }
                 game.data.chunk_size = game.data.chunk_sizes[game.data.current_chunk_size];
 
                 game.data.size = floor(static_cast<float>(game.data.chunk_size) / 2);
@@ -232,7 +244,6 @@ void mainloop(void *arg)
     uchunk = game.content(uchunk, 1);
 
     if(game.data.inside) {
-
         if((game.data.active_interior.user.x >= game.data.chunk_size*3 && game.data.active_interior.user.x < game.data.chunk_size*4) && game.data.active_interior.user.y > game.data.chunk_size*6){
             send_alert(7);
             game.data.inside = false;
@@ -303,6 +314,14 @@ void mainloop(void *arg)
 
         }
 
+    }
+    else if(game.data.map_mode) {
+        temp_rect.x = 0;
+        temp_rect.y = game.data.height/4;
+        temp_rect.w = game.data.width;
+        temp_rect.h = game.data.height/4;
+        SDL_SetRenderDrawColor(renderer, 134, 134, 134, 50 );
+        SDL_RenderFillRect(renderer, &temp_rect);
     }
     else {
         /*Tile renders*/
