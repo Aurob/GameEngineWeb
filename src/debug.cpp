@@ -16,11 +16,32 @@ struct context
     int iteration;
 };
 
+int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
+    switch(event->type) {
+
+        case SDL_MOUSEWHEEL:
+            //Temporarily disabling zooming while inside
+            //if(!game.data.inside){
+                if(event->wheel.y < 0) tilesize/=2;
+                if(event->wheel.y > 0) tilesize*=2;
+            //}
+            break;
+    }
+
+    return -1;
+}
+
 const unsigned int WIDTH = 1280;
 const unsigned int HEIGHT = 768;
 unsigned int tilesize = 32;
 void mainloop(void *arg)
 {   
+    SDL_Event event;
+    //Handle events
+    while (SDL_PollEvent(&event)) {
+        EventHandler(0, &event);
+    }
+
     context *ctx = static_cast<context*>(arg);
     SDL_Renderer *renderer = ctx->renderer;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
