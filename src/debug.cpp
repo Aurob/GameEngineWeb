@@ -19,9 +19,6 @@ struct context
 const unsigned int WIDTH = 1000;
 const unsigned int HEIGHT = 1000;
 unsigned int tilesize = 64;
-
-
-
 void mainloop(void *arg)
 {   
     context *ctx = static_cast<context*>(arg);
@@ -33,6 +30,7 @@ void mainloop(void *arg)
     temp_rect.h = tilesize;
     for(int x = 0; x < WIDTH%tilesize; x++){
         for(int y = 0; y < HEIGHT%tilesize; y++){
+            srand(x+y);
             temp_rect.x = x*tilesize;
             temp_rect.y = y*tilesize;
             int g = rand() % 255;
