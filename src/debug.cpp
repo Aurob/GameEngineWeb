@@ -16,8 +16,8 @@ struct context
     int iteration;
 };
 
-const unsigned int WIDTH = 1920;
-const unsigned int HEIGHT = 1080;
+const unsigned int WIDTH = 1280;
+const unsigned int HEIGHT = 768;
 unsigned int tilesize = 32;
 void mainloop(void *arg)
 {   
