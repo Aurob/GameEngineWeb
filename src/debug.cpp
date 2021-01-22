@@ -16,9 +16,9 @@ struct context
     int iteration;
 };
 
-const unsigned int WIDTH = 1000;
-const unsigned int HEIGHT = 1000;
-unsigned int tilesize = 64;
+const unsigned int WIDTH = 1920;
+const unsigned int HEIGHT = 1080;
+unsigned int tilesize = 32;
 void mainloop(void *arg)
 {   
     context *ctx = static_cast<context*>(arg);
