@@ -48,6 +48,10 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
             //Temporarily disabling zooming while inside
             //if(!game.data.inside){
                 if(event->wheel.y < 0 && game.data.current_chunk_size > 0) game.data.current_chunk_size--;
+                else {
+                    game.data.map_view
+                    game.data.current_chunk_size--;
+                }
                 if(event->wheel.y > 0 && game.data.current_chunk_size < 5) game.data.current_chunk_size++;
                 
                 game.data.chunk_size = game.data.chunk_sizes[game.data.current_chunk_size];
@@ -500,7 +504,8 @@ void mainloop(void *arg)
                     room = 3;//
                 }
                 if(game.check_click(static_cast<float>(b.screen_origin[0]), static_cast<float>(b.screen_origin[1]))) {
-                     //Door position
+                    std::cout << "AHHH!" << std::endl;
+                    //Door position
                     //TODO
                     if(uchunk.x + 1 >= (b.screen_origin[0] + (game.data.chunk_size * 3)) && uchunk.x + 1 <= (b.screen_origin[0] + (game.data.chunk_size * 4))){
                         if(uchunk.y + 1 >= (b.screen_origin[1] + (game.data.chunk_size * 6)) && uchunk.y + 1 <= (b.screen_origin[1] + (game.data.chunk_size * 7))){
