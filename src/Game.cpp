@@ -9,8 +9,8 @@ Game::Game(){
         .speed = 10,
         .xoffset = 0, .yoffset = 0,
         .width = 1280, .height = 768,
-        .chunk_sizes = std::vector<int>{2, 8, 32, 64, 128, 256},
-        .current_chunk_size = 3, .chunk_size = 64, .size = 625,
+        .chunk_sizes = std::vector<int>{1, 2, 4, 8, 32, 64},
+        .current_chunk_size = 3, .chunk_size = 8, .size = 625,
         .time = SDL_GetTicks(), .MAX_ENTITIES = 10, .default_chk = 3,
         .time_stepx = 0, .time_stepy = 0,
         .map_mode = false
