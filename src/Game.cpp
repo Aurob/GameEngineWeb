@@ -6,7 +6,7 @@
 Game::Game(){
     //Begin defining game settings
     data = GameOBJ{
-        .speed = 10,
+        .speed = 1,
         .xoffset = 0, .yoffset = 0,
         .width = 1280, .height = 768,
         .chunk_sizes = std::vector<int>{1, 2, 4, 8, 32, 64},
@@ -18,7 +18,7 @@ Game::Game(){
 
     data.WorldGen.rock_noise.SetSeed(time(NULL));
     User user {
-        .globalx = 1, .globaly = 1,
+        .globalx = 0, .globaly = 0,
         .mouse{{"x",0},{"y",0}}, .chunk{0, 0},
         .mouse_chunk{0,0}, .directionx = 1, .directiony = 1
     };
