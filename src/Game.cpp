@@ -8,7 +8,7 @@ Game::Game(){
     unsigned int cs = 64;
 
     data = GameOBJ{
-        .speed = 10,
+        .speed = 2,
         .xoffset = 0, .yoffset = 0,
         .width = static_cast<unsigned int>(1000/cs)*cs, .height = static_cast<unsigned int>(1000/cs)*cs,
         .chunk_sizes = std::vector<int>{64, 64, 64, 64, 64, 64}, //.chunk_sizes = std::vector<int>{10, 20, 50, 100, 250, 500},
@@ -90,19 +90,19 @@ void Game::update_pos(){
 
 
     if(user.keyState[1]){
-        user.globalx+=data.speed * ((user.keyState[5]) ? ((data.chunk_size == 2) ? 550 : 15) : 1); //D
+        user.globalx+=data.speed * ((user.keyState[5]) ? 550 : 1); //D
         user.directionx = 1;
     }
     if(user.keyState[2]){
-        user.globalx-=data.speed * ((user.keyState[5]) ? ((data.chunk_size == 2) ? 550 : 15) : 1); //A
+        user.globalx-=data.speed * ((user.keyState[5]) ? 550 : 1);  //A
         user.directionx = -1;
     }
     if(user.keyState[3]){
-        user.globaly+=data.speed * ((user.keyState[5]) ? ((data.chunk_size == 2) ? 550 : 15) : 1); //S
+        user.globaly+=data.speed * ((user.keyState[5]) ? 550 : 1);  //S
         user.directiony = 1;
     }
     if(user.keyState[4]){
-        user.globaly-=data.speed * ((user.keyState[5]) ? ((data.chunk_size == 2) ? 550 : 15) : 1); //W
+        user.globaly-=data.speed * ((user.keyState[5]) ? 550 : 1);  //W
         user.directiony = -1;
     } 
 
