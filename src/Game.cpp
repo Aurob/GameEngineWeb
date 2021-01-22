@@ -13,7 +13,7 @@ Game::Game(){
         .current_chunk_size = 3, .chunk_size = 50, .size = 625,
         .time = SDL_GetTicks(), .MAX_ENTITIES = 10, .default_chk = 3,
         .time_stepx = 0, .time_stepy = 0,
-        .map_mode = false;
+        .map_mode = false
     };
 
     data.WorldGen.rock_noise.SetSeed(time(NULL));
