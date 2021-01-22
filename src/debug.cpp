@@ -20,9 +20,7 @@ const unsigned int WIDTH = 1000;
 const unsigned int HEIGHT = 1000;
 unsigned int tilesize = 64;
 
-SDL_Rect temp_rect;
-temp_rect.w = tilesize;
-temp_rect.h = tilesize;
+
 
 void mainloop(void *arg)
 {   
@@ -30,7 +28,9 @@ void mainloop(void *arg)
     SDL_Renderer *renderer = ctx->renderer;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255 );
     SDL_RenderClear(renderer);
-
+    SDL_Rect temp_rect;
+    temp_rect.w = tilesize;
+    temp_rect.h = tilesize;
     for(int x = 0; x < WIDTH%tilesize; x++){
         for(int y = 0; y < HEIGHT%tilesize; y++){
             temp_rect.x = x*tilesize;
