@@ -11,7 +11,7 @@ Game::Game(){
         .speed = 10,
         .xoffset = 0, .yoffset = 0,
         .width = static_cast<int>(1000/cs)*cs, .height = static_cast<int>(1000/cs)*cs,
-        .chunk_sizes = statstd::vector<int>{64, 64, 64, 64, 64, 64}, //.chunk_sizes = std::vector<int>{10, 20, 50, 100, 250, 500},
+        .chunk_sizes = std::vector<int>{64, 64, 64, 64, 64, 64}, //.chunk_sizes = std::vector<int>{10, 20, 50, 100, 250, 500},
         .current_chunk_size = 3, .chunk_size = cs, .size = 625,
         .time = SDL_GetTicks(), .MAX_ENTITIES = 10, .default_chk = 3,
         .time_stepx = 0, .time_stepy = 0
