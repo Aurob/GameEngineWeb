@@ -19,16 +19,39 @@ struct context
 const unsigned int WIDTH = 1280;
 const unsigned int HEIGHT = 768;
 unsigned int tilesize = 32;
+unsigned int[2] mouse;
+bool mousedown = false;
+int offsetx{};
+int offsety{};
 
 int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
     switch(event->type) {
+        case SDL_MOUSEMOTION:
+            if(mousedown) {
+                if(event->motion.x > mouse[0]) //drag left
+                    xoffset+=2;
+                else //drag down
+                    xoffset-=2;
+                if(event->motion.y > mouse[1]) //draw down
+                    yoffset+=2;
+                else //drag up
+                    yoffset-=2;
+                mouse[0] = event->motion.x;
+                mouse[1] = event->motion.y;
+            }
+            break;
+
+        case SDL_MOUSEBUTTONDOWN:
+            mousedown = true;
+            break;   
+
+        case SDL_MOUSEBUTTONUP:
+            mousedown = false;
+            break;
 
         case SDL_MOUSEWHEEL:
-            //Temporarily disabling zooming while inside
-            //if(!game.data.inside){
-                if(event->wheel.y < 0) tilesize/=2;
+            if(event->wheel.y < 0) tilesize/=2;
                 if(event->wheel.y > 0) tilesize*=2;
-            //}
             break;
     }
 
@@ -54,8 +77,8 @@ void mainloop(void *arg)
     for(int x = 0; x < WIDTH/tilesize; x++){
         for(int y = 0; y < HEIGHT/tilesize; y++){
             srand(x+y);
-            temp_rect.x = x*tilesize;
-            temp_rect.y = y*tilesize;
+            temp_rect.x = (x*tilesize) + xoffset;
+            temp_rect.y = (y*tilesize) + yoffset;
             int g = rand() % 255;
             SDL_SetRenderDrawColor(renderer, g, g, g, 255 );
 
