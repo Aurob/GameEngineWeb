@@ -19,7 +19,7 @@ struct context
 const unsigned int WIDTH = 1280;
 const unsigned int HEIGHT = 768;
 unsigned int tilesize = 32;
-unsigned int[2] mouse;
+unsigned int mouse[2];
 bool mousedown = false;
 int offsetx{};
 int offsety{};
