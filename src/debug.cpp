@@ -29,13 +29,13 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
         case SDL_MOUSEMOTION:
             if(mousedown) {
                 if(event->motion.x > mouse[0]) //drag left
-                    xoffset+=2;
+                    offsetx+=2;
                 else //drag down
-                    xoffset-=2;
+                    offsetx-=2;
                 if(event->motion.y > mouse[1]) //draw down
-                    yoffset+=2;
+                    offsety+=2;
                 else //drag up
-                    yoffset-=2;
+                    offsety-=2;
                 mouse[0] = event->motion.x;
                 mouse[1] = event->motion.y;
             }
@@ -77,8 +77,8 @@ void mainloop(void *arg)
     for(int x = 0; x < WIDTH/tilesize; x++){
         for(int y = 0; y < HEIGHT/tilesize; y++){
             srand(x+y);
-            temp_rect.x = (x*tilesize) + xoffset;
-            temp_rect.y = (y*tilesize) + yoffset;
+            temp_rect.x = (x*tilesize) + offsetx;
+            temp_rect.y = (y*tilesize) + offsety;
             int g = rand() % 255;
             SDL_SetRenderDrawColor(renderer, g, g, g, 255 );
 
