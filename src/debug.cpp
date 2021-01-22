@@ -28,8 +28,8 @@ void mainloop(void *arg)
     SDL_Rect temp_rect;
     temp_rect.w = tilesize;
     temp_rect.h = tilesize;
-    for(int x = 0; x < WIDTH%tilesize; x++){
-        for(int y = 0; y < HEIGHT%tilesize; y++){
+    for(int x = 0; x < WIDTH/tilesize; x++){
+        for(int y = 0; y < HEIGHT/tilesize; y++){
             srand(x+y);
             temp_rect.x = x*tilesize;
             temp_rect.y = y*tilesize;
