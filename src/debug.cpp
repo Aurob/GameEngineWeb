@@ -16,6 +16,10 @@ struct context
     int iteration;
 };
 
+const unsigned int WIDTH = 1280;
+const unsigned int HEIGHT = 768;
+unsigned int tilesize = 32;
+
 int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
     switch(event->type) {
 
@@ -31,9 +35,7 @@ int SDLCALL EventHandler(void *userdata, SDL_Event *event) {
     return -1;
 }
 
-const unsigned int WIDTH = 1280;
-const unsigned int HEIGHT = 768;
-unsigned int tilesize = 32;
+
 void mainloop(void *arg)
 {   
     SDL_Event event;
