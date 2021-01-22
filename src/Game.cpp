@@ -5,12 +5,14 @@
 //This really needs to be a singleton
 Game::Game(){
     //Begin defining game settings
+    int cs = 64;
+
     data = GameOBJ{
         .speed = 10,
         .xoffset = 0, .yoffset = 0,
-        .width = 1000, .height = 1000,
+        .width = floor(1000/cs)*cs, .height = floor(1000/cs)*cs,
         .chunk_sizes = std::vector<int>{64, 64, 64, 64, 64, 64}, //.chunk_sizes = std::vector<int>{10, 20, 50, 100, 250, 500},
-        .current_chunk_size = 3, .chunk_size = 50, .size = 625,
+        .current_chunk_size = 3, .chunk_size = cs, .size = 625,
         .time = SDL_GetTicks(), .MAX_ENTITIES = 10, .default_chk = 3,
         .time_stepx = 0, .time_stepy = 0
     };
